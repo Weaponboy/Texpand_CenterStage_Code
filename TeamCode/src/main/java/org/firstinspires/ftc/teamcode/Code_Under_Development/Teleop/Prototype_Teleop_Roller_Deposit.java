@@ -1,36 +1,33 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.Teleop;
 
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.currentGamepad1;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.previousGamepad1;
+
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Slidey_Gripper_Pivot;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Intake_And_Pivot;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Delivery_Slides;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Drivetrain;
-
 
 import java.util.List;
 
 @TeleOp
-public class Rebuild_Teleop extends OpMode {
+public class Prototype_Teleop_Roller_Deposit extends OpMode {
 
     Drivetrain drive = new Drivetrain();
 
     Delivery_Slides deliverySlides = new Delivery_Slides();
 
-    Slidey_Gripper_Pivot slidey = new Slidey_Gripper_Pivot();
-
-    Gamepad currentGamepad1 = new Gamepad();
-
-    Gamepad currentGamepad2 = new Gamepad();
-
-    Gamepad previousGamepad1 = new Gamepad();
-
-    Gamepad previousGamepad2 = new Gamepad();
+    Intake_And_Pivot slidey = new Intake_And_Pivot();
 
     PIDFController Slide_Power;
+
+    Servo Roller;
 
     int SlidesTarget = 0;
 
@@ -71,6 +68,8 @@ public class Rebuild_Teleop extends OpMode {
         drive.LF.setPower(throttle*(pivot + (vertical + horizontal)));
         drive.LB.setPower((throttle*1.15)*(pivot + (vertical - horizontal)));
 
+        /**Delivery Slide Code*/
+
         SlideSafetyHeight = deliverySlides.Left_Slide.getCurrentPosition() > 2200;
         SlideSafetyBottom = deliverySlides.Left_Slide.getCurrentPosition() < 10;
 
@@ -84,6 +83,8 @@ public class Rebuild_Teleop extends OpMode {
             deliverySlides.SlidesBothPower(0.0005);
         }
 
+        /**Top pivot code*/
+
         if (gamepad1.dpad_up){
             Pivot_Target = 460;
         }
@@ -95,48 +96,40 @@ public class Rebuild_Teleop extends OpMode {
         if (gamepad1.right_trigger > 0){
             deliverySlides.DeliverySlides(0, -0.6);
         }
+
+        /**Intake Toggle*/
+
         if (gamepad1.b){
             slidey.Intake.setPower(-1);
         }else if (gamepad1.y) {
             slidey.Intake.setPower(0);
         }
 
-//        if(gamepad1.dpad_left){
-//            slidey.Plunger.setPosition(0);
-//        }else if (gamepad1.dpad_right){
-//            slidey.Plunger.setPosition(1);
-//        } else if (gamepad1.back) {
-//            slidey.Plunger.setPosition(0.6);
-//        } else if (gamepad1.start) {
-//            slidey.Plunger.setPosition(0.65);
-//        }
+        /**Deposit Code*/
 
         if(gamepad1.dpad_left){
-            slidey.Plunger.setPosition(-1);
+            Roller.setPosition(-1);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(800);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            slidey.Plunger.setPosition(0.5);
+            Roller.setPosition(0.5);
         }else if (gamepad1.dpad_right){
-            slidey.Plunger.setPosition(1);
+            Roller.setPosition(1);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(800);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            slidey.Plunger.setPosition(0.5);
+            Roller.setPosition(0.5);
         }
+
+        /**Call all PID's and telemetry code*/
 
         Top_Pivot_Position();
 
-        telemetry.addData("left slide", deliverySlides.Left_Slide.getCurrentPosition());
-        telemetry.addData("right slide", deliverySlides.Right_Slide.getCurrentPosition());
-        telemetry.addData("height", SlideSafetyHeight);
-        telemetry.addData("bottom", SlideSafetyBottom);
-        telemetry.addData("pivot pos", slidey.Pivot.getCurrentPosition());
-        telemetry.addData("pivot target", Pivot_Target);
+        TelemetryMap();
 
     }
 
@@ -149,7 +142,13 @@ public class Rebuild_Teleop extends OpMode {
 
         slidey.init(hardwareMap);
 
+        Roller = hardwareMap.get(Servo.class, "roller");
+
         Slide_Power = new PIDFController(pivot_p, pivot_i, pivot_d, 0);
+
+        currentGamepad1 = new Gamepad();
+
+        previousGamepad1 = new Gamepad();
 
         List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
 
@@ -187,6 +186,16 @@ public class Rebuild_Teleop extends OpMode {
         SlidePower = Slide_Power.calculate(SlidesTarget);
         SlideSafetyBottom = deliverySlides.Left_Slide.getCurrentPosition() < 10;
         deliverySlides.SlidesBothPower(SlidePower);
+    }
+
+    void TelemetryMap(){
+        telemetry.addData("left slide", deliverySlides.Left_Slide.getCurrentPosition());
+        telemetry.addData("right slide", deliverySlides.Right_Slide.getCurrentPosition());
+        telemetry.addData("height", SlideSafetyHeight);
+        telemetry.addData("bottom", SlideSafetyBottom);
+        telemetry.addData("pivot pos", slidey.Pivot.getCurrentPosition());
+        telemetry.addData("pivot target", Pivot_Target);
+        telemetry.update();
     }
 
 }

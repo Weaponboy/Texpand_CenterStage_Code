@@ -7,9 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class Slidey_Gripper_Pivot {
+public class Intake_And_Pivot {
 
-    public Servo Plunger;
     public DcMotorEx Pivot;
     public DcMotorEx Intake;
     public PIDFController pivot_controllers;
@@ -24,8 +23,6 @@ public class Slidey_Gripper_Pivot {
         pivot_controllers = new PIDFController(pivot_p, pivot_i, pivot_d, 0.05);
 
         pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0.05);
-
-        Plunger = hardwareMap.get(Servo.class, "plug");
 
         Pivot = hardwareMap.get(DcMotorEx.class, "pivot");
 
