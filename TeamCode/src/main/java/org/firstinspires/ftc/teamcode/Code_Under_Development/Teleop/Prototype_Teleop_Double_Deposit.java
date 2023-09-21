@@ -102,31 +102,31 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
         /**Intake Toggle*/
 
         if (gamepad1.b){
-            slidey.Intake.setPower(-1);
+            slidey.Intake.setPower(-0.4);
         }else if (gamepad1.y) {
             slidey.Intake.setPower(0);
         }
 
         /**Deposit Code*/
 
-        if(gamepad1.dpad_left && LeftClaw.getPosition() == 0){
-            LeftClaw.setPosition(0);
+        if(gamepad1.dpad_left && LeftClaw.getPosition() == 0.5){
+            LeftClaw.setPosition(0.5);
         }else if (gamepad1.dpad_left && LeftClaw.getPosition() == 1){
             LeftClaw.setPosition(1);
         }
 
         if(gamepad1.dpad_right && RightClaw.getPosition() == 1){
-            RightClaw.setPosition(0);
-        }else if (gamepad1.dpad_right && RightClaw.getPosition() == 0){
+            RightClaw.setPosition(0.5);
+        }else if (gamepad1.dpad_right && RightClaw.getPosition() == 0.5){
             RightClaw.setPosition(1);
         }
 
         if(gamepad1.back){
-            RightClaw.setPosition(0);
-            LeftClaw.setPosition(0);
+            RightClaw.setPosition(0.5);
+            LeftClaw.setPosition(1);
         }else if (gamepad1.start){
             RightClaw.setPosition(1);
-            LeftClaw.setPosition(1);
+            LeftClaw.setPosition(0.5);
         }
 
         /**Call all PID's and telemetry code*/
