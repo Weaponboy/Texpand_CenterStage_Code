@@ -9,84 +9,81 @@ import java.util.List;
 
 public class HexagonDetectionPipeline extends OpenCvPipeline {
 
-    private Mat output = new Mat();
+    Mat output = new Mat();
+    Mat hsvImage = new Mat();
+    Mat greenMask = new Mat();
+    Mat whiteMask = new Mat();
+    Mat purpleMask = new Mat();
 
     @Override
     public Mat processFrame(Mat input) {
-
-        // Copy the input frame to the output frame for visualization
         input.copyTo(output);
+        Imgproc.cvtColor(input, hsvImage, Imgproc.COLOR_BGR2HSV);
 
-        // Convert to grayscale
-        Mat gray = new Mat();
-        Imgproc.cvtColor(input, gray, Imgproc.COLOR_BGR2GRAY);
+        Core.inRange(hsvImage, new Scalar(ColorConstants.GREEN_LOWER_H, ColorConstants.GREEN_LOWER_S, ColorConstants.GREEN_LOWER_V),
+                new Scalar(ColorConstants.GREEN_UPPER_H, ColorConstants.GREEN_UPPER_S, ColorConstants.GREEN_UPPER_V), greenMask);
 
-        // Apply Gaussian blur
-        Mat blurred = new Mat();
-        Imgproc.GaussianBlur(gray, blurred, new Size(5, 5), 0);
+        Core.inRange(hsvImage, new Scalar(ColorConstants.WHITE_LOWER_H, ColorConstants.WHITE_LOWER_S, ColorConstants.WHITE_LOWER_V),
+                new Scalar(ColorConstants.WHITE_UPPER_H, ColorConstants.WHITE_UPPER_S, ColorConstants.WHITE_UPPER_V), whiteMask);
 
-        // Edge detection using Canny
-        Mat edged = new Mat();
-        Imgproc.Canny(blurred, edged, 50, 150);
+        Core.inRange(hsvImage, new Scalar(ColorConstants.PURPLE_LOWER_H, ColorConstants.PURPLE_LOWER_S, ColorConstants.PURPLE_LOWER_V),
+                new Scalar(ColorConstants.PURPLE_UPPER_H, ColorConstants.PURPLE_UPPER_S, ColorConstants.PURPLE_UPPER_V), purpleMask);
 
-        // Find contours
-        List<MatOfPoint> contours = new ArrayList<>();
-        Mat hierarchy = new Mat();
-        Imgproc.findContours(edged, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+        Mat[] masks = {greenMask, whiteMask, purpleMask};
+        String[] colors = {"Green", "White", "Purple"};
 
-        // Loop over the contours to find hexagons
-        for (MatOfPoint cnt : contours) {
-            MatOfPoint2f approx = new MatOfPoint2f();
-            MatOfPoint2f cnt2f = new MatOfPoint2f(cnt.toArray());
-            double epsilon = 0.02 * Imgproc.arcLength(cnt2f, true);  // Reduced approximation error
-            Imgproc.approxPolyDP(cnt2f, approx, epsilon, true);
+        List<Rect> allRects = new ArrayList<>();
 
-            // Check if it's a hexagon (6 sides) and has a minimum size
-            if (approx.total() == 6 && Imgproc.contourArea(cnt) > 50) {
-                // Draw bounding rectangle
-                Rect rect = Imgproc.boundingRect(cnt);
+        for (int i = 0; i < masks.length; i++) {
+            List<MatOfPoint> contours = new ArrayList<>();
+            Mat hierarchy = new Mat();
+            Imgproc.findContours(masks[i], contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
-                // Identify color and label it
-                double[] color = input.get((int) (rect.y + rect.height / 2), (int) (rect.x + rect.width / 2));
-                String colorLabel = identifyColor(color);
-                Scalar boxColor = getColorScalar(colorLabel);
+            for (MatOfPoint cnt : contours) {
+                if (Imgproc.contourArea(cnt) > 50) {
+                    Rect rect = Imgproc.boundingRect(cnt);
+                    allRects.add(rect);
+                }
+            }
+        }
 
-                Imgproc.rectangle(output, rect.tl(), rect.br(), boxColor, 2);
-                Imgproc.putText(output, colorLabel, new Point(rect.x, rect.y - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(255, 255, 255), 2);
+        for (Rect rect : allRects) {
+            if (!isInsideAnother(rect, allRects)) {
+                drawHexagon(rect, output, new Scalar(0, 255, 0));
             }
         }
 
         return output;
     }
-    private Scalar getColorScalar(String colorLabel) {
-        switch (colorLabel) {
-            case "White":
-                return new Scalar(255, 255, 255);
-            case "Purple":
-                return new Scalar(255, 0, 255);
-            case "Yellow":
-                return new Scalar(0, 255, 255);
-            case "Green":
-                return new Scalar(0, 128, 0);
-            default:
-                return new Scalar(0, 0, 0);
+
+    private void drawHexagon(Rect rect, Mat output, Scalar color) {
+        int xCenter = rect.x + rect.width / 2;
+        int yCenter = rect.y + rect.height / 2;
+        int radius = Math.min(rect.width, rect.height) / 2;
+
+        Point[] hexagon = new Point[6];
+        for (int i = 0; i < 6; i++) {
+            double angle = Math.PI / 3 * i;
+            int x = (int) (xCenter + radius * Math.cos(angle));
+            int y = (int) (yCenter + radius * Math.sin(angle));
+            hexagon[i] = new Point(x, y);
         }
+
+        MatOfPoint hexMat = new MatOfPoint();
+        hexMat.fromArray(hexagon);
+
+        List<MatOfPoint> hexList = new ArrayList<>();
+        hexList.add(hexMat);
+
+        Imgproc.polylines(output, hexList, true, color, 2);
     }
 
-
-    private String identifyColor(double[] color) {
-        // RGB color detection logic
-        if (color[0] > 200 && color[1] > 200 && color[2] > 200) {
-            return "White";
-        } else if (color[0] < 50 && color[1] > 100 && color[2] > 100) {
-            return "Purple";
-        } else if (color[0] > 200 && color[1] > 200 && color[2] < 100) {
-            return "Yellow";
-        } else if (color[0] < 100 && color[1] > 100 && color[2] < 100) {
-            return "Green";
+    private boolean isInsideAnother(Rect rect, List<Rect> allRects) {
+        for (Rect otherRect : allRects) {
+            if (otherRect != rect && otherRect.contains(rect.tl()) && otherRect.contains(rect.br())) {
+                return true;
+            }
         }
-        return "Unknown";
+        return false;
     }
 }
-
-
