@@ -9,7 +9,6 @@ import java.util.List;
 
 public class HexagonDetectionPipeline extends OpenCvPipeline {
 
-    // Initialize Mat objects here to avoid memory leak
     Mat output = new Mat();
     Mat hsvImage = new Mat();
     Mat greenMask = new Mat();
@@ -18,7 +17,6 @@ public class HexagonDetectionPipeline extends OpenCvPipeline {
 
     @Override
     public Mat processFrame(Mat input) {
-        // Reuse existing Mat objects
         input.copyTo(output);
         Imgproc.cvtColor(input, hsvImage, Imgproc.COLOR_BGR2HSV);
 
@@ -34,6 +32,8 @@ public class HexagonDetectionPipeline extends OpenCvPipeline {
         Mat[] masks = {greenMask, whiteMask, purpleMask};
         String[] colors = {"Green", "White", "Purple"};
 
+        List<Rect> allRects = new ArrayList<>();
+
         for (int i = 0; i < masks.length; i++) {
             List<MatOfPoint> contours = new ArrayList<>();
             Mat hierarchy = new Mat();
@@ -42,26 +42,48 @@ public class HexagonDetectionPipeline extends OpenCvPipeline {
             for (MatOfPoint cnt : contours) {
                 if (Imgproc.contourArea(cnt) > 50) {
                     Rect rect = Imgproc.boundingRect(cnt);
-                    Scalar color = new Scalar(0, 255, 0); // Default to green
-
-                    switch (colors[i]) {
-                        case "Green":
-                            color = new Scalar(0, 128, 0);
-                            break;
-                        case "White":
-                            color = new Scalar(255, 255, 255);
-                            break;
-                        case "Purple":
-                            color = new Scalar(255, 0, 255);
-                            break;
-                    }
-
-                    Imgproc.rectangle(output, rect.tl(), rect.br(), color, 2);
-                    Imgproc.putText(output, colors[i], new Point(rect.x, rect.y - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, new Scalar(255, 255, 255), 2);
+                    allRects.add(rect);
                 }
             }
         }
 
+        for (Rect rect : allRects) {
+            if (!isInsideAnother(rect, allRects)) {
+                drawHexagon(rect, output, new Scalar(0, 255, 0));
+            }
+        }
+
         return output;
+    }
+
+    private void drawHexagon(Rect rect, Mat output, Scalar color) {
+        int xCenter = rect.x + rect.width / 2;
+        int yCenter = rect.y + rect.height / 2;
+        int radius = Math.min(rect.width, rect.height) / 2;
+
+        Point[] hexagon = new Point[6];
+        for (int i = 0; i < 6; i++) {
+            double angle = Math.PI / 3 * i;
+            int x = (int) (xCenter + radius * Math.cos(angle));
+            int y = (int) (yCenter + radius * Math.sin(angle));
+            hexagon[i] = new Point(x, y);
+        }
+
+        MatOfPoint hexMat = new MatOfPoint();
+        hexMat.fromArray(hexagon);
+
+        List<MatOfPoint> hexList = new ArrayList<>();
+        hexList.add(hexMat);
+
+        Imgproc.polylines(output, hexList, true, color, 2);
+    }
+
+    private boolean isInsideAnother(Rect rect, List<Rect> allRects) {
+        for (Rect otherRect : allRects) {
+            if (otherRect != rect && otherRect.contains(rect.tl()) && otherRect.contains(rect.br())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

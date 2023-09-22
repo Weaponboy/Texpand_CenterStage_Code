@@ -88,7 +88,7 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
         /**Top pivot code*/
 
         if (gamepad1.dpad_up){
-            Pivot_Target = 460;
+            Pivot_Target = 2070;
         }
 
         if (gamepad1.dpad_down){
@@ -110,9 +110,10 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
         /**Deposit Code*/
 
         if(gamepad1.dpad_left && LeftClaw.getPosition() == 0.5){
-            LeftClaw.setPosition(0.5);
-        }else if (gamepad1.dpad_left && LeftClaw.getPosition() == 1){
             LeftClaw.setPosition(1);
+        }else if (gamepad1.dpad_left && LeftClaw.getPosition() == 1){
+            LeftClaw.setPosition(0.5);
+
         }
 
         if(gamepad1.dpad_right && RightClaw.getPosition() == 1){
@@ -169,7 +170,7 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
         double Pivot_Current_Position = slidey.Pivot.getCurrentPosition();
 
-        double Top_Pivot_PID = slidey.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.2;
+        double Top_Pivot_PID = slidey.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.3;
 
         slidey.Pivot.setPower(Top_Pivot_PID);
 
