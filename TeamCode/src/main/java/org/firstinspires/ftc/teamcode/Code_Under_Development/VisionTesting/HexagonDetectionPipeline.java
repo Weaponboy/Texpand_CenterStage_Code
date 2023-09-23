@@ -63,7 +63,7 @@ public class HexagonDetectionPipeline extends OpenCvPipeline {
 
         Point[] hexagon = new Point[6];
         for (int i = 0; i < 6; i++) {
-            double angle = Math.PI / 3 * i;
+            double angle = Math.PI / 3 * i + Math.PI / 6; // Add Math.PI / 6 for a 30-degree rotation
             int x = (int) (xCenter + radius * Math.cos(angle));
             int y = (int) (yCenter + radius * Math.sin(angle));
             hexagon[i] = new Point(x, y);
