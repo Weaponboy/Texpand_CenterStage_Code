@@ -100,6 +100,28 @@ public class Pull_up_teleop extends OpMode {
 
     }
 
+    public void Slide_Position_With_Feedforward(){
+
+        slidey.pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0);
+
+        double Pivot_Current_Position = slidey.Pivot.getCurrentPosition();
+
+        double Top_Pivot_PID = slidey.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.8;
+
+        double pivot_f = 0.1;
+
+        double ticks_in_degrees = 560 / 180.0;
+
+        double Pivot_FF = Math.cos(Math.toRadians(Pivot_Target / ticks_in_degrees)) * pivot_f;
+
+        double Pivot_Power = Top_Pivot_PID + Pivot_FF;
+
+        slidey.Pivot.setPower(Pivot_Power);
+
+    }
+
+
+
     public void letDown(){
         Pivot_Target = 800;
         while(deliverySlides.Left_Slide.getCurrentPosition() < 780){
