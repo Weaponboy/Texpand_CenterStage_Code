@@ -56,6 +56,7 @@ public class Pull_up_teleop extends OpMode {
             //pull up 5
             letDown();
             pullUp();
+            
         }
 
         Slide_Position();
