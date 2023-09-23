@@ -132,7 +132,7 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
         /**Call all PID's and telemetry code*/
 
-        Top_Pivot_Position();
+        Top_Pivot_Position_With_Feedforward();
 
         TelemetryMap();
 
@@ -173,6 +173,26 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
         double Top_Pivot_PID = slidey.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.3;
 
         slidey.Pivot.setPower(Top_Pivot_PID);
+
+    }
+
+    public void Top_Pivot_Position_With_Feedforward(){
+
+        slidey.pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0);
+
+        double Pivot_Current_Position = slidey.Pivot.getCurrentPosition();
+
+        double Top_Pivot_PID = slidey.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.6;
+
+        double pivot_f = 0.1;
+
+        double ticks_in_degrees = 2550 / 180.0;
+
+        double Pivot_FF = Math.cos(Math.toRadians(Pivot_Target / ticks_in_degrees)) * pivot_f;
+
+        double Pivot_Power = Top_Pivot_PID + Pivot_FF;
+
+        slidey.Pivot.setPower(Pivot_Power);
 
     }
 
