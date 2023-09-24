@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants;
 
 import com.acmerobotics.dashboard.config.Config;
 

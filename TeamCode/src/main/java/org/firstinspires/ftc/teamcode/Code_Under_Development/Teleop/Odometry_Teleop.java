@@ -9,14 +9,13 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.vertical;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.currentGamepad1;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.previousGamepad1;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.X;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Y;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.heading;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Drivetrain;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Intake_And_Pivot;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry;
@@ -27,17 +26,21 @@ public class Odometry_Teleop extends OpMode{
 
     Drivetrain drive = new Drivetrain();
 
-    Odometry odometry = new Odometry();
+    Odometry odometry = new Odometry(0, 0, 0);
 
     Intake_And_Pivot collect = new Intake_And_Pivot();
+
+    public static FtcDashboard dashboard = FtcDashboard.getInstance();
+
+    public static Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
     @Override
     public void loop() {
 
         /**Drive code*/
 
-        collection_on = X < 75 && Y < 120;
-        drop_pixel_area = X > 274 && Y > 213;
+        collection_on = odometry.X < 75 && odometry.Y < 120;
+        drop_pixel_area = odometry.X > 274 && odometry.Y > 213;
 
         if(collection_on){
             throttle = 0.4;
@@ -97,9 +100,9 @@ public class Odometry_Teleop extends OpMode{
         telemetry.addData("center pod", odometry.currentCenterPod);
         telemetry.addLine();
         telemetry.addData("Odometry", "Position");
-        telemetry.addData("X |", X);
-        telemetry.addData("Y --", Y);
-        telemetry.addData("odo heading", heading);
+        telemetry.addData("X |", odometry.X);
+        telemetry.addData("Y --", odometry.Y);
+        telemetry.addData("odo heading", odometry.heading);
         telemetry.addData("imu heading", botHeading);
         telemetry.update();
     }

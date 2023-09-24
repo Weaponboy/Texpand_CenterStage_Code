@@ -7,8 +7,10 @@ import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Delivery_Slides;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Drivetrain;
@@ -31,6 +33,9 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
     Servo RightClaw;
 
+    ColorSensor left_Pixel;
+    ColorSensor right_Pixel;
+
     int SlidesTarget = 0;
 
     double SlidePower;
@@ -44,6 +49,12 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
     boolean SlideSafetyHeight = false;
 
     boolean SlideSafetyBottom = false;
+
+    boolean reverseIntake = false;
+
+    double timeOfReverse;
+
+    ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void loop() {
@@ -101,6 +112,18 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
         /**Intake Toggle*/
 
+        if (left_Pixel.blue() > 500 && right_Pixel.blue() > 500){
+            slidey.Intake.setPower(0.4);
+            reverseIntake = true;
+            timeOfReverse = runtime.seconds();
+            runtime.reset();
+        }
+
+        if (reverseIntake && timeOfReverse - runtime.seconds() < 0){
+            reverseIntake = false;
+            slidey.Intake.setPower(0);
+        }
+
         if (gamepad1.b){
             slidey.Intake.setPower(-0.4);
         }else if (gamepad1.y) {
@@ -147,6 +170,10 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
         slidey.init(hardwareMap);
 
+        left_Pixel = hardwareMap.get(ColorSensor.class, "left_pixel");
+
+        right_Pixel = hardwareMap.get(ColorSensor.class, "right_pixel");
+
         LeftClaw = hardwareMap.get(Servo.class, "left_claw");
 
         RightClaw = hardwareMap.get(Servo.class, "right_claw");
@@ -156,6 +183,8 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
         currentGamepad1 = new Gamepad();
 
         previousGamepad1 = new Gamepad();
+
+        runtime.reset();
 
         List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
 

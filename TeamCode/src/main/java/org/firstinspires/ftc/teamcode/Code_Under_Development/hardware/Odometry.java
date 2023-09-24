@@ -41,15 +41,15 @@ public class Odometry {
     public int oldLeftPod = 0;
     public int oldCenterPod = 0;
 
-    static double startX = 0, startY = -5, startHeading = Math.toRadians(0);
-    static double oldXreset = 0, oldYreset = -5, oldHeadingreset = Math.toRadians(0);
+    public double startX, startY, startHeading;
 
-    public static double X = startX, Y = startY, heading = startHeading;
+    public Odometry(double startX, double startY, double startHeading){
+        this.startX = Math.toRadians(startX);
+        this.startY = startY;
+        this.startHeading = startHeading;
+    }
 
-    public double oldHeading;
-
-    public double oldX;
-    public double oldY;
+    public double X = startX, Y = startY, heading = startHeading;
 
     public double dtheta;
 
@@ -128,33 +128,19 @@ public class Odometry {
         centerPod = LF;
     }
 
-    public void resetHeading(){
+    public void resetHeadingUsingImu(){
 
         update();
-
-        oldXreset = X;
-
-        oldYreset = Y;
 
         leftPod.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightPod.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         centerPod.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        leftPod.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightPod.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        centerPod.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
         YawAngle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         botHeading = -YawAngle.firstAngle;
 
-        oldHeadingreset = Math.toRadians(botHeading);
-
-        X = oldXreset;
-
-        Y = oldYreset;
-
-        heading = oldHeadingreset;
+        heading = Math.toRadians(botHeading);
 
     }
 

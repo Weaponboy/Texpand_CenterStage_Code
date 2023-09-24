@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry;
 
 public class odometry_Calibration extends OpMode {
 
-    Odometry odo = new Odometry();
+    Odometry odo = new Odometry(0, 0, 0);
 
     @Override
     public void init() {
@@ -20,7 +20,6 @@ public class odometry_Calibration extends OpMode {
         telemetry.addData("right pod", odo.currentRightPod);
         telemetry.addData("center pod", odo.currentCenterPod);
         telemetry.update();
-
     }
 
 }
