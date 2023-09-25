@@ -8,10 +8,12 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Delivery_Slides;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Drivetrain;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Intake_And_Pivot;
@@ -32,8 +34,9 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
     Servo LeftClaw;
 
     Servo RightClaw;
+    Servo Intake_Servo;
 
-    ColorSensor left_Pixel;
+    DistanceSensor left_Pixel;
     ColorSensor right_Pixel;
 
     int SlidesTarget = 0;
@@ -52,7 +55,10 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
     boolean reverseIntake = false;
 
-    double timeOfReverse;
+    boolean autodeposit = false;
+    int RightPixelColThresh = 700;
+    double IntakeServopos = 0.4;
+    int buttondelaytime = 300;
 
     ElapsedTime runtime = new ElapsedTime();
 
@@ -109,49 +115,83 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
         if (gamepad1.right_trigger > 0){
             deliverySlides.DeliverySlides(0, -0.6);
         }
+        /**Pixel Sensor Conditions*/
+
+        if (left_Pixel.getDistance(DistanceUnit.MM) < 23 && autodeposit){
+            RightClaw.setPosition(0.5);                     //Lol I think I did the hardware wrong
+        }
+
+        if ((right_Pixel.blue() > RightPixelColThresh || right_Pixel.red() > RightPixelColThresh || right_Pixel.green() > RightPixelColThresh) && autodeposit){
+            LeftClaw.setPosition(1);                        //Lol I think I did the hardware wrong
+        }
 
         /**Intake Toggle*/
 
-        if (left_Pixel.blue() > 500 && right_Pixel.blue() > 500){
+        if (slidey.Intake.getPower() < 0 && left_Pixel.getDistance(DistanceUnit.MM) < 23 && (right_Pixel.blue() > RightPixelColThresh || right_Pixel.red() > RightPixelColThresh || right_Pixel.green() > RightPixelColThresh)){
             slidey.Intake.setPower(0.4);
             reverseIntake = true;
-            timeOfReverse = runtime.seconds();
             runtime.reset();
         }
 
-        if (reverseIntake && timeOfReverse - runtime.seconds() < 0){
+        if (reverseIntake && (runtime.seconds() > 5)){
             reverseIntake = false;
             slidey.Intake.setPower(0);
         }
 
-        if (gamepad1.b){
+        if (gamepad1.right_bumper && slidey.Intake.getPower() >= 0 && (runtime.milliseconds()) > buttondelaytime){
             slidey.Intake.setPower(-0.4);
-        }else if (gamepad1.y) {
+            autodeposit = true;
+            runtime.reset();
+        }else if (gamepad1.right_bumper && slidey.Intake.getPower() < 0 && (runtime.milliseconds()) > buttondelaytime) {
             slidey.Intake.setPower(0);
+            autodeposit = false;
+            runtime.reset();
         }
 
         /**Deposit Code*/
 
         if(gamepad1.dpad_left && LeftClaw.getPosition() == 0.5){
             LeftClaw.setPosition(1);
+            autodeposit = false;
         }else if (gamepad1.dpad_left && LeftClaw.getPosition() == 1){
             LeftClaw.setPosition(0.5);
-
+            autodeposit = false;
         }
 
         if(gamepad1.dpad_right && RightClaw.getPosition() == 1){
             RightClaw.setPosition(0.5);
+            autodeposit = false;
         }else if (gamepad1.dpad_right && RightClaw.getPosition() == 0.5){
             RightClaw.setPosition(1);
+            autodeposit = false;
         }
 
         if(gamepad1.back){
             RightClaw.setPosition(0.5);
             LeftClaw.setPosition(1);
+            autodeposit = false;
         }else if (gamepad1.start){
             RightClaw.setPosition(1);
             LeftClaw.setPosition(0.5);
+            autodeposit = false;
         }
+
+        /**Intake servo*/
+
+        if(gamepad1.y && IntakeServopos < 0.55 && (runtime.milliseconds()) > buttondelaytime) {
+            IntakeServopos = IntakeServopos + 0.05;
+            runtime.reset();
+        }
+        else if(gamepad1.y && IntakeServopos < 0.6 && (runtime.milliseconds()) > buttondelaytime) {
+            IntakeServopos = IntakeServopos + 0.1;
+            runtime.reset();
+        }else if (gamepad1.y && (runtime.milliseconds()) > buttondelaytime){
+            IntakeServopos = 0.4;
+            runtime.reset();
+        }
+
+        Intake_Servo.setPosition(IntakeServopos);
+
 
         /**Call all PID's and telemetry code*/
 
@@ -170,13 +210,16 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
         slidey.init(hardwareMap);
 
-        left_Pixel = hardwareMap.get(ColorSensor.class, "left_pixel");
+        left_Pixel = hardwareMap.get(DistanceSensor.class, "left_pixel_sensor");
 
-        right_Pixel = hardwareMap.get(ColorSensor.class, "right_pixel");
+        right_Pixel = hardwareMap.get(ColorSensor.class, "right_pixel_sensor");
 
         LeftClaw = hardwareMap.get(Servo.class, "left_claw");
 
         RightClaw = hardwareMap.get(Servo.class, "right_claw");
+
+        Intake_Servo = hardwareMap.get(Servo.class, "intake_servo");
+
 
         Slide_Power = new PIDFController(pivot_p, pivot_i, pivot_d, 0);
 
@@ -191,6 +234,7 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
         for (LynxModule hub : allHubs) {
             hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
+        Intake_Servo.setPosition(0.7);
     }
 
     public void Top_Pivot_Position(){
@@ -247,9 +291,12 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
     void TelemetryMap(){
         telemetry.addData("left slide", deliverySlides.Left_Slide.getCurrentPosition());
         telemetry.addData("right slide", deliverySlides.Right_Slide.getCurrentPosition());
-        telemetry.addData("height", SlideSafetyHeight);
-        telemetry.addData("bottom", SlideSafetyBottom);
+        telemetry.addData("Left_Pixel_Sensor", left_Pixel.getDistance(DistanceUnit.MM));
+        telemetry.addData("Right_Pixel_Sensor Blue", right_Pixel.blue());
+        telemetry.addData("Right_Pixel_Sensor Red", right_Pixel.red());
+        telemetry.addData("Right_Pixel_Sensor Green", right_Pixel.green());
         telemetry.addData("pivot pos", slidey.Pivot.getCurrentPosition());
+        telemetry.addData("Intake servo pos", Intake_Servo.getPosition());
         telemetry.addData("pivot target", Pivot_Target);
         telemetry.update();
     }
