@@ -122,7 +122,7 @@ public class ConceptExploringIMUOrientation extends LinearOpMode {
                     }
                     updateOrientation();
                 }
-            } else {
+            }else {
                 justChangedLogoDirection = false;
             }
 

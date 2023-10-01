@@ -120,8 +120,6 @@ public class Pull_up_teleop extends OpMode {
 
     }
 
-
-
     public void letDown(){
         Pivot_Target = 800;
         while(deliverySlides.Left_Slide.getCurrentPosition() < 780){
