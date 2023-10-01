@@ -18,6 +18,7 @@ public class Intake_And_Pivot {
     HardwareMap hmap;
 
     public void init(HardwareMap hardwareMap){
+        
         hmap = hardwareMap;
 
         pivot_controllers = new PIDFController(pivot_p, pivot_i, pivot_d, 0.05);
@@ -39,5 +40,6 @@ public class Intake_And_Pivot {
         Intake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
     }
 }
