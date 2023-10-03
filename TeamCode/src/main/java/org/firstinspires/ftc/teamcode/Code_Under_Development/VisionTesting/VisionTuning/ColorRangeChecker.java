@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionTuning;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -25,16 +25,16 @@ import java.util.concurrent.TimeUnit;
 public class ColorRangeChecker extends LinearOpMode {
     FtcDashboard dashboard;
 
-    public static double lowerH = 100;
-    public static double lowerS = 10;
-    public static double lowerV = 140;
+    public static double lowerH = 60;
+    public static double lowerS = 60;
+    public static double lowerV = 64;
 
-    public static double upperH = 250;
-    public static double upperS = 80;
+    public static double upperH = 75;
+    public static double upperS = 220;
     public static double upperV = 270;
 
     public static double cameraGain = 30; // Range: 0-255
-    public static double cameraExposure = 15; // Range: 0-10000
+    public static double cameraExposure = 7; // Range: 0-10000
 
     public OpenCvWebcam webcam;
 
@@ -44,7 +44,7 @@ public class ColorRangeChecker extends LinearOpMode {
         dashboard.setTelemetryTransmissionInterval(25);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "pixelcam"));
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
         webcam.openCameraDevice();
 
         // Set initial gain and exposure before starting streaming
@@ -52,12 +52,11 @@ public class ColorRangeChecker extends LinearOpMode {
             @Override
             public void onOpened() {
 
-
                 webcam.getExposureControl().setMode(ExposureControl.Mode.Manual);
 
-                webcam.getExposureControl().setExposure(80, TimeUnit.MILLISECONDS);
+                webcam.getExposureControl().setExposure(7, TimeUnit.MILLISECONDS);
 
-                webcam.getGainControl().setGain(60);
+                webcam.getGainControl().setGain(30);
 
                 FocusControl.Mode focusmode = FocusControl.Mode.Fixed;
 

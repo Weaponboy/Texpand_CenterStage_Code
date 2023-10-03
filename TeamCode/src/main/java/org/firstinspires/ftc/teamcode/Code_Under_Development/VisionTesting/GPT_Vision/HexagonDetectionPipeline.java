@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.GPT_Vision;
 
 import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants;
 import org.opencv.core.*;
