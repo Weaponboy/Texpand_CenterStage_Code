@@ -35,6 +35,7 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
     Servo RightClaw;
     Servo Intake_Servo;
+    Servo Plane_Launcher;
 
     DistanceSensor left_Pixel;
     ColorSensor right_Pixel;
@@ -57,7 +58,7 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
     boolean autodeposit = false;
     int RightPixelColThresh = 700;
-    double IntakeServopos = 0.4;
+    double IntakeServopos = 0.3;
     int buttondelaytime = 300;
 
     ElapsedTime runtime = new ElapsedTime();
@@ -135,13 +136,13 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
             runtime.reset();
         }
 
-        if (reverseIntake && (runtime.seconds() > 5)){
+        if (reverseIntake && (runtime.seconds() > 3)){
             reverseIntake = false;
             slidey.Intake.setPower(0);
         }
 
         if (gamepad1.right_bumper && slidey.Intake.getPower() >= 0 && (runtime.milliseconds()) > buttondelaytime){
-            slidey.Intake.setPower(-0.4);
+            slidey.Intake.setPower(-0.5);
             autodeposit = true;
             runtime.reset();
         }else if (gamepad1.right_bumper && slidey.Intake.getPower() < 0 && (runtime.milliseconds()) > buttondelaytime) {
@@ -180,20 +181,31 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
         /**Intake servo*/
 
-        if(gamepad1.y && IntakeServopos < 0.55 && (runtime.milliseconds()) > buttondelaytime) {
+        if(gamepad1.y && IntakeServopos < 0.6 && (runtime.milliseconds()) > buttondelaytime) {
             IntakeServopos = IntakeServopos + 0.05;
             runtime.reset();
         }
-        else if(gamepad1.y && IntakeServopos < 0.6 && (runtime.milliseconds()) > buttondelaytime) {
-            IntakeServopos = IntakeServopos + 0.1;
-            runtime.reset();
-        }else if (gamepad1.y && (runtime.milliseconds()) > buttondelaytime){
-            IntakeServopos = 0.4;
+//        else if(gamepad1.y && IntakeServopos < 0.8 && (runtime.milliseconds()) > buttondelaytime) {
+//            IntakeServopos = IntakeServopos + 0.1;
+//            runtime.reset();
+//        }
+        else if (gamepad1.y && (runtime.milliseconds()) > buttondelaytime){
+            IntakeServopos = 0.3;
             runtime.reset();
         }
 
+
         Intake_Servo.setPosition(IntakeServopos);
 
+        /**Plane Launcher*/
+
+        if(gamepad1.b && Plane_Launcher.getPosition() < 0.5 && (runtime.milliseconds()) > buttondelaytime) {
+            Plane_Launcher.setPosition(1);
+            runtime.reset();
+        }else if (gamepad1.b && (runtime.milliseconds()) > buttondelaytime){
+            Plane_Launcher.setPosition(0);
+            runtime.reset();
+        }
 
         /**Call all PID's and telemetry code*/
 
@@ -222,6 +234,7 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
         Intake_Servo = hardwareMap.get(Servo.class, "intake_servo");
 
+        Plane_Launcher = hardwareMap.get(Servo.class, "plane_launcher");
 
         Slide_Power = new PIDFController(pivot_p, pivot_i, pivot_d, 0);
 
@@ -237,6 +250,7 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
             hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
         Intake_Servo.setPosition(0.7);
+        Plane_Launcher.setPosition(1);
     }
 
     public void Top_Pivot_Position(){
