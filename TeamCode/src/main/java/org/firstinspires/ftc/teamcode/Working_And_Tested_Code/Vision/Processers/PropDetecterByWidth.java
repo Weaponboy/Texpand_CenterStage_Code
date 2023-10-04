@@ -2,22 +2,15 @@ package org.firstinspires.ftc.teamcode.Working_And_Tested_Code.Vision.Processers
 
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_LOWER_Cb_PROP;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_LOWER_Cr_PROP;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_LOWER_H_PROP;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_LOWER_S_PROP;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_LOWER_V_PROP;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_LOWER_Y_PROP;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_UPPER_Cb_PROP;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_UPPER_Cr_PROP;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_UPPER_H_PROP;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_UPPER_S_PROP;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_UPPER_V_PROP;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_UPPER_Y_PROP;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.dilate_const;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.erode_const;
 import static org.opencv.core.Core.inRange;
 import static org.opencv.core.CvType.CV_8U;
 import static org.opencv.imgproc.Imgproc.CHAIN_APPROX_SIMPLE;
-import static org.opencv.imgproc.Imgproc.COLOR_RGB2HSV;
 import static org.opencv.imgproc.Imgproc.COLOR_RGB2YCrCb;
 import static org.opencv.imgproc.Imgproc.RETR_TREE;
 import static org.opencv.imgproc.Imgproc.boundingRect;
@@ -41,7 +34,7 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PropDetecter implements VisionProcessor {
+public class PropDetecterByWidth implements VisionProcessor {
 
     public Rect rect = new Rect(20, 20, 50, 50);
 
