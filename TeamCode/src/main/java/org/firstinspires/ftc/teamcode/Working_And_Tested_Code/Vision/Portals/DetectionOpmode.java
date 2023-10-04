@@ -5,19 +5,20 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionPortalProcessers.PropDetecterTest;
+import org.firstinspires.ftc.teamcode.Working_And_Tested_Code.Vision.Processers.PropDetecterByWidth;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Autonomous()
 public class DetectionOpmode extends OpMode {
 
-    PropDetecterTest propDetecterTest;
+    PropDetecterByWidth propDetecterTest;
     private VisionPortal visionPortal;
     WebcamName webcamName;
 
     @Override
     public void init() {
         webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
-        propDetecterTest = new PropDetecterTest();
+        propDetecterTest = new PropDetecterByWidth();
         visionPortal = VisionPortal.easyCreateWithDefaults(webcamName, propDetecterTest);
     }
 

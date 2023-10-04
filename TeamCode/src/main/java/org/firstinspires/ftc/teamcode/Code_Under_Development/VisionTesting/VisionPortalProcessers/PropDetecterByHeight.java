@@ -80,11 +80,11 @@ public class PropDetecterByHeight implements VisionProcessor {
 
         if (rects.size() > 0) {
 
-            OrderedByWidthrects = VisionUtils.sortRectsByMaxOption(rects.size(), VisionUtils.RECT_OPTION.WIDTH, rects);
+            OrderedByWidthrects = VisionUtils.sortRectsByMaxOption(rects.size(), VisionUtils.RECT_OPTION.HEIGHT, rects);
 
             //find the widths expected for a high pole and a medium pole
             for (int i = 0; i < OrderedByWidthrects.size(); i++) {
-                if (OrderedByWidthrects.get(i).height < 120 && (OrderedByWidthrects.get(i).height > 105)) {
+                if (OrderedByWidthrects.get(i).height < 140 && (OrderedByWidthrects.get(i).height > 150)) {
                     HighRect = i;
                 }
             }

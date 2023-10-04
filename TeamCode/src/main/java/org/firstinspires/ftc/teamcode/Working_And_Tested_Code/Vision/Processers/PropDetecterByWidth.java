@@ -88,6 +88,7 @@ public class PropDetecterByWidth implements VisionProcessor {
                     HighRect = i;
                 }
             }
+
             if (HighRect > -1) {
                 TargetHighRect = OrderedByWidthrects.get(HighRect);
 

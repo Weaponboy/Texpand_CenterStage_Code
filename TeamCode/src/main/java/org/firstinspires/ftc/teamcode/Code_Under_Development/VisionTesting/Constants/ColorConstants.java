@@ -96,7 +96,7 @@ public class ColorConstants {
     public static final double RED_CAMERA_EXPOSURE_PROP = 7;  // Range: 0-10000
 
     // yellow color HSV values
-    public static final double RED_LOWER_H_PROP = 140;
+    public static final double RED_LOWER_H_PROP = 100;
     public static final double RED_LOWER_S_PROP = 90;
     public static final double RED_LOWER_V_PROP = 90;
 
@@ -107,7 +107,7 @@ public class ColorConstants {
     /**red prop YCbCr*/
 
     // yellow color HSV values
-    public static final double RED_LOWER_Y_PROP = 95;
+    public static final double RED_LOWER_Y_PROP = 88;
     public static final double RED_LOWER_Cb_PROP = 80;
     public static final double RED_LOWER_Cr_PROP = 52;
 
