@@ -64,6 +64,14 @@ public class Odometry_Teleop extends OpMode {
     public boolean RunOdo = false;
 
     @Override
+    public void loop() {
+
+        /**Drive code*/
+        driveCode(0.6);
+
+    }
+
+    @Override
     public void init() {
         drive.init(hardwareMap);
         odo.init(hardwareMap);
@@ -71,14 +79,6 @@ public class Odometry_Teleop extends OpMode {
         drivePID = new PIDFController(driveP, 0, driveD, driveF);
         strafePID = new PIDFController(strafeP, 0, strafeD, strafeF);
         PivotPID = new PIDFController(rotationP, 0, rotationD, rotationF);
-    }
-
-    @Override
-    public void loop() {
-
-        /**Drive code*/
-        driveCode(0.6);
-
     }
 
     public void driveCode(double Throttle){
