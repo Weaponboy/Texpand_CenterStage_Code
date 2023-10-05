@@ -17,6 +17,7 @@ import static org.opencv.imgproc.Imgproc.boundingRect;
 import static org.opencv.imgproc.Imgproc.dilate;
 import static org.opencv.imgproc.Imgproc.erode;
 import static org.opencv.imgproc.Imgproc.findContours;
+import static org.opencv.imgproc.Imgproc.rectangle;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -51,12 +52,11 @@ public class PropDetecterByWidth implements VisionProcessor {
     private Rect TargetHighRect;
 
     @Override
-    public void init(int width, int height, CameraCalibration calibration) {
-
-    }
+    public void init(int width, int height, CameraCalibration calibration) {}
 
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
+
         frame.copyTo(modifiedMat);
 
         Imgproc.cvtColor(modifiedMat, modifiedMat, COLOR_RGB2YCrCb);

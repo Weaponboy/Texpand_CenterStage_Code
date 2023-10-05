@@ -79,8 +79,6 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
             throttle = 0.3;
         }
 
-        right_Pixel.argb();
-
         double vertical = -gamepad1.right_stick_y;
         double horizontal = gamepad1.right_stick_x*1.5;
         double pivot = gamepad1.left_stick_x;

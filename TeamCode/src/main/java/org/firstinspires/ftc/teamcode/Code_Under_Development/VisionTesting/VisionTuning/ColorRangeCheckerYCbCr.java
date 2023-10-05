@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.FocusControl;
@@ -22,20 +23,19 @@ import java.util.concurrent.TimeUnit;
 
 @Config
 @TeleOp
-public class ColorRangeChecker extends LinearOpMode {
-
+public class ColorRangeCheckerYCbCr extends LinearOpMode {
     FtcDashboard dashboard;
 
-    public static double lowerH = 60;
-    public static double lowerS = 60;
-    public static double lowerV = 64;
+    public static double lowerH = 84;
+    public static double lowerS = 0.36;
+    public static double lowerV = 31;
 
-    public static double upperH = 75;
-    public static double upperS = 220;
-    public static double upperV = 270;
+    public static double upperH = 76;
+    public static double upperS = -40;
+    public static double upperV = 127;
 
     public static double cameraGain = 30; // Range: 0-255
-    public static double cameraExposure = 7; // Range: 0-10000
+    public static double cameraExposure = 30; // Range: 0-10000
 
     public OpenCvWebcam webcam;
 
@@ -73,7 +73,7 @@ public class ColorRangeChecker extends LinearOpMode {
             public void onError(int errorCode) { }
         });
 
-        webcam.setPipeline(new ColorRangePipeline());
+        webcam.setPipeline(new ColorRangePipelineYCbCr());
 
         FtcDashboard.getInstance().startCameraStream(webcam,30);
 
@@ -102,14 +102,14 @@ public class ColorRangeChecker extends LinearOpMode {
         webcam.closeCameraDevice();
     }
 
-    public static class ColorRangePipeline extends OpenCvPipeline {
+    public static class ColorRangePipelineYCbCr extends OpenCvPipeline {
 
         Mat hsvImage = new Mat();
         Mat mask = new Mat();
 
         @Override
         public Mat processFrame(Mat input) {
-            Imgproc.cvtColor(input, hsvImage, Imgproc.COLOR_BGR2HSV);
+            Imgproc.cvtColor(input, hsvImage, Imgproc.COLOR_BGR2YCrCb);
             Core.inRange(hsvImage, new Scalar(lowerH, lowerS, lowerV), new Scalar(upperH, upperS, upperV), mask);
             return mask;
         }
