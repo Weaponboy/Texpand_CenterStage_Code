@@ -56,6 +56,8 @@ public class Odometry {
     public double dx;
     public double dy;
 
+    public double factor = 0;
+
     public BNO055IMU imu = null;
 
     Orientation YawAngle;
@@ -85,6 +87,12 @@ public class Odometry {
         X += dx * Math.cos(theta) - dy * Math.sin(theta);
         Y += dx * Math.sin(theta) + dy * Math.cos(theta);
         heading += dtheta;
+
+        factor = heading/360;
+
+        if(factor > 1) {
+            heading = heading - 360*(int)factor;
+        }
 
     }
 

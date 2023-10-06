@@ -42,13 +42,13 @@ public class Odometry_Teleop extends OpMode{
         collection_on = odometry.X < 75 && odometry.Y < 120;
         drop_pixel_area = odometry.X > 274 && odometry.Y > 213;
 
-        if(collection_on){
-            throttle = 0.4;
-        }else if (drop_pixel_area){
-            throttle = 0.2;
-        }else {
-            throttle = 0.6;
-        }
+//        if(collection_on){
+//            throttle = 0.4;
+//        }else if (drop_pixel_area){
+//            throttle = 0.2;
+//        }else {
+//            throttle = 0.6;
+//        }
 
         vertical = -gamepad1.right_stick_y;
         horizontal = gamepad1.right_stick_x*1.5;
@@ -60,7 +60,6 @@ public class Odometry_Teleop extends OpMode{
         drive.LB.setPower((throttle*1.15)*(pivot + (vertical - horizontal)));
 
         /**Intake Toggle*/
-
         if (gamepad1.b || collection_on){
             collect.Intake.setPower(-0.4);
         }else if (gamepad1.y) {

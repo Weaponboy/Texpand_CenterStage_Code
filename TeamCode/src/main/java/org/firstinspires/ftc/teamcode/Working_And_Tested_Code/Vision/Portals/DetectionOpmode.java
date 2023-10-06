@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionPortalProcessers.PropDetecterByHeight;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionPortalProcessers.PropDetecterTest;
 import org.firstinspires.ftc.teamcode.Working_And_Tested_Code.Vision.Processers.PropDetecterByWidth;
 import org.firstinspires.ftc.vision.VisionPortal;
 

@@ -93,7 +93,7 @@ public class Odometry_Teleop extends OpMode {
             RunOdo = false;
         }
 
-        if (RunOdo){
+        if (RunOdo && gamepad1.atRest()){
 
             odo.update();
             double CurrentXPos = odo.X;

@@ -8,6 +8,9 @@ public class Constants {
      * !!!!!!
      * */
 
+    /**randomization position*/
+    public static int propPos = 0;
+
     /**Odometry constants*/
     public static double botHeading;
 

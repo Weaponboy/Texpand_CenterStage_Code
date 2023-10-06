@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionPortalProcessers;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.propPos;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_LOWER_H_PROP;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_LOWER_S_PROP;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_LOWER_V_PROP;
@@ -34,9 +35,9 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PropDetecterTest implements VisionProcessor {
+public class PropDetectorTest implements VisionProcessor {
 
-    public Rect rect = new Rect(20, 20, 50, 50);
+    private Rect rect = new Rect();
 
     public Mat modifiedMat = new Mat();
 
@@ -44,11 +45,18 @@ public class PropDetecterTest implements VisionProcessor {
     public Scalar MAX_THRESH_RED = new Scalar(RED_UPPER_H_PROP, RED_UPPER_V_PROP, RED_UPPER_S_PROP);
 
     private ArrayList<MatOfPoint> contours = new ArrayList<>();
-    private Mat hierarchy = new Mat();
     private List<Rect> rects = new ArrayList<>();
     private List<Rect> OrderedByWidthrects = new ArrayList<>();
-    private int HighRect = -1;
     private Rect TargetHighRect;
+
+    private Mat hierarchy = new Mat();
+
+    private int HighRect = -1;
+
+    double position1 = 0;
+    double position2 = 0;
+    double position3 = 0;
+    double lastRectX;
 
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
@@ -89,7 +97,30 @@ public class PropDetecterTest implements VisionProcessor {
                 }
             }
             if (HighRect > -1) {
+                lastRectX = TargetHighRect.x;
                 TargetHighRect = OrderedByWidthrects.get(HighRect);
+
+                if (Math.abs(lastRectX - TargetHighRect.x) > 20){
+                    position3 = 0;
+                    position2 = 0;
+                    position1 = 0;
+                }
+
+                if (TargetHighRect.x < 320){
+                    position1++;
+                }else if (TargetHighRect.x > 320){
+                    position2++;
+                }else{
+                    position3++;
+                }
+
+                if (position1 > position2 && position1 > position3){
+                    propPos = 1;
+                }else if (position2 > position1 && position2 > position3){
+                    propPos = 2;
+                }else{
+                    propPos = 3;
+                }
 
                 rect = new Rect(TargetHighRect.x, TargetHighRect.y, TargetHighRect.width, TargetHighRect.height);
             }else {
