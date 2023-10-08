@@ -8,6 +8,20 @@ public class Constants {
      * !!!!!!
      * */
 
+    /**Drive PID's*/
+
+    public static double driveP = 0.1;
+    public static double driveD = 0.01;
+    public static double driveF = 0;
+
+    public static double strafeP = 0.1;
+    public static double strafeD = 0.005;
+    public static double strafeF = 0;
+
+    public static double rotationP = 0.05;
+    public static double rotationD = 0.005;
+    public static double rotationF = 0;
+
     /**randomization position*/
     public static int propPos = 0;
 

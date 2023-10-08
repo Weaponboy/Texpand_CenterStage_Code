@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.Teleop;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.Teleop_Assistance;
 
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.botHeading;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.collection_on;
@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry;
 
 import java.util.List;
 
-public class Odometry_Teleop extends OpMode{
+public class Odometry_Teleop_Auto_Intake extends OpMode{
 
     Drivetrain drive = new Drivetrain();
 

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.Teleop.Odometry_Integration;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.Teleop_Assistance;
 
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.throttle;
 
@@ -88,10 +88,6 @@ public class Odometry_Teleop extends OpMode {
         vertical = -gamepad1.right_stick_y;
         horizontal = -gamepad1.right_stick_x * 1.2;
         rotation = gamepad1.left_stick_x;
-
-        if (vertical == -1 && gamepad1.left_stick_y == 1){
-            RunOdo = false;
-        }
 
         if (RunOdo && gamepad1.atRest()){
 
