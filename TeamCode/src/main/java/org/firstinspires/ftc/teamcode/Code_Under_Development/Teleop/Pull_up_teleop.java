@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Delivery;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Delivery_Slides;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Drivetrain;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Collection;
@@ -24,6 +25,7 @@ public class Pull_up_teleop extends OpMode {
     Delivery_Slides deliverySlides = new Delivery_Slides();
 
     Collection slidey = new Collection();
+    Delivery delivery = new Delivery();
 
     PIDFController Slide_Power;
 
@@ -90,11 +92,11 @@ public class Pull_up_teleop extends OpMode {
 
     public void Slide_Position(){
 
-        slidey.pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0);
+        delivery.pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0);
 
         double Pivot_Current_Position = deliverySlides.Left_Slide.getCurrentPosition();
 
-        double Top_Pivot_PID = slidey.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.5;
+        double Top_Pivot_PID = delivery.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.5;
 
         deliverySlides.SlidesBothPower(Top_Pivot_PID);
 
@@ -102,11 +104,11 @@ public class Pull_up_teleop extends OpMode {
 
     public void Slide_Position_With_Feedforward(){
 
-        slidey.pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0);
+        delivery.pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0);
 
-        double Pivot_Current_Position = slidey.Pivot.getCurrentPosition();
+        double Pivot_Current_Position = delivery.Pivot.getCurrentPosition();
 
-        double Top_Pivot_PID = slidey.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.8;
+        double Top_Pivot_PID = delivery.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.8;
 
         double pivot_f = 0.1;
 
@@ -116,7 +118,7 @@ public class Pull_up_teleop extends OpMode {
 
         double Pivot_Power = Top_Pivot_PID + Pivot_FF;
 
-        slidey.Pivot.setPower(Pivot_Power);
+        delivery.Pivot.setPower(Pivot_Power);
 
     }
 

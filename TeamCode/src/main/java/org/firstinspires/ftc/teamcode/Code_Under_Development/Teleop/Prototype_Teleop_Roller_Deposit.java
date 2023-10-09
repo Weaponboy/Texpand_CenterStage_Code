@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Collection;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Delivery;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Delivery_Slides;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Drivetrain;
 
@@ -24,6 +25,7 @@ public class Prototype_Teleop_Roller_Deposit extends OpMode {
     Delivery_Slides deliverySlides = new Delivery_Slides();
 
     Collection slidey = new Collection();
+    Delivery delivery = new Delivery();
 
     PIDFController Slide_Power;
 
@@ -159,13 +161,13 @@ public class Prototype_Teleop_Roller_Deposit extends OpMode {
 
     public void Top_Pivot_Position(){
 
-        slidey.pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0);
+        delivery.pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0);
 
-        double Pivot_Current_Position = slidey.Pivot.getCurrentPosition();
+        double Pivot_Current_Position = delivery.Pivot.getCurrentPosition();
 
-        double Top_Pivot_PID = slidey.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.2;
+        double Top_Pivot_PID = delivery.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.2;
 
-        slidey.Pivot.setPower(Top_Pivot_PID);
+        delivery.Pivot.setPower(Top_Pivot_PID);
 
     }
 
@@ -193,7 +195,7 @@ public class Prototype_Teleop_Roller_Deposit extends OpMode {
         telemetry.addData("right slide", deliverySlides.Right_Slide.getCurrentPosition());
         telemetry.addData("height", SlideSafetyHeight);
         telemetry.addData("bottom", SlideSafetyBottom);
-        telemetry.addData("pivot pos", slidey.Pivot.getCurrentPosition());
+        telemetry.addData("pivot pos", delivery.Pivot.getCurrentPosition());
         telemetry.addData("pivot target", Pivot_Target);
         telemetry.update();
     }
