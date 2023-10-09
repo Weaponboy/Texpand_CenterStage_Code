@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Delivery_Slides;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Drivetrain;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Intake_And_Pivot;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Collection;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class Pull_up_teleop extends OpMode {
 
     Delivery_Slides deliverySlides = new Delivery_Slides();
 
-    Intake_And_Pivot slidey = new Intake_And_Pivot();
+    Collection slidey = new Collection();
 
     PIDFController Slide_Power;
 
