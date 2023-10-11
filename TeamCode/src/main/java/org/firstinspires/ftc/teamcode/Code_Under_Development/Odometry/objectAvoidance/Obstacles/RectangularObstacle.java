@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class RectangularObstacle implements Obstacle {
+
 	private final double xHigher, xLower, yHigher, yLower;
 
 	public RectangularObstacle(double xHigher, double xLower, double yHigher, double yLower) {

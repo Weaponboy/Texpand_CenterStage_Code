@@ -17,7 +17,7 @@ public class Sprint2_Auto extends LinearOpMode {
 
     Drivetrain drive = new Drivetrain();
 
-    Odometry odometry = new Odometry(183, 305, 90);
+    Odometry odometry = new Odometry(183, 0, 270);
 
     Delivery_Slides deliverySlides = new Delivery_Slides();
 

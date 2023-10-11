@@ -57,13 +57,6 @@ public class CenterStageObstacleMap implements ObstacleMap {
         };
     }
 
-
-//    public CenterStageObstacleMap(double tileSize, double robotSize, ArrayList<Obstacle> additionalObstacles) {
-//        this(tileSize, new ArrayList<>(0), robotSize);
-//        this.additionalObstacles = additionalObstacles;
-//    }
-
-
     @Override
     public double getRobotSize() {
         return robotSize;

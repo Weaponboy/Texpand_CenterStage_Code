@@ -36,7 +36,7 @@ public class Testopmode extends OpMode {
     public void loop() {
         robotPos.set(X,Y);
 
-        telemetry.addData("closest odstruction", map.getObstacles());
+        telemetry.addData("closest odstruction", map.obstacleAvoidanceVector(robotPos));
         telemetry.update();
     }
 
