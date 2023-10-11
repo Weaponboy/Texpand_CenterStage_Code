@@ -1,87 +1,67 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance;
 
-import androidx.annotation.NonNull;
-
 import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.Obstacles.Obstacle;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.Obstacles.ObstacleMap;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.Obstacles.RectangularObstacle;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.Vector.Vector2D;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.tickConverter.Units;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 public class CenterStageObstacleMap implements ObstacleMap {
-    private final ArrayList<Obstacle> additionalObstacles;
+    private ArrayList<Obstacle> additionalObstacles;
     private final Obstacle[] obstacles;
-    private final double robotSize;
+    private double robotSize;
 
-    @Override
-    public Vector2D closestObstacleVector(@NonNull Vector2D position) {
-        return ObstacleMap.super.closestObstacleVector(position);
-    }
 
-    /**
-     * @param unit                the units for your tile and robot size
-     * @param tileSize            the size length of one tile, this allows this map to adapt to different tile sizes at your own field or at competitions
-     * @param additionalObstacles a list of additional obstacles that you can manipulate in order to add your own realtime obstacle avoidance and detection
-     * @param robotSize           the radius of the robot, you should test with setting this to either 1/2 the width of the robot (representative of the robot driving forwards and backwards) or the longest radius you can measure (to fully prevent running into an obstacle). picking the latter option may affect the willingness of your robot to go through tight spaces during auto
-     */
-    public CenterStageObstacleMap(@NotNull Units unit, double tileSize, ArrayList<Obstacle> additionalObstacles, double robotSize) {
+    public CenterStageObstacleMap(double tileSize, double robotSize) {
         this.additionalObstacles = additionalObstacles;
-        tileSize = unit.toMillimeters(tileSize);
-        this.robotSize = unit.toMillimeters(robotSize);
         this.obstacles = new Obstacle[]{
                 // walls
 
-                //left
-                new RectangularObstacle(Units.MILLIMETER, -3.1 * tileSize, -3.1 * tileSize, -3 * tileSize, 3.1 * tileSize),
-                //right
-                new RectangularObstacle(Units.MILLIMETER, 3 * tileSize, -3.1 * tileSize, 3.1 * tileSize, 3.1 * tileSize),
-                //top
-                new RectangularObstacle(Units.MILLIMETER, -3.1 * tileSize, 3 * tileSize, 3.1 * tileSize, 3.1 * tileSize),
-                //bottom
-                new RectangularObstacle(Units.MILLIMETER, -3.1 * tileSize, -3.1 * tileSize, 3.1 * tileSize, -3 * tileSize),
+                //red wall
+                new RectangularObstacle( 310, -5, 310, 305),
+//                //blue wall
+//                new RectangularObstacle(Units.MILLIMETER, 3 * tileSize, -3.1 * tileSize, 3.1 * tileSize, 3.1 * tileSize),
+//                //backdrop wall
+//                new RectangularObstacle(Units.MILLIMETER, -3.1 * tileSize, 3 * tileSize, 3.1 * tileSize, 3.1 * tileSize),
+//                //landing zone
+//                new RectangularObstacle(Units.MILLIMETER, -3.1 * tileSize, -3.1 * tileSize, 3.1 * tileSize, -3 * tileSize),
 
 
                 // trusses
 
-                // blue
-                // furthest
-                new RectangularObstacle(Units.MILLIMETER, -1 * tileSize - Units.INCH.toMillimeters(1), 3 * tileSize - Units.INCH.toMillimeters(1), Units.INCH.toMillimeters(1), 3 * tileSize),
-                // middle
-                new RectangularObstacle(Units.MILLIMETER, -1 * tileSize - Units.INCH.toMillimeters(1), 2 * tileSize - Units.INCH.toMillimeters(0.5), Units.INCH.toMillimeters(1), 2 * tileSize + Units.INCH.toMillimeters(0.5)),
-                // closest
-                new RectangularObstacle(Units.MILLIMETER, -1 * tileSize - Units.INCH.toMillimeters(1), 1 * tileSize - Units.INCH.toMillimeters(0.5), Units.INCH.toMillimeters(1), 1 * tileSize + Units.INCH.toMillimeters(0.5)),
-
-                // red
-                // closest
-                new RectangularObstacle(Units.MILLIMETER, -1 * tileSize - Units.INCH.toMillimeters(1), -1 * tileSize - Units.INCH.toMillimeters(0.5), Units.INCH.toMillimeters(1), -1 * tileSize + Units.INCH.toMillimeters(0.5)),
-                // middle
-                new RectangularObstacle(Units.MILLIMETER, -1 * tileSize - Units.INCH.toMillimeters(1), -2 * tileSize - Units.INCH.toMillimeters(0.5), Units.INCH.toMillimeters(1), -2 * tileSize + Units.INCH.toMillimeters(0.5)),
-                // furthest
-                new RectangularObstacle(Units.MILLIMETER, -1 * tileSize - Units.INCH.toMillimeters(1), -3 * tileSize, Units.INCH.toMillimeters(1), -3 * tileSize + Units.INCH.toMillimeters(1)),
-
-
-                // backdrops
-
-                // blue
-                new RectangularObstacle(Units.MILLIMETER, 2.5 * tileSize, 1 * tileSize, 3 * tileSize, 2 * tileSize),
-                // red
-                new RectangularObstacle(Units.MILLIMETER, 2.5 * tileSize, -1 * tileSize, 3 * tileSize, -2 * tileSize),
+//                // blue
+//                // furthest
+//                new RectangularObstacle(Units.MILLIMETER, -1 * tileSize - Units.INCH.toMillimeters(1), 3 * tileSize - Units.INCH.toMillimeters(1), Units.INCH.toMillimeters(1), 3 * tileSize),
+//                // middle
+//                new RectangularObstacle(Units.MILLIMETER, -1 * tileSize - Units.INCH.toMillimeters(1), 2 * tileSize - Units.INCH.toMillimeters(0.5), Units.INCH.toMillimeters(1), 2 * tileSize + Units.INCH.toMillimeters(0.5)),
+//                // closest
+//                new RectangularObstacle(Units.MILLIMETER, -1 * tileSize - Units.INCH.toMillimeters(1), 1 * tileSize - Units.INCH.toMillimeters(0.5), Units.INCH.toMillimeters(1), 1 * tileSize + Units.INCH.toMillimeters(0.5)),
+//
+//                // red
+//                // closest
+//                new RectangularObstacle(Units.MILLIMETER, -1 * tileSize - Units.INCH.toMillimeters(1), -1 * tileSize - Units.INCH.toMillimeters(0.5), Units.INCH.toMillimeters(1), -1 * tileSize + Units.INCH.toMillimeters(0.5)),
+//                // middle
+//                new RectangularObstacle(Units.MILLIMETER, -1 * tileSize - Units.INCH.toMillimeters(1), -2 * tileSize - Units.INCH.toMillimeters(0.5), Units.INCH.toMillimeters(1), -2 * tileSize + Units.INCH.toMillimeters(0.5)),
+//                // furthest
+//                new RectangularObstacle(Units.MILLIMETER, -1 * tileSize - Units.INCH.toMillimeters(1), -3 * tileSize, Units.INCH.toMillimeters(1), -3 * tileSize + Units.INCH.toMillimeters(1)),
+//
+//
+//                // backdrops
+//
+//                // blue
+//                new RectangularObstacle(Units.MILLIMETER, 2.5 * tileSize, 1 * tileSize, 3 * tileSize, 2 * tileSize),
+//                // red
+//                new RectangularObstacle(Units.MILLIMETER, 2.5 * tileSize, -1 * tileSize, 3 * tileSize, -2 * tileSize),
 
         };
     }
 
-    /**
-     * @param unit      the units for your tile size
-     * @param tileSize  the size length of one tile, this allows this map to adapt to different tile sizes at your own field or at competitions
-     * @param robotSize the radius of the robot, you should test with setting this to either 1/2 the width of the robot (representative of the robot driving forwards and backwards) or the longest radius you can measure (to fully prevent running into an obstacle). picking the latter option may affect the willingness of your robot to go through tight spaces during auto
-     */
-    public CenterStageObstacleMap(Units unit, double tileSize, double robotSize) {
-        this(unit, tileSize, new ArrayList<>(0), robotSize);
-    }
+
+//    public CenterStageObstacleMap(double tileSize, double robotSize, ArrayList<Obstacle> additionalObstacles) {
+//        this(tileSize, new ArrayList<>(0), robotSize);
+//        this.additionalObstacles = additionalObstacles;
+//    }
 
 
     @Override

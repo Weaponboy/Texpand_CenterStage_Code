@@ -4,10 +4,12 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Drivetrain;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry;
 
+@TeleOp
 public class Odometry_Teleop extends OpMode {
 
     Drivetrain drive = new Drivetrain();

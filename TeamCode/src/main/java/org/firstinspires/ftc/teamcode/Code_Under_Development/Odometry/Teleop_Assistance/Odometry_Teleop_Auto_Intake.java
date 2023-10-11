@@ -16,8 +16,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Collection;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Delivery;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Drivetrain;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Intake_And_Pivot;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry;
 
 import java.util.List;
@@ -28,7 +29,9 @@ public class Odometry_Teleop_Auto_Intake extends OpMode{
 
     Odometry odometry = new Odometry(0, 0, 0);
 
-    Intake_And_Pivot collect = new Intake_And_Pivot();
+    Delivery delivery = new Delivery();
+
+    Collection collection = new Collection();
 
     public static FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -61,9 +64,9 @@ public class Odometry_Teleop_Auto_Intake extends OpMode{
 
         /**Intake Toggle*/
         if (gamepad1.b || collection_on){
-            collect.Intake.setPower(-0.4);
+            collection.Intake.setPower(-0.4);
         }else if (gamepad1.y) {
-            collect.Intake.setPower(0);
+            collection.Intake.setPower(0);
         }
 
         TelemetryMap();
@@ -79,7 +82,9 @@ public class Odometry_Teleop_Auto_Intake extends OpMode{
 
         odometry.init(hardwareMap);
 
-        collect.init(hardwareMap);
+        collection.init(hardwareMap);
+
+        delivery.init(hardwareMap);
 
         currentGamepad1 = new Gamepad();
 

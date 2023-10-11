@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Delivery;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Delivery_Slides;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Drivetrain;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Collection;
@@ -27,7 +28,9 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
     Delivery_Slides deliverySlides = new Delivery_Slides();
 
-    Collection slidey = new Collection();
+    Collection collection = new Collection();
+
+    Delivery delivery = new Delivery();
 
     PIDFController Slide_Power;
 
@@ -128,23 +131,23 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
         /**Intake Toggle*/
 
-        if (slidey.Intake.getPower() < 0 && left_Pixel.getDistance(DistanceUnit.MM) < 23 && (right_Pixel.blue() > RightPixelColThresh || right_Pixel.red() > RightPixelColThresh || right_Pixel.green() > RightPixelColThresh)){
-            slidey.Intake.setPower(0.4);
+        if (collection.Intake.getPower() < 0 && left_Pixel.getDistance(DistanceUnit.MM) < 23 && (right_Pixel.blue() > RightPixelColThresh || right_Pixel.red() > RightPixelColThresh || right_Pixel.green() > RightPixelColThresh)){
+            collection.Intake.setPower(0.4);
             reverseIntake = true;
             runtime.reset();
         }
 
         if (reverseIntake && (runtime.seconds() > 3)){
             reverseIntake = false;
-            slidey.Intake.setPower(0);
+            collection.Intake.setPower(0);
         }
 
-        if (gamepad1.right_bumper && slidey.Intake.getPower() >= 0 && (runtime.milliseconds()) > buttondelaytime){
-            slidey.Intake.setPower(-0.5);
+        if (gamepad1.right_bumper && collection.Intake.getPower() >= 0 && (runtime.milliseconds()) > buttondelaytime){
+            collection.Intake.setPower(-0.5);
             autodeposit = true;
             runtime.reset();
-        }else if (gamepad1.right_bumper && slidey.Intake.getPower() < 0 && (runtime.milliseconds()) > buttondelaytime) {
-            slidey.Intake.setPower(0);
+        }else if (gamepad1.right_bumper && collection.Intake.getPower() < 0 && (runtime.milliseconds()) > buttondelaytime) {
+            collection.Intake.setPower(0);
             autodeposit = false;
             runtime.reset();
         }
@@ -220,7 +223,9 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
         deliverySlides.init(hardwareMap);
 
-        slidey.init(hardwareMap);
+        collection.init(hardwareMap);
+
+        delivery.init(hardwareMap);
 
         left_Pixel = hardwareMap.get(DistanceSensor.class, "left_pixel_sensor");
 
@@ -253,23 +258,23 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
     public void Top_Pivot_Position(){
 
-        slidey.pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0);
+        delivery.pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0);
 
-        double Pivot_Current_Position = slidey.Pivot.getCurrentPosition();
+        double Pivot_Current_Position = delivery.Pivot.getCurrentPosition();
 
-        double Top_Pivot_PID = slidey.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.3;
+        double Top_Pivot_PID = delivery.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.3;
 
-        slidey.Pivot.setPower(Top_Pivot_PID);
+        delivery.Pivot.setPower(Top_Pivot_PID);
 
     }
 
     public void Top_Pivot_Position_With_Feedforward(){
 
-        slidey.pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0);
+        delivery.pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0);
 
-        double Pivot_Current_Position = slidey.Pivot.getCurrentPosition();
+        double Pivot_Current_Position = delivery.Pivot.getCurrentPosition();
 
-        double Top_Pivot_PID = slidey.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.6;
+        double Top_Pivot_PID = delivery.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.6;
 
         double pivot_f = 0.1;
 
@@ -279,7 +284,7 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
 
         double Pivot_Power = Top_Pivot_PID + Pivot_FF;
 
-        slidey.Pivot.setPower(Pivot_Power);
+        delivery.Pivot.setPower(Pivot_Power);
 
     }
 
@@ -309,7 +314,7 @@ public class Prototype_Teleop_Double_Deposit extends OpMode {
         telemetry.addData("Right_Pixel_Sensor Blue", right_Pixel.blue());
         telemetry.addData("Right_Pixel_Sensor Red", right_Pixel.red());
         telemetry.addData("Right_Pixel_Sensor Green", right_Pixel.green());
-        telemetry.addData("pivot pos", slidey.Pivot.getCurrentPosition());
+        telemetry.addData("pivot pos", delivery.Pivot.getCurrentPosition());
         telemetry.addData("Intake servo pos", Intake_Servo.getPosition());
         telemetry.addData("pivot target", Pivot_Target);
         telemetry.update();

@@ -12,6 +12,7 @@ import java.util.Locale;
 
 @SuppressWarnings("unused")
 public class Vector2D {
+
 	private double x, y;
 
 	public Vector2D(double x, double y) {
