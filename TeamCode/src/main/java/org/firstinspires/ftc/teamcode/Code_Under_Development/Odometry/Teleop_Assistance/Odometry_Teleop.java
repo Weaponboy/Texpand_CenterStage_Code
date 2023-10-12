@@ -71,6 +71,18 @@ public class Odometry_Teleop extends OpMode {
         /**Drive code*/
         driveCode(0.6);
 
+        if (gamepad1.x){
+            RunOdo = true;
+            targetX = 10;
+            targetY = 10;
+            targetHeading = 0;
+        }
+
+        telemetry.addData("target x", targetX);
+        telemetry.addData("target y", targetY);
+        telemetry.addData("target heading", targetHeading);
+        telemetry.update();
+
     }
 
     @Override
@@ -91,6 +103,10 @@ public class Odometry_Teleop extends OpMode {
         horizontal = -gamepad1.right_stick_x * 1.2;
         rotation = gamepad1.left_stick_x;
 
+        if (gamepad1.a){
+            RunOdo = false;
+        }
+
         if (RunOdo && gamepad1.atRest()){
 
             odo.update();
@@ -110,6 +126,10 @@ public class Odometry_Teleop extends OpMode {
             rotdist = (targetHeading - Heading) * 1.55;
 
             rotdistForStop = (targetHeading - Heading);
+
+//            if (Math.abs(XdistForStop) < 1 && Math.abs(YdistForStop) < 1 && Math.abs(rotdistForStop) < 1){
+//                RunOdo = false;
+//            }
 
             if (rotdist < -180) {
                 rotdist = (360 + rotdist);
@@ -133,6 +153,9 @@ public class Odometry_Teleop extends OpMode {
             horizontal = Math.max(horizontal, Horizontal);
             vertical = Math.max(vertical, Vertical);
             rotation = Math.max(rotation, Pivot);
+
+            telemetry.addData("vertical", Vertical);
+            telemetry.update();
         }
 
         denominator = Math.max(Math.abs(horizontal) + Math.abs(vertical) + Math.abs(rotation), 1);

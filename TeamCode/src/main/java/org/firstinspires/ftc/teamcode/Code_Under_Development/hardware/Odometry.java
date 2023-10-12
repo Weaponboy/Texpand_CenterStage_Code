@@ -38,8 +38,8 @@ public class Odometry {
 
     HardwareMap hardwareMap;
 
-    public static double trackwidth = 35.95;
-    public static double centerPodOffset = 10.768;
+    public static double trackwidth = 26.1;
+    public static double centerPodOffset = -18;
     public static double wheelRadius = 1.75;
     public static double podTicks = 8192;
 
@@ -174,9 +174,9 @@ public class Odometry {
         LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         LB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        leftPod = LB;
+        leftPod = LF;
         rightPod = RF;
-        centerPod = LF;
+        centerPod = LB;
     }
 
     public void resetHeadingUsingImu(){
