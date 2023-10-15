@@ -18,8 +18,8 @@ public class Constants {
     public static double strafeD = 0.005;
     public static double strafeF = 0;
 
-    public static double rotationP = 0.05;
-    public static double rotationD = 0.005;
+    public static double rotationP = 0.01;
+    public static double rotationD = 0;
     public static double rotationF = 0;
 
     /**randomization position*/

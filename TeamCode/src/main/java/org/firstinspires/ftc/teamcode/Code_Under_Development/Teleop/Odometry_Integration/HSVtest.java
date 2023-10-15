@@ -17,6 +17,7 @@ public class HSVtest extends OpMode {
     private static final float MAX_SATURATION = 1.0f; // Maximum saturation value for the target color
     private static final float MIN_VALUE = 0.5f; // Minimum value (brightness) for the target color
     private static final float MAX_VALUE = 1.0f; // Maximum value (brightness) for the target color
+    boolean isTargetColorDetected = false;
 
     @Override
     public void init() {
@@ -27,7 +28,6 @@ public class HSVtest extends OpMode {
     public void loop() {
         int argb_val = right_Pixel.argb();
         Color.colorToHSV(argb_val, hsvval);
-        boolean isTargetColorDetected = false;
 
         float hue = hsvval[0];
         float saturation = hsvval[1];
@@ -38,4 +38,5 @@ public class HSVtest extends OpMode {
                 value >= MIN_VALUE && value <= MAX_VALUE) {
             isTargetColorDetected = true;
         }
-    }}
+    }
+}

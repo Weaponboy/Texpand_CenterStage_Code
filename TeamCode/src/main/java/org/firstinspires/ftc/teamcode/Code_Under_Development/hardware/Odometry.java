@@ -10,6 +10,7 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeD;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeF;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeP;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.drive;
 
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -24,8 +25,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class Odometry {
-
-    Drivetrain drivetrain = new Drivetrain();
 
     DcMotor LF;
     DcMotor RF;
@@ -156,7 +155,9 @@ public class Odometry {
 
         imu.initialize(parameters);
 
-        drivetrain.init(hardwareMap);
+        drive = new Drivetrain();
+
+        drive.init(hardwareMap);
 
         drivePID = new PIDFController(driveP, 0, driveD, driveF);
 
@@ -204,70 +205,37 @@ public class Odometry {
 
         do {
 
-            update();
+            Xdist = (targetX - X);
+            Ydist = (targetY - Y);
 
-            //GET CURRENT X
-            double CurrentXPos = X;
+            rotdist = (targetRot - heading);
 
-            //GET CURRENT Y
-            double CurrentYPos = Y;
+            RRXdist = Ydist * Math.sin(Math.toRadians(heading)) + Xdist * Math.cos(Math.toRadians(heading));
+            RRYdist = Ydist * Math.cos(Math.toRadians(heading)) - Xdist * Math.sin(Math.toRadians(heading));
 
-            //GET START HEADING WITH ODOMETRY
-            double Heading = Math.toDegrees(heading);
-
-            //SET DISTANCE TO TRAVEL ERROR
-            Xdist = (-targetX - CurrentXPos);
-            Ydist = (targetY - CurrentYPos);
-
-            XdistForStop = (-targetX - CurrentXPos);
-            YdistForStop = (targetY - CurrentYPos);
-
-            //CONVERT HEADING FOR TRIG CALCS
-            if (Heading <= 0) {
-                ConvertedHeading = (360 + Heading);
-            } else {
-                ConvertedHeading = (0 + Heading);
-            }
-
-            rotdist = (targetRot - Heading) * 1.55;
-
-            rotdistForStop = (targetRot - Heading);
-
-            if (rotdist < -180) {
-                rotdist = (360 + rotdist);
-            } else if (rotdist > 180) {
-                rotdist = (rotdist - 360);
-            }
-
-            if (rotdistForStop < -180) {
-                rotdistForStop = (360 + rotdistForStop);
-            } else if (rotdistForStop > 180) {
-                rotdistForStop = (rotdistForStop - 360);
-            }
-
-            //CONVERT TARGET TO ROBOT RELATIVE TARGET
-            RRXdist = Xdist * Math.cos(Math.toRadians(360 - ConvertedHeading)) - Ydist * Math.sin(Math.toRadians(360 - ConvertedHeading));
-            RRYdist = Xdist * Math.sin(Math.toRadians(360 - ConvertedHeading)) + Ydist * Math.cos(Math.toRadians(360 - ConvertedHeading));
-
-            //SET DRIVE CONSTANTS TO THE PIDF CONTROL LOOPS
-            Vertical = drivePID.calculate(RRXdist);
+            Vertical = drivePID.calculate(-RRXdist);
             Horizontal = strafePID.calculate(-RRYdist);
             Pivot = PivotPID.calculate(-rotdist);
 
-            //SET MOTOR POWER USING THE PID OUTPUT
-            drivetrain.RF.setPower(-Pivot + (Vertical + Horizontal));
-            drivetrain.RB.setPower((-Pivot * 1.4) + (Vertical - (Horizontal * 1.3)));
-            drivetrain.LF.setPower(Pivot + (Vertical - Horizontal));
-            drivetrain.LB.setPower((Pivot * 1.4) + (Vertical + (Horizontal * 1.3)));
+            double denominator = Math.max(Math.abs(Vertical) + Math.abs(Horizontal) + Math.abs(Pivot), 1);
 
-        }while ((Math.abs(XdistForStop) > 0.8 ) || (Math.abs(YdistForStop) > 0.8 ) || (Math.abs(rotdistForStop) > 0.8));
+            double left_Front = (Vertical + Horizontal + Pivot) / denominator;
+            double left_Back = (Vertical - Horizontal + Pivot) / denominator;
+            double right_Front = (Vertical - Horizontal - Pivot) / denominator;
+            double right_Back = (Vertical + Horizontal - Pivot) / denominator;
 
-        drivetrain.RF.setPower(0);
-        drivetrain.RB.setPower(0);
-        drivetrain.LF.setPower(0);
-        drivetrain.LB.setPower(0);
+            drive.RF.setPower(right_Front);
+            drive.RB.setPower(right_Back);
+            drive.LF.setPower(left_Front);
+            drive.LB.setPower(left_Back);
+
+        }while ((Math.abs(Xdist) > 0.8 ) || (Math.abs(Ydist) > 0.8 ) || (Math.abs(rotdist) > 0.8));
+
+        drive.RF.setPower(0);
+        drive.RB.setPower(0);
+        drive.LF.setPower(0);
+        drive.LB.setPower(0);
 
     }
-
 
 }

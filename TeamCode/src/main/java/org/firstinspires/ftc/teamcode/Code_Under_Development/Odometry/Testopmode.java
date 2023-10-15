@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -11,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoi
 import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.Vector.Vector2D;
 
 @Config
-@TeleOp
+@Disabled
 public class Testopmode extends OpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
