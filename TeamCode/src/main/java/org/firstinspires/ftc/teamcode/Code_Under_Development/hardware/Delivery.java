@@ -30,5 +30,7 @@ public class Delivery {
         Pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
     }
 }
