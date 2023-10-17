@@ -9,12 +9,13 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.drive;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.odometry;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.sensors;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.propDetectorTest;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.propDetecterRed;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Setpoints.Pivot_Target;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionPortalProcessers.PropDetecterByHeight;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionPortalProcessers.PropDetectorTest;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Delivery;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Delivery_Slides;
@@ -77,8 +78,8 @@ public class Sprint2_Auto extends LinearOpMode {
         drive.init(hardwareMap);
         deliverySlides.init(hardwareMap);
         sensors.init(hardwareMap);
-        propDetectorTest = new PropDetectorTest();
-        sensors.portal = VisionPortal.easyCreateWithDefaults(sensors.frontCam, propDetectorTest);
+        propDetecterRed = new PropDetecterByHeight();
+        sensors.portal = VisionPortal.easyCreateWithDefaults(sensors.frontCam, propDetecterRed);
     }
 
     public void dropPurplePixel(){

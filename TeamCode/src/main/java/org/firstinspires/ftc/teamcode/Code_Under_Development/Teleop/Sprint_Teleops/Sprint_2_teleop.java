@@ -108,17 +108,14 @@ public class Sprint_2_teleop extends OpMode {
 
         /**Top pivot code*/
 
-        if (gamepad1.dpad_up) {
-            Pivot_Target = 2070;
+        if (gamepad1.dpad_up && deliverySlides.Left_Slide.getCurrentPosition() > 200) {
+            Pivot_Target = 0;
         }
 
         if (gamepad1.dpad_down) {
             Pivot_Target = 0;
         }
 
-        if (gamepad1.right_trigger > 0) {
-            deliverySlides.DeliverySlides(0, -0.6);
-        }
         /**Pixel Sensor Conditions*/
 
         if (left_Pixel.getDistance(DistanceUnit.MM) < 23 && autodeposit) {
@@ -195,7 +192,6 @@ public class Sprint_2_teleop extends OpMode {
             runtime.reset();
         }
 
-
         Intake_Servo.setPosition(IntakeServopos);
 
         /**Plane Launcher*/
@@ -216,19 +212,14 @@ public class Sprint_2_teleop extends OpMode {
 
         /** pivot flip under slides**/
 
-        if (gamepad1.cross && deliverySlides.Left_Slide.getCurrentPosition() == 0) {
+        if (gamepad1.left_bumper && deliverySlides.Left_Slide.getCurrentPosition() < 15) {
             deliverySlides.DeliverySlides(400, 1);
-
-        } else if (gamepad1.cross && deliverySlides.Left_Slide.getCurrentPosition() == 400 && delivery.Pivot.getCurrentPosition() == 0) {
+        } else if (gamepad1.left_bumper && deliverySlides.Left_Slide.getCurrentPosition() > 380 && delivery.Pivot.getCurrentPosition() < 100) {
             deliverySlides.DeliverySlides(0, -1);
         }
 
         if (deliverySlides.Left_Slide.getVelocity() > 200 && deliverySlides.Left_Slide.getCurrentPosition() > 200) {
                 Pivot_Target = 400;
-        }
-
-        if (gamepad1.circle && delivery.Pivot.getCurrentPosition() > 200) {
-            Pivot_Target = 0;
         }
 
     }

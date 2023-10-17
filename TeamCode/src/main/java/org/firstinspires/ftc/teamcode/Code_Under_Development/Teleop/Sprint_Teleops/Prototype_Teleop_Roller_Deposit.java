@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -17,7 +18,7 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Drivetrain
 
 import java.util.List;
 
-@TeleOp
+@Disabled
 public class Prototype_Teleop_Roller_Deposit extends OpMode {
 
     Drivetrain drive = new Drivetrain();
@@ -25,6 +26,7 @@ public class Prototype_Teleop_Roller_Deposit extends OpMode {
     Delivery_Slides deliverySlides = new Delivery_Slides();
 
     Collection slidey = new Collection();
+
     Delivery delivery = new Delivery();
 
     PIDFController Slide_Power;

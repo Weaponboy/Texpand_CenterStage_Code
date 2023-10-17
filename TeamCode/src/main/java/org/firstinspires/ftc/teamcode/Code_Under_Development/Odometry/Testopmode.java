@@ -8,18 +8,21 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.Angle.Units;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.CenterStageObstacleMap;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.Vector.Vector2D;
 
+import java.util.ArrayList;
+
 @Config
-@Disabled
+@TeleOp
 public class Testopmode extends OpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
-    CenterStageObstacleMap map = new CenterStageObstacleMap( 610, 0);
+    CenterStageObstacleMap map = new CenterStageObstacleMap(Units.MILLIMETER, 610, 250);
 
     Vector2D robotPos = new Vector2D();
 
@@ -37,8 +40,10 @@ public class Testopmode extends OpMode {
     public void loop() {
         robotPos.set(X,Y);
 
-        telemetry.addData("closest odstruction", map.obstacleAvoidanceVector(robotPos));
+        telemetry.addData("closest odstruction", map.closestObstacleVector(robotPos));
         telemetry.update();
     }
 
+
 }
+
