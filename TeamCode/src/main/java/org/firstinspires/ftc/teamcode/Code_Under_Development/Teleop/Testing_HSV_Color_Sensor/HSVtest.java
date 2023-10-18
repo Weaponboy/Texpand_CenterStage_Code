@@ -26,16 +26,16 @@ public class HSVtest extends OpMode {
 
     @Override
     public void loop() {
+
         int argb_val = right_Pixel.argb();
+
         Color.colorToHSV(argb_val, hsvval);
 
         float hue = hsvval[0];
         float saturation = hsvval[1];
         float value = hsvval[2];
 
-        if (hue >= MIN_HUE && hue <= MAX_HUE &&
-                saturation >= MIN_SATURATION && saturation <= MAX_SATURATION &&
-                value >= MIN_VALUE && value <= MAX_VALUE) {
+        if (hue >= MIN_HUE && hue <= MAX_HUE && saturation >= MIN_SATURATION && saturation <= MAX_SATURATION && value >= MIN_VALUE && value <= MAX_VALUE) {
             isTargetColorDetected = true;
         }
     }

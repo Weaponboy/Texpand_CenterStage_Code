@@ -45,6 +45,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
@@ -73,6 +74,8 @@ public class ConceptAprilTag extends LinearOpMode {
      * The variable to store our instance of the AprilTag processor.
      */
     private AprilTagProcessor aprilTag;
+
+    Odometry odometry = new Odometry(0,0,10);
 
     CameraName cameraName;
 
@@ -123,6 +126,12 @@ public class ConceptAprilTag extends LinearOpMode {
 
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
+
+//            if (detection.){
+//                // distance to apriltag from wall - odometry.Y = detection.ftcPose.x;
+//
+//            }
+
             if (detection.metadata != null) {
                 telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
                 telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (MM)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
@@ -147,9 +156,6 @@ public class ConceptAprilTag extends LinearOpMode {
 
         // Create the AprilTag processor.
         aprilTag = new AprilTagProcessor.Builder()
-                //.setDrawAxes(false)
-                //.setDrawCubeProjection(false)
-                //.setDrawTagOutline(true)
                 .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
                 .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
                 .setOutputUnits(DistanceUnit.MM, AngleUnit.DEGREES)
