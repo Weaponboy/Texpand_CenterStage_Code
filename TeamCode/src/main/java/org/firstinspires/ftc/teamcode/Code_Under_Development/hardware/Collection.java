@@ -22,7 +22,7 @@ public class Collection {
 
 
 
-        Intake = hardwareMap.get(DcMotorEx.class, "intake");
+        Intake = hardwareMap.get(DcMotorEx.class, "Intake");
 
 
 
