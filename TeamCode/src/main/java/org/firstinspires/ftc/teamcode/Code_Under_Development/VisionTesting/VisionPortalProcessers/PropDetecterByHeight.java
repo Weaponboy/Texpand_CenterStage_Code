@@ -122,6 +122,7 @@ public class PropDetecterByHeight implements VisionProcessor {
             }else {
                 rect = new Rect(5,5,5,5);
             }
+            
 
         }else {
             rect = new Rect(0,0,0,0);
