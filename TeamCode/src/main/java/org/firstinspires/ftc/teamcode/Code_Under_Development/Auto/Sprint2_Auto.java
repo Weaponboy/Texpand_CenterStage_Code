@@ -28,6 +28,7 @@ public class Sprint2_Auto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+
         initialization();
         
         waitForStart();

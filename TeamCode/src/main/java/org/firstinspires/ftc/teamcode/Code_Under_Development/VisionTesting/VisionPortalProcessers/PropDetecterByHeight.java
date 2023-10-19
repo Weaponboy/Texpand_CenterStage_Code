@@ -93,6 +93,7 @@ public class PropDetecterByHeight implements VisionProcessor {
             }
 
             if (HighRect > -1) {
+
                 lastRectX = TargetHighRect.x;
                 TargetHighRect = OrderedByWidthrects.get(HighRect);
 
@@ -119,10 +120,10 @@ public class PropDetecterByHeight implements VisionProcessor {
                 }
 
                 rect = new Rect(TargetHighRect.x, TargetHighRect.y, TargetHighRect.width, TargetHighRect.height);
+
             }else {
                 rect = new Rect(5,5,5,5);
             }
-            
 
         }else {
             rect = new Rect(0,0,0,0);

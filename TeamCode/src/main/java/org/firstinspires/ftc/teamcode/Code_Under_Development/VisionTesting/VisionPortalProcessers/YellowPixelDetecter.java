@@ -35,12 +35,11 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.List;
 
-public class YellowPixelDetecter implements VisionProcessor {
+public class YellowPixelDetecter implements VisionProcessor{
 
     public Rect rect;
 
     public Mat modifiedMat = new Mat();
-    public Mat output = new Mat();
 
     public Scalar MIN_THRESH_GREEN = new Scalar(GREEN_LOWER_H_PAPER, GREEN_LOWER_V_PAPER, GREEN_LOWER_S_PAPER);
     public Scalar MAX_THRESH_GREEN = new Scalar(GREEN_UPPER_H_PAPER, GREEN_UPPER_V_PAPER, GREEN_UPPER_S_PAPER);
