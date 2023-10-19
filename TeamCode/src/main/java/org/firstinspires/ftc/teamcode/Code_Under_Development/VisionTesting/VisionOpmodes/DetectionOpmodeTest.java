@@ -1,18 +1,24 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionOpmodes;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionPortalProcessers.PropDetecterByHeight;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionPortalProcessers.PropDetectorTest;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Autonomous
 public class DetectionOpmodeTest extends OpMode {
 
-//   private GreenPixelDetecter greenPixel;
-//   YellowPixelDetecter yellowPixel;
-    PropDetectorTest propDetectorTest;
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
+    
+    PropDetecterByHeight propDetectorTest;
     private VisionPortal visionPortal;
     WebcamName webcamName;
 
@@ -21,12 +27,16 @@ public class DetectionOpmodeTest extends OpMode {
        webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
 //       greenPixel = new GreenPixelDetecter();
 //       yellowPixel = new YellowPixelDetecter();
-        propDetectorTest = new PropDetectorTest();
+       propDetectorTest = new PropDetecterByHeight();
        visionPortal = VisionPortal.easyCreateWithDefaults(webcamName, propDetectorTest);
+
+       telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
    }
 
     @Override
     public void init_loop() {
+//        telemetry.addData("height", propDetectorTest.height);
+//        telemetry.update();
    }
 
     @Override
@@ -36,5 +46,6 @@ public class DetectionOpmodeTest extends OpMode {
 
     @Override
     public void loop() {
+
     }
 }

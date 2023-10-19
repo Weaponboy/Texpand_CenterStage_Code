@@ -1,28 +1,26 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionPortalProcessers;
 
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_LOWER_Cb_PROP;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_LOWER_Cr_PROP;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_LOWER_Y_PROP;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_UPPER_Cb_PROP;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_UPPER_Cr_PROP;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.RED_UPPER_Y_PROP;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.dilate_const;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Constants.ColorConstants.erode_const;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.propPos;
 import static org.opencv.core.Core.inRange;
 import static org.opencv.core.CvType.CV_8U;
 import static org.opencv.imgproc.Imgproc.CHAIN_APPROX_SIMPLE;
+import static org.opencv.imgproc.Imgproc.COLOR_RGB2HSV;
 import static org.opencv.imgproc.Imgproc.COLOR_RGB2YCrCb;
 import static org.opencv.imgproc.Imgproc.RETR_TREE;
 import static org.opencv.imgproc.Imgproc.boundingRect;
 import static org.opencv.imgproc.Imgproc.dilate;
 import static org.opencv.imgproc.Imgproc.erode;
 import static org.opencv.imgproc.Imgproc.findContours;
+import static org.opencv.imgproc.Imgproc.rectangle;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
+import org.firstinspires.ftc.robotcore.internal.opmode.TelemetryImpl;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Vision_Utils.VisionUtils;
 import org.firstinspires.ftc.vision.VisionProcessor;
 import org.opencv.core.Mat;
@@ -40,8 +38,8 @@ public class PropDetecterByHeight implements VisionProcessor {
 
     public Mat modifiedMat = new Mat();
 
-    public Scalar MIN_THRESH_RED = new Scalar(RED_LOWER_Y_PROP, RED_LOWER_Cr_PROP, RED_LOWER_Cb_PROP);
-    public Scalar MAX_THRESH_RED = new Scalar(RED_UPPER_Y_PROP, RED_UPPER_Cr_PROP, RED_UPPER_Cb_PROP);
+    public Scalar MIN_THRESH_RED = new Scalar(100, 90, 90);
+    public Scalar MAX_THRESH_RED = new Scalar(180, 255, 255);
 
     private ArrayList<MatOfPoint> contours = new ArrayList<>();
     private Mat hierarchy = new Mat();
@@ -49,6 +47,11 @@ public class PropDetecterByHeight implements VisionProcessor {
     private List<Rect> OrderedByWidthrects = new ArrayList<>();
     private int HighRect = -1;
     private Rect TargetHighRect;
+
+    double position1 = 0;
+    double position2 = 0;
+    double position3 = 0;
+    double lastRectX;
 
     @Override
     public void init(int width, int height, CameraCalibration calibration) {
@@ -59,16 +62,16 @@ public class PropDetecterByHeight implements VisionProcessor {
     public Object processFrame(Mat frame, long captureTimeNanos) {
         frame.copyTo(modifiedMat);
 
-        Imgproc.cvtColor(modifiedMat, modifiedMat, COLOR_RGB2YCrCb);
+        Imgproc.cvtColor(modifiedMat, modifiedMat, COLOR_RGB2HSV);
 
         //Apply colour scales
         inRange(modifiedMat, MIN_THRESH_RED, MAX_THRESH_RED, modifiedMat);
 
         //erode image
-        erode(modifiedMat, modifiedMat, new Mat(erode_const, erode_const, CV_8U));
+        erode(modifiedMat, modifiedMat, new Mat(5, 5, CV_8U));
 
         //dilate image
-        dilate(modifiedMat, modifiedMat, new Mat(dilate_const, dilate_const, CV_8U));
+        dilate(modifiedMat, modifiedMat, new Mat(5, 5, CV_8U));
 
         //find outlines of the objects of the colours in the range
         findContours(modifiedMat, contours, hierarchy, RETR_TREE, CHAIN_APPROX_SIMPLE);
@@ -84,17 +87,44 @@ public class PropDetecterByHeight implements VisionProcessor {
 
             //find the widths expected for a high pole and a medium pole
             for (int i = 0; i < OrderedByWidthrects.size(); i++) {
-                if (OrderedByWidthrects.get(i).height < 140 && (OrderedByWidthrects.get(i).height > 150)) {
+                if (OrderedByWidthrects.get(i).height > 100 && (OrderedByWidthrects.get(i).height < 130)) {
                     HighRect = i;
                 }
             }
+
             if (HighRect > -1) {
+                lastRectX = TargetHighRect.x;
                 TargetHighRect = OrderedByWidthrects.get(HighRect);
+
+                if (Math.abs(lastRectX - TargetHighRect.x) > 20){
+                    position3 = 0;
+                    position2 = 0;
+                    position1 = 0;
+                }
+
+                if (TargetHighRect.x < 320){
+                    position1++;
+                }else if (TargetHighRect.x > 320){
+                    position2++;
+                }else{
+                    position3++;
+                }
+
+                if (position1 > position2 && position1 > position3){
+                    propPos = 1;
+                }else if (position2 > position1 && position2 > position3){
+                    propPos = 2;
+                }else{
+                    propPos = 3;
+                }
 
                 rect = new Rect(TargetHighRect.x, TargetHighRect.y, TargetHighRect.width, TargetHighRect.height);
             }else {
-                rect = new Rect(0,0,0,0);
+                rect = new Rect(5,5,5,5);
             }
+
+        }else {
+            rect = new Rect(0,0,0,0);
         }
 
         contours.clear();
@@ -106,13 +136,13 @@ public class PropDetecterByHeight implements VisionProcessor {
 
     private android.graphics.Rect makeGraphicsRect(Rect rect, float scaleBmpPxToCanvasPx) {
 
-            int left = Math.round(rect.x * scaleBmpPxToCanvasPx);
-            int top = Math.round(rect.y * scaleBmpPxToCanvasPx);
-            int right = left + Math.round(rect.width * scaleBmpPxToCanvasPx);
+        int left = Math.round(rect.x * scaleBmpPxToCanvasPx);
+        int top = Math.round(rect.y * scaleBmpPxToCanvasPx);
+        int right = left + Math.round(rect.width * scaleBmpPxToCanvasPx);
 
-            int bottom = top + Math.round(rect.height * scaleBmpPxToCanvasPx);
+        int bottom = top + Math.round(rect.height * scaleBmpPxToCanvasPx);
 
-            return new android.graphics.Rect(left, top, right, bottom);
+        return new android.graphics.Rect(left, top, right, bottom);
     }
 
     @Override
