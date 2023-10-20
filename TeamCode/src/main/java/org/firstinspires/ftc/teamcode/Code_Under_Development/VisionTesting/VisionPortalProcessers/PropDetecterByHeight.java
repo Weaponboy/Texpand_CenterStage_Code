@@ -38,7 +38,7 @@ public class PropDetecterByHeight implements VisionProcessor {
 
     public Mat modifiedMat = new Mat();
 
-    public Scalar MIN_THRESH_RED = new Scalar(100, 90, 90);
+    public Scalar MIN_THRESH_RED = new Scalar(100, 80, 80);
     public Scalar MAX_THRESH_RED = new Scalar(180, 255, 255);
 
     private ArrayList<MatOfPoint> contours = new ArrayList<>();
@@ -48,9 +48,9 @@ public class PropDetecterByHeight implements VisionProcessor {
     private int HighRect = -1;
     private Rect TargetHighRect;
 
-    double position1 = 0;
-    double position2 = 0;
-    double position3 = 0;
+    public double position1 = 0;
+    public double position2 = 0;
+    public double position3 = 0;
     double lastRectX;
 
     @Override
@@ -87,46 +87,48 @@ public class PropDetecterByHeight implements VisionProcessor {
 
             //find the widths expected for a high pole and a medium pole
             for (int i = 0; i < OrderedByWidthrects.size(); i++) {
-                if (OrderedByWidthrects.get(i).height > 100 && (OrderedByWidthrects.get(i).height < 130)) {
+                if (OrderedByWidthrects.get(i).height > 100 && (OrderedByWidthrects.get(i).height < 170)) {
                     HighRect = i;
                 }
             }
 
             if (HighRect > -1) {
 
-                lastRectX = TargetHighRect.x;
+//                lastRectX = TargetHighRect.x;
+
                 TargetHighRect = OrderedByWidthrects.get(HighRect);
 
-                if (Math.abs(lastRectX - TargetHighRect.x) > 20){
-                    position3 = 0;
-                    position2 = 0;
-                    position1 = 0;
-                }
+//                if (Math.abs(lastRectX - TargetHighRect.x) > 20){
+//                    position3 = 0;
+//                    position2 = 0;
+//                    position1 = 0;
+//                }
 
                 if (TargetHighRect.x < 320){
-                    position1++;
-                }else if (TargetHighRect.x > 320){
                     position2++;
-                }else{
+                }else if (TargetHighRect.x > 320){
                     position3++;
-                }
-
-                if (position1 > position2 && position1 > position3){
-                    propPos = 1;
-                }else if (position2 > position1 && position2 > position3){
-                    propPos = 2;
                 }else{
-                    propPos = 3;
+                    position1++;
                 }
 
                 rect = new Rect(TargetHighRect.x, TargetHighRect.y, TargetHighRect.width, TargetHighRect.height);
 
             }else {
                 rect = new Rect(5,5,5,5);
+                position1++;
             }
 
         }else {
             rect = new Rect(0,0,0,0);
+        }
+
+        if (position1 > position2 && position1 > position3){
+            propPos = 1;
+        }else if (position2 > position1 && position2 > position3){
+            propPos = 2;
+        }else{
+            propPos = 3;
         }
 
         contours.clear();

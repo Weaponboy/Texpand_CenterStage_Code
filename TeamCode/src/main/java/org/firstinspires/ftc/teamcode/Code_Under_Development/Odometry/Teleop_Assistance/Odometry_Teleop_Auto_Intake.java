@@ -9,10 +9,15 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.vertical;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.currentGamepad1;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.previousGamepad1;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ConvertedHeadingForPosition;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pivot;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.rotdist;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -23,91 +28,48 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry;
 
 import java.util.List;
 
-public class Odometry_Teleop_Auto_Intake extends OpMode{
+@TeleOp
+public class Odometry_Teleop_Auto_Intake extends LinearOpMode {
 
     Drivetrain drive = new Drivetrain();
 
-    Odometry odometry = new Odometry(0, 0, 0);
-
-    Delivery delivery = new Delivery();
-  
-    Collection collection = new Collection();
+    Odometry odometry = new Odometry(60, 0, 270);
 
     public static FtcDashboard dashboard = FtcDashboard.getInstance();
 
     public static Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
     @Override
-    public void loop() {
-
-        /**Drive code*/
-
-        collection_on = odometry.X < 75 && odometry.Y < 120;
-        drop_pixel_area = odometry.X > 274 && odometry.Y > 213;
-
-//        if(collection_on){
-//            throttle = 0.4;
-//        }else if (drop_pixel_area){
-//            throttle = 0.2;
-//        }else {
-//            throttle = 0.6;
-//        }
-
-        vertical = -gamepad1.right_stick_y;
-        horizontal = gamepad1.right_stick_x*1.5;
-        pivot = gamepad1.left_stick_x;
-
-        drive.RF.setPower(throttle*(-pivot + (vertical - horizontal)));
-        drive.RB.setPower((throttle*1.15)*(-pivot + (vertical + horizontal)));
-        drive.LF.setPower(throttle*(pivot + (vertical + horizontal)));
-        drive.LB.setPower((throttle*1.15)*(pivot + (vertical - horizontal)));
-
-        /**Intake Toggle*/
-        if (gamepad1.b || collection_on){
-            collection.Intake.setPower(-0.4);
-        }else if (gamepad1.y) {
-            collection.Intake.setPower(0);
-        }
-
-        TelemetryMap();
-
-        odometry.update();
-
-    }
-
-    @Override
-    public void init() {
+    public void runOpMode() throws InterruptedException {
 
         drive.init(hardwareMap);
 
         odometry.init(hardwareMap);
 
-        collection.init(hardwareMap);
+        odometry.update();
 
-        delivery.init(hardwareMap);
+        waitForStart();
 
-        currentGamepad1 = new Gamepad();
-
-        previousGamepad1 = new Gamepad();
-
-        List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
-
-        for (LynxModule hub : allHubs) {
-            hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+        while (opModeIsActive()){
+            TelemetryMap();
         }
+
+//        odometry.Odo_Drive(0, 60, 180);
+
     }
 
     void TelemetryMap(){
-        telemetry.addData("Pod", "encoder readings");
-        telemetry.addData("left pod", odometry.currentLeftPod);
-        telemetry.addData("right pod", odometry.currentRightPod);
-        telemetry.addData("center pod", odometry.currentCenterPod);
+        telemetry.addData("rotation", rotdist);
+        telemetry.addData("Pivot power", Pivot);
+        telemetry.addData("Y --", odometry.Y);
+        telemetry.addData("imu heading", botHeading);
+        telemetry.addData("Converted heading", ConvertedHeadingForPosition);
         telemetry.addLine();
         telemetry.addData("Odometry", "Position");
         telemetry.addData("X |", odometry.X);
         telemetry.addData("Y --", odometry.Y);
-        telemetry.addData("odo heading", odometry.heading);
         telemetry.addData("imu heading", botHeading);
+        telemetry.addData("Converted heading", ConvertedHeadingForPosition);
         telemetry.update();
     }
 

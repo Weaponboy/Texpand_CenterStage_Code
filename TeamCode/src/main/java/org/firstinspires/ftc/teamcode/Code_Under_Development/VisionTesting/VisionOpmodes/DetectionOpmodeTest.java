@@ -24,7 +24,7 @@ public class DetectionOpmodeTest extends OpMode {
 
    @Override
    public void init() {
-       webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
+       webcamName = hardwareMap.get(WebcamName.class, "frontCam");
 //       greenPixel = new GreenPixelDetecter();
 //       yellowPixel = new YellowPixelDetecter();
        propDetectorTest = new PropDetecterByHeight();

@@ -1,9 +1,19 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.Auto;
 
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.botHeading;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.driveD;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.driveF;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.driveP;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.pivot_d;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.pivot_i;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.pivot_p;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.propPos;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.rotationD;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.rotationF;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.rotationP;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeD;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeF;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeP;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.delivery;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.deliverySlides;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.drive;
@@ -11,7 +21,22 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.sensors;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.propDetecterRed;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Setpoints.Pivot_Target;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.Testopmode.X;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.Testopmode.Y;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ConvertedHeading;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ConvertedHeadingForPosition;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Horizontal;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pivot;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.PivotPID;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.RRXdist;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.RRYdist;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Vertical;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.drivePID;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.rotdist;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.strafePID;
 
+import com.arcrobotics.ftclib.controller.PIDFController;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -24,63 +49,83 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Sensors;
 import org.firstinspires.ftc.vision.VisionPortal;
 
+@Autonomous
 public class Sprint2_Auto extends LinearOpMode {
+
+    double Xdist;
+
+    double Ydist;
+
+    Odometry odometry = new Odometry(60, 0, 270);;
+
+    public WebcamName frontCam;
+
+    public VisionPortal portal;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
         initialization();
+
+        while (opModeInInit()){
+            odometry.update();
+            telemetry.addData("Position", propPos);
+            telemetry.addData("1", propDetecterRed.position1);
+            telemetry.addData("2", propDetecterRed.position2);
+            telemetry.addData("3", propDetecterRed.position3);
+            telemetry.addData("X", odometry.X);
+            telemetry.addData("Y", odometry.Y);
+            telemetry.addData("heading", ConvertedHeadingForPosition);
+            telemetry.update();
+        }
         
         waitForStart();
 
         if (propPos == 1){
 
-            odometry.Odo_Drive(205, 275, 270);
+            odometry.Odo_Drive(60, 90, 180);
 
-            dropPurplePixel();
+            odometry.Odo_Drive(60, 105, 180);
 
-            odometry.Odo_Drive(285, 244, 180);
+            odometry.Odo_Drive(260, 105, 180);
 
-            dropYellowPixel();
+            odometry.Odo_Drive(260, 60, 180);
 
         } else if (propPos == 2) {
 
-            odometry.Odo_Drive(183, 260, 270);
+            odometry.Odo_Drive(50, 58, 270);
 
-            dropPurplePixel();
+            sleep(500);
 
-            odometry.Odo_Drive(270, 244, 180);
+            odometry.Odo_Drive(20, 58, 180);
 
-            dropYellowPixel();
+            sleep(500);
 
-        } else if (propPos ==3) {
+            odometry.Odo_Drive(20, 125, 180);
 
-            odometry.Odo_Drive(183, 265, 315);
+        } else if (propPos == 3) {
 
-            dropPurplePixel();
+            odometry.Odo_Drive(75, 90, 0);
 
-            odometry.Odo_Drive(255, 244, 180);
+            sleep(500);
 
-            dropYellowPixel();
-
+            odometry.Odo_Drive(60, 130, 180);
         }
     }
 
     public void initialization(){
-        //create hardware objects
-        drive = new Drivetrain();
-        odometry = new Odometry(183, 0, 270);
-        deliverySlides = new Delivery_Slides();
-        sensors = new Sensors();
-        delivery = new Delivery();
 
-        //init hardware
+        drive = new Drivetrain();
+        sensors = new Sensors();
+
         odometry.init(hardwareMap);
         drive.init(hardwareMap);
-        deliverySlides.init(hardwareMap);
-        sensors.init(hardwareMap);
+
+        frontCam = hardwareMap.get(WebcamName.class, "frontCam");
+
         propDetecterRed = new PropDetecterByHeight();
-        sensors.portal = VisionPortal.easyCreateWithDefaults(sensors.frontCam, propDetecterRed);
+
+        portal = VisionPortal.easyCreateWithDefaults(frontCam, propDetecterRed);
     }
 
     public void dropPurplePixel(){

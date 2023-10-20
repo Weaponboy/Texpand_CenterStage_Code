@@ -38,7 +38,7 @@ public class Odometry {
     HardwareMap hardwareMap;
 
     public static double trackwidth = 26.1;
-    public static double centerPodOffset = -18;
+    public static double centerPodOffset = 18;
     public static double wheelRadius = 1.75;
     public static double podTicks = 8192;
 
@@ -77,13 +77,15 @@ public class Odometry {
 
     public static double ConvertedHeading = 0;
 
+    public static double ConvertedHeadingForPosition = 0;
+
     public Odometry(double startX, double startY, double startHeading){
-        this.startX = Math.toRadians(startX);
-        this.startY = startY;
+        this.X = startX;
+        this.Y = startY;
         this.startHeading = startHeading;
     }
 
-    public double X = startX, Y = startY, heading = startHeading;
+    public double X, Y, heading = startHeading;
 
     public double dtheta;
 
@@ -96,16 +98,26 @@ public class Odometry {
 
     Orientation YawAngle;
 
+    public double correctedStart = 0;
+
     public void update(){
 
         YawAngle = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         botHeading = -YawAngle.firstAngle;
 
+        botHeading += getCorrectStartHeading(startHeading);
+
+        if (botHeading <= 0) {
+            ConvertedHeadingForPosition = (360 + botHeading);
+        } else {
+            ConvertedHeadingForPosition = (0 + botHeading);
+        }
+
         oldCenterPod = currentCenterPod;
         oldLeftPod = currentLeftPod;
         oldRightPod = currentRightPod;
 
-        currentCenterPod = centerPod.getCurrentPosition();
+        currentCenterPod = -centerPod.getCurrentPosition();
         currentLeftPod = -leftPod.getCurrentPosition();
         currentRightPod = rightPod.getCurrentPosition();
 
@@ -118,8 +130,8 @@ public class Odometry {
         dy = cm_per_tick * (dn3 - (dn2-dn1) * centerPodOffset / trackwidth);
 
         double theta = heading + (dtheta / 2.0);
-        X += dx * Math.cos(theta) - dy * Math.sin(theta);
-        Y += dx * Math.sin(theta) + dy * Math.cos(theta);
+        X += dx * Math.cos(Math.toRadians(ConvertedHeadingForPosition)) - dy * Math.sin(Math.toRadians(ConvertedHeadingForPosition));
+        Y += dx * Math.sin(Math.toRadians(ConvertedHeadingForPosition)) + dy * Math.cos(Math.toRadians(ConvertedHeadingForPosition));
         heading += dtheta;
 
         factor = heading/360;
@@ -205,13 +217,27 @@ public class Odometry {
 
         do {
 
+            update();
+
             Xdist = (targetX - X);
             Ydist = (targetY - Y);
 
-            rotdist = (targetRot - heading);
+            if (botHeading <= 0) {
+                ConvertedHeading = (360 + botHeading);
+            } else {
+                ConvertedHeading = (0 + botHeading);
+            }
 
-            RRXdist = Ydist * Math.sin(Math.toRadians(heading)) + Xdist * Math.cos(Math.toRadians(heading));
-            RRYdist = Ydist * Math.cos(Math.toRadians(heading)) - Xdist * Math.sin(Math.toRadians(heading));
+            rotdist = (targetRot - ConvertedHeading);
+
+            if (rotdist < -180) {
+                rotdist = (360 + rotdist);
+            } else if (rotdist > 360) {
+                rotdist = (rotdist - 360);
+            }
+
+            RRXdist = Ydist * Math.sin(Math.toRadians(ConvertedHeading)) + Xdist * Math.cos(Math.toRadians(ConvertedHeading));
+            RRYdist = Ydist * Math.cos(Math.toRadians(ConvertedHeading)) - Xdist * Math.sin(Math.toRadians(ConvertedHeading));
 
             Vertical = drivePID.calculate(-RRXdist);
             Horizontal = strafePID.calculate(-RRYdist);
@@ -236,6 +262,16 @@ public class Odometry {
         drive.LF.setPower(0);
         drive.LB.setPower(0);
 
+    }
+
+    public double getCorrectStartHeading(double globalStartHeading){
+
+        if (globalStartHeading == 270){
+            correctedStart = -90;
+        } else if (globalStartHeading == 90) {
+            correctedStart = 90;
+        }
+        return correctedStart;
     }
 
 }
