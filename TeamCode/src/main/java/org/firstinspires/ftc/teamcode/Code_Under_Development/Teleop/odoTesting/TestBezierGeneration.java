@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.PathingPoint;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.Vector.Vector2D;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.ObjectAvoidance.Vector2D;
 
 import java.util.ArrayList;
 import java.util.Arrays;

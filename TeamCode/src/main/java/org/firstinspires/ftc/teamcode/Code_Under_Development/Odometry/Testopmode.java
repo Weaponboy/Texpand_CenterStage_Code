@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry;
 
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.horizontal;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.vertical;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.ObjectAvoidance.ObstacleMap.findClosestPosition;
+
 import android.icu.text.Transliterator;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -12,10 +16,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.Angle.Units;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.CenterStageObstacleMap;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.EmptyObstacleMap;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.Vector.Vector2D;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.ObjectAvoidance.Vector2D;
+
 
 import java.util.ArrayList;
 
@@ -27,12 +29,10 @@ public class Testopmode extends OpMode {
 
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
-    ArrayList<Position> positionList = new ArrayList<>();
-
     Vector2D robotPos = new Vector2D();
 
-    public static double X = 0;
-    public static double Y = 60;
+    public static double X = 180;
+    public static double Y = 100;
 
     public Position currentPos;
     public Position closestPosition;
@@ -41,43 +41,45 @@ public class Testopmode extends OpMode {
     public void init() {
         robotPos.set(X,Y);
 
-        positionList.add(new Position(DistanceUnit.INCH, 12.0, 24.0, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.INCH, 18.0, 36.0, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.INCH, 24.0, 48.0, 0.0, 0));
+        vertical = -1;
+
+        horizontal = 1;
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     }
 
     @Override
     public void loop() {
-        robotPos.set(X,Y);
 
-        currentPos = new Position(DistanceUnit.INCH, robotPos.getX(), robotPos.getY(), 0.0, 0);
+        currentPos = new Position(DistanceUnit.CM, robotPos.getX(), robotPos.getY(), 0.0, 0);
 
-        closestPosition = findClosestPosition(currentPos, positionList);
+        closestPosition = findClosestPosition(currentPos);
 
-        telemetry.addData("closest odstruction", closestPosition);
+        if (Math.abs(closestPosition.x - robotPos.getX()) <= 5 && closestPosition.y == robotPos.getY()){
+
+            if (closestPosition.x > robotPos.getX() && vertical > 0){
+                vertical = 0;
+            } else if (closestPosition.x < robotPos.getX() && vertical < 0){
+                vertical = 0;
+            }
+
+        }else if (Math.abs(closestPosition.y - robotPos.getY()) <= 5 && closestPosition.x == robotPos.getX()) {
+
+            if (closestPosition.y > robotPos.getY() && horizontal < 0){
+                horizontal = 0;
+            } else if (closestPosition.y < robotPos.getY() && horizontal > 0){
+                horizontal = 0;
+            }
+
+        }
+
+        telemetry.addData("closest obstruction", closestPosition);
+        telemetry.addData("vertical", vertical);
+        telemetry.addData("horizontal", horizontal);
         telemetry.update();
     }
 
-    public static Position findClosestPosition(Position currentPos, ArrayList<Position> positions) {
-        Position closest = null;
-        double minDistance = Double.MAX_VALUE;
 
-        for (Position pos : positions) {
-            double distance = Math.sqrt(
-                    Math.pow(currentPos.x - pos.x, 2) +
-                            Math.pow(currentPos.y - pos.y, 2)
-            );
-
-            if (distance < minDistance) {
-                minDistance = distance;
-                closest = pos;
-            }
-        }
-
-        return closest;
-    }
 }
 
 

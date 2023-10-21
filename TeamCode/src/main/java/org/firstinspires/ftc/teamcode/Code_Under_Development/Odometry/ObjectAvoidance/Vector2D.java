@@ -1,10 +1,8 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.Vector;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.ObjectAvoidance;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.Angle.Angle;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.objectAvoidance.Angle.AngleRadians;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +10,6 @@ import java.util.Locale;
 
 @SuppressWarnings("unused")
 public class Vector2D {
-
 	private double x, y;
 
 	public Vector2D(double x, double y) {
@@ -27,31 +24,6 @@ public class Vector2D {
 		this(0, 0);
 	}
 
-	/**
-	 * The polar constructor for vectors, uses radians
-	 *
-	 * @param r magnitude
-	 * @param t theta in radians
-	 * @return a Vector2D with the above values assigned to x and y coordinates
-	 */
-	@NotNull
-	@Contract("_, _ -> new")
-	public static Vector2D fromPolar(double r, double t) {
-		return fromPolar(r, new AngleRadians(t));
-	}
-
-	/**
-	 * The polar constructor for vectors
-	 *
-	 * @param r magnitude
-	 * @param t theta
-	 * @return a Vector2D with the supplied properties
-	 */
-	@NotNull
-	@Contract("_, _ -> new")
-	public static Vector2D fromPolar(double r, @NotNull Angle t) {
-		return new Vector2D(r * Math.cos(t.getRadians()), r * Math.sin(t.getRadians()));
-	}
 
 	public double getX() {
 		return x;
@@ -79,9 +51,6 @@ public class Vector2D {
 		this.y = y;
 	}
 
-	public Angle getHeading() {
-		return new AngleRadians(Math.atan2(y, x));
-	}
 
 	public double getMagnitude() {
 		return Math.hypot(x, y);
@@ -142,15 +111,7 @@ public class Vector2D {
 		return this.subtract(other.x, other.y);
 	}
 
-	/**
-	 * non-mutating
-	 *
-	 * @param factor the scalar multiplication
-	 * @return a new vector with the desired operation applied
-	 */
-	public Vector2D scalarMultiply(double factor) {
-		return fromPolar(getMagnitude() * factor, getHeading());
-	}
+
 
 	/**
 	 * dot product
@@ -160,18 +121,6 @@ public class Vector2D {
 	 */
 	public double dot(@NotNull Vector2D other) {
 		return this.getX() * other.getX() + this.getY() * other.getY();
-	}
-
-	/**
-	 * rotates anti-clockwise
-	 *
-	 * @param angle
-	 * @return a new vector with the desired operation applied
-	 */
-	public Vector2D rotate(@NotNull Angle angle) {
-		double cos = Math.cos(angle.getRadians());
-		double sin = Math.sin(angle.getRadians());
-		return new Vector2D(cos * getX() - sin * getY(), sin * getX() + cos * getY());
 	}
 
 	@Override

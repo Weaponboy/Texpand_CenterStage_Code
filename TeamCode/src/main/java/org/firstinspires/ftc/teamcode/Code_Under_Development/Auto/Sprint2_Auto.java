@@ -56,7 +56,7 @@ public class Sprint2_Auto extends LinearOpMode {
 
     double Ydist;
 
-    Odometry odometry = new Odometry(60, 0, 270);;
+    Odometry odometry = new Odometry(93, 33, 270);
 
     public WebcamName frontCam;
 
@@ -73,9 +73,6 @@ public class Sprint2_Auto extends LinearOpMode {
             telemetry.addData("1", propDetecterRed.position1);
             telemetry.addData("2", propDetecterRed.position2);
             telemetry.addData("3", propDetecterRed.position3);
-            telemetry.addData("X", odometry.X);
-            telemetry.addData("Y", odometry.Y);
-            telemetry.addData("heading", ConvertedHeadingForPosition);
             telemetry.update();
         }
         
@@ -83,19 +80,23 @@ public class Sprint2_Auto extends LinearOpMode {
 
         if (propPos == 1){
 
-            odometry.Odo_Drive(60, 90, 180);
+            odometry.Odo_Drive(95, 85, 180);
 
-            odometry.Odo_Drive(60, 105, 180);
+            dropPurplePixel();
 
-            odometry.Odo_Drive(260, 105, 180);
+            odometry.Odo_Drive(100, 150, 180);
 
-            odometry.Odo_Drive(260, 60, 180);
+            odometry.Odo_Drive(310, 150, 180);
+
+            odometry.Odo_Drive(314, 75, 180);
+
+            dropYellowPixel();
 
         } else if (propPos == 2) {
 
             odometry.Odo_Drive(50, 58, 270);
 
-            sleep(500);
+            dropPurplePixel();
 
             odometry.Odo_Drive(20, 58, 180);
 
@@ -107,7 +108,7 @@ public class Sprint2_Auto extends LinearOpMode {
 
             odometry.Odo_Drive(75, 90, 0);
 
-            sleep(500);
+            dropPurplePixel();
 
             odometry.Odo_Drive(60, 130, 180);
         }
