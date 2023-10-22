@@ -31,8 +31,8 @@ public class Testopmode extends OpMode {
 
     Vector2D robotPos = new Vector2D();
 
-    public static double X = 180;
-    public static double Y = 100;
+    public static double X = 200;
+    public static double Y = 4;
 
     public Position currentPos;
     public Position closestPosition;

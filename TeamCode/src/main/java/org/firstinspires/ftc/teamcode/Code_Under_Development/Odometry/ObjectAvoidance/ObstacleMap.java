@@ -4,6 +4,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
 
 public class ObstacleMap {
 
@@ -30,428 +31,53 @@ public class ObstacleMap {
     }
 
     public static void SetMap(){
-        WallBlueTruss();
-        MiddleBlueTruss();
-        DoorBlueTruss();
-    }
 
-    public static void MiddleBlueTruss(){
-        positionList.add(new Position(DistanceUnit.CM, 115, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 116, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 117, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 118, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 119, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 120, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 121, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 122, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 123, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 125, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 126, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 127, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 128, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 129, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 130, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 131, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 132, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 133, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 134, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 135, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 136, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 137, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 138, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 139, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 140, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 141, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 142, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 143, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 144, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 145, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 146, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 147, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 148, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 149, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 150, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 151, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 152, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 153, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 154, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 155, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 156, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 157, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 158, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 159, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 160, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 161, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 162, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 163, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 164, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 165, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 166, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 167, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 168, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 169, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 170, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 171, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 172, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 173, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 174, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 175, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 176, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 177, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 178, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 179, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 180, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 181, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 182, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 183, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 184, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 185, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 186, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 187, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 58, 0.0, 0));
+        // wall blue truss
+        Rectangle(115, 0, 188, 5);
 
-        positionList.add(new Position(DistanceUnit.CM, 115, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 116, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 117, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 118, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 119, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 120, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 121, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 122, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 123, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 125, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 126, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 127, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 128, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 129, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 130, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 131, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 132, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 133, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 134, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 135, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 136, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 137, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 138, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 139, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 140, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 141, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 142, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 143, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 144, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 145, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 146, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 147, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 148, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 149, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 150, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 151, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 152, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 153, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 154, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 155, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 156, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 157, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 158, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 159, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 160, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 161, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 162, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 163, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 164, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 165, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 166, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 167, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 168, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 169, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 170, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 171, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 172, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 173, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 174, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 175, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 176, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 177, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 178, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 179, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 180, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 181, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 182, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 183, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 184, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 185, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 186, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 187, 63, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 63, 0.0, 0));
+        // middle blue truss
+        Rectangle(115, 57, 188, 63);
 
-        positionList.add(new Position(DistanceUnit.CM, 188, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 59, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 60, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 61, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 62, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 63, 0.0, 0));
+        // door blue truss
+        Rectangle(115, 117, 188, 123);
 
-        positionList.add(new Position(DistanceUnit.CM, 115, 58, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 115, 59, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 115, 60, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 115, 61, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 115, 62, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 115, 63, 0.0, 0));
+        // door red truss
+        Rectangle(115, 241, 188, 247);
+
+        // middle red truss
+        Rectangle(115, 301, 188, 307);
+
+        // wall red truss
+        Rectangle(115, 360, 188, 365);
 
     }
 
-    public static void DoorBlueTruss(){
-        positionList.add(new Position(DistanceUnit.CM, 115, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 116, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 117, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 118, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 119, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 120, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 121, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 122, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 123, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 125, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 126, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 127, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 128, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 129, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 130, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 131, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 132, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 133, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 134, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 135, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 136, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 137, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 138, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 139, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 140, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 141, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 142, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 143, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 144, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 145, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 146, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 147, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 148, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 149, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 150, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 151, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 152, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 153, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 154, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 155, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 156, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 157, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 158, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 159, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 160, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 161, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 162, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 163, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 164, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 165, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 166, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 167, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 168, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 169, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 170, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 171, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 172, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 173, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 174, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 175, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 176, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 177, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 178, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 179, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 180, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 181, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 182, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 183, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 184, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 185, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 186, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 187, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 117, 0.0, 0));
+    public static void Rectangle(double xStart, double yStart, double xEnd, double yEnd){
 
-        positionList.add(new Position(DistanceUnit.CM, 115, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 116, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 117, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 118, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 119, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 120, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 121, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 122, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 123, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 125, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 126, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 127, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 128, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 129, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 130, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 131, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 132, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 133, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 134, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 135, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 136, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 137, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 138, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 139, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 140, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 141, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 142, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 143, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 144, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 145, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 146, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 147, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 148, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 149, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 150, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 151, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 152, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 153, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 154, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 155, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 156, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 157, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 158, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 159, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 160, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 161, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 162, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 163, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 164, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 165, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 166, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 167, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 168, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 169, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 170, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 171, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 172, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 173, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 174, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 175, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 176, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 177, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 178, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 179, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 180, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 181, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 182, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 183, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 184, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 185, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 186, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 187, 123, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 123, 0.0, 0));
+        double xPosition = xStart;
+        double yPosition = yStart;
 
-        positionList.add(new Position(DistanceUnit.CM, 188, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 118, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 119, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 120, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 121, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 122, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 123, 0.0, 0));
+        for (int i =0; i < ((xEnd - xStart)*2); i++){
+            positionList.add(new Position(DistanceUnit.CM, xPosition, yPosition, 0.0, 0));
+            xPosition++;
+            if (xPosition == xEnd){
+                xPosition = xStart;
+                yPosition = yEnd;
+            }
+        }
 
-        positionList.add(new Position(DistanceUnit.CM, 115, 117, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 115, 118, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 115, 119, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 115, 120, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 115, 121, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 115, 122, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 115, 123, 0.0, 0));
+        xPosition = xStart;
+        yPosition = yStart;
+
+        for (int i =0; i < ((yEnd - yStart)*2); i++){
+            positionList.add(new Position(DistanceUnit.CM, xPosition, yPosition, 0.0, 0));
+            yPosition++;
+            if (yPosition == yEnd){
+                yPosition = yStart;
+                xPosition = xEnd;
+            }
+        }
 
     }
-
-    public static void WallBlueTruss(){
-        positionList.add(new Position(DistanceUnit.CM, 115, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 116, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 117, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 118, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 119, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 120, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 121, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 122, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 123, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 125, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 126, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 127, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 128, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 129, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 130, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 131, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 132, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 133, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 134, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 135, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 136, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 137, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 138, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 139, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 140, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 141, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 142, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 143, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 144, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 145, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 146, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 147, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 148, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 149, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 150, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 151, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 152, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 153, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 154, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 155, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 156, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 157, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 158, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 159, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 160, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 161, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 162, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 163, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 164, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 165, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 166, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 167, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 168, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 169, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 170, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 171, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 172, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 173, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 174, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 175, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 176, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 177, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 178, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 179, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 180, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 181, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 182, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 183, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 184, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 185, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 186, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 187, 5, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 5, 0.0, 0));
-
-        positionList.add(new Position(DistanceUnit.CM, 188, 1, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 2, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 3, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 188, 4, 0.0, 0));
-
-        positionList.add(new Position(DistanceUnit.CM, 115, 1, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 115, 2, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 115, 3, 0.0, 0));
-        positionList.add(new Position(DistanceUnit.CM, 115, 4, 0.0, 0));
-    }
-
 
 }
