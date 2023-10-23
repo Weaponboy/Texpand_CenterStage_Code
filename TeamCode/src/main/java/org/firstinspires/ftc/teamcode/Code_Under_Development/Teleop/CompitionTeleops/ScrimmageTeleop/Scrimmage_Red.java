@@ -6,14 +6,12 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.portal;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.propDetecterRed;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionPortalProcessers.PropDetecterByHeight;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionPortalProcessers.PropDetectorTest;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Delivery_Slides;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Drivetrain;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Sensors;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Delivery_Slides;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Sensors;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 

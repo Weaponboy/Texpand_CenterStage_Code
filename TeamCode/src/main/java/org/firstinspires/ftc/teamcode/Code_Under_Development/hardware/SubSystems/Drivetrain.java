@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -38,6 +38,13 @@ public class Drivetrain {
         RB.setPower(0);
         LB.setPower(0);
 
+    }
+
+    public void setAllPower(double power){
+        RF.setPower(power);
+        LF.setPower(power);
+        RB.setPower(power);
+        LB.setPower(power);
     }
 
 

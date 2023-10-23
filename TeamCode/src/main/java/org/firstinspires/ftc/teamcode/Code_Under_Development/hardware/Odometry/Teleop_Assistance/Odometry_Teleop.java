@@ -1,17 +1,16 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.Teleop_Assistance;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Teleop_Assistance;
 
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.throttle;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.drive;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.Odometry_Calibration.Tune_PID_And_Drive_Direction.heading;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.Testopmode.X;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.Testopmode.Y;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.Odometry_Calibration.Tune_PID_And_Drive_Direction.heading;
+import static Testopmode.X;
+import static Testopmode.Y;
 
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Drivetrain;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry;
 
 @TeleOp
 public class Odometry_Teleop extends OpMode {

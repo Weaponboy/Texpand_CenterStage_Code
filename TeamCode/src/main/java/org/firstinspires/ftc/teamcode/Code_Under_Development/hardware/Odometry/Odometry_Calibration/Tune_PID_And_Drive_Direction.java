@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.Odometry_Calibration;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Odometry_Calibration;
 
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.driveD;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.driveF;
@@ -9,18 +9,12 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeD;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeF;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeP;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.odometry;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Horizontal;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pivot;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.PivotPID;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Vertical;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Xdist;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.XdistForStop;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.YdistForStop;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.drivePID;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.rotdist;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.rotdistForStop;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.strafePID;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.Horizontal;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.Pivot;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.PivotPID;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.Vertical;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.drivePID;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.strafePID;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -28,11 +22,9 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.ObjectAvoidance.Vector2D;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.ObjectAvoidance.Vector2D;
 
 @Disabled
 @Config

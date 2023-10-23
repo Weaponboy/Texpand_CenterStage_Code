@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems;
 
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.botHeading;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.driveD;
@@ -23,17 +23,18 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Drivetrain;
 
 public class Odometry {
 
-    DcMotor LF;
-    DcMotor RF;
-    DcMotor LB;
-    DcMotor RB;
+    DcMotorEx LF;
+    DcMotorEx RF;
+    DcMotorEx LB;
+    DcMotorEx RB;
 
-    DcMotor leftPod;
-    DcMotor rightPod;
-    DcMotor centerPod;
+    DcMotorEx leftPod;
+    DcMotorEx rightPod;
+    DcMotorEx centerPod;
 
     HardwareMap hardwareMap;
 
@@ -272,6 +273,14 @@ public class Odometry {
             correctedStart = 90;
         }
         return correctedStart;
+    }
+
+    public double getMaxVerticalVelocity(){
+        return leftPod.getVelocity() + rightPod.getVelocity()/2;
+    }
+
+    public double getMaxHorizontalVelocity(){
+        return centerPod.getVelocity();
     }
 
 }

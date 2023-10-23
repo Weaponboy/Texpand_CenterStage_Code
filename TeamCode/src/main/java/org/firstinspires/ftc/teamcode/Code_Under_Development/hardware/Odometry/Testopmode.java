@@ -1,29 +1,26 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry;
 
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.horizontal;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.vertical;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.ObjectAvoidance.ObstacleMap.findClosestPosition;
-
-import android.icu.text.Transliterator;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.Odometry.ObjectAvoidance.Vector2D;
-
-
-import java.util.ArrayList;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.ObjectAvoidance.Vector2D;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.ObjectAvoidance.ObstacleMap;
 
 @Config
 @TeleOp
 public class Testopmode extends OpMode {
+
+    ColorSensor colorSensor;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -53,7 +50,7 @@ public class Testopmode extends OpMode {
 
         currentPos = new Position(DistanceUnit.CM, robotPos.getX(), robotPos.getY(), 0.0, 0);
 
-        closestPosition = findClosestPosition(currentPos);
+        closestPosition = ObstacleMap.findClosestPosition(currentPos);
 
         if (Math.abs(closestPosition.x - robotPos.getX()) <= 5 && closestPosition.y == robotPos.getY()){
 
@@ -71,6 +68,10 @@ public class Testopmode extends OpMode {
                 horizontal = 0;
             }
 
+        }
+
+        if (colorSensor.blue() > 500){
+            
         }
 
         telemetry.addData("closest obstruction", closestPosition);
