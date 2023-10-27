@@ -236,6 +236,7 @@ public class Odometry {
             } else if (rotdist > 360) {
                 rotdist = (rotdist - 360);
             }
+            
 
             RRXdist = Ydist * Math.sin(Math.toRadians(ConvertedHeading)) + Xdist * Math.cos(Math.toRadians(ConvertedHeading));
             RRYdist = Ydist * Math.cos(Math.toRadians(ConvertedHeading)) - Xdist * Math.sin(Math.toRadians(ConvertedHeading));
