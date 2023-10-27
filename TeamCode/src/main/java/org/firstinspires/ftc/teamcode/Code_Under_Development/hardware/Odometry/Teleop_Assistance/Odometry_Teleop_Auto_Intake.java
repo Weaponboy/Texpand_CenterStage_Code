@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Sub
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.rotdist;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -13,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry;
 
-@TeleOp
+@Disabled
 public class Odometry_Teleop_Auto_Intake extends LinearOpMode {
 
     Drivetrain drive = new Drivetrain();

@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @Config
-@TeleOp
+@Disabled
 public class Calibrate_Trackwidth extends OpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();

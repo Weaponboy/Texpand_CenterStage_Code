@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Teleop_Assistance;
 
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.throttle;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.Odometry_Calibration.Tune_PID_And_Drive_Direction.heading;
-import static Testopmode.X;
-import static Testopmode.Y;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Odometry_Calibration.Tune_PID_And_Drive_Direction.heading;
 
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -108,8 +106,8 @@ public class Odometry_Teleop extends OpMode {
 
         if (RunOdo && gamepad1.atRest()){
 
-            Xdist = (targetX - X);
-            Ydist = (targetY - Y);
+            Xdist = (targetX - odo.X);
+            Ydist = (targetY - odo.Y);
 
             rotdist = (targetHeading - heading);
 

@@ -45,4 +45,6 @@ public class Constants {
     public static double horizontal;
     public static double pivot;
 
+    public static double robotRadius = 22;
+
 }
