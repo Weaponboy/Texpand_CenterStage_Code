@@ -1,7 +1,16 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Teleop_Assistance;
 
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.botHeading;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.driveD;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.driveF;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.driveP;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.rotationD;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.rotationF;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.rotationP;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeD;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeF;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeP;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.throttle;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Odometry_Calibration.Tune_PID_And_Drive_Direction.heading;
 
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -21,44 +30,7 @@ public class Odometry_Teleop extends OpMode {
     private double horizontal;
     private double rotation;
 
-    double RRXdist = 0;
-    double RRYdist = 0;
-
     double denominator;
-
-    double botHeading;
-
-    public PIDFController drivePID;
-    public PIDFController strafePID;
-    public PIDFController PivotPID;
-
-    public double driveP = 0.1;
-    public double driveD = 0.01;
-    public double driveF = 0;
-
-    public double strafeP = 0.1;
-    public double strafeD = 0.005;
-    public double strafeF = 0;
-
-    public double rotationP = 0.05;
-    public double rotationD = 0.005;
-    public double rotationF = 0;
-
-    public double XdistForStop = 0;
-    public double YdistForStop = 0;
-
-    public double rotdistForStop = 0;
-
-    public double Horizontal = 0;
-    public double Vertical = 0;
-
-    public double Pivot = 0;
-
-    public double ConvertedHeading = 0;
-
-    public double Xdist = 0;
-    public double Ydist = 0;
-    public double rotdist = 0;
 
     public double targetX = 0;
     public double targetY = 0;
@@ -92,9 +64,9 @@ public class Odometry_Teleop extends OpMode {
         drive.init(hardwareMap);
         odo.init(hardwareMap);
 
-        drivePID = new PIDFController(driveP, 0, driveD, driveF);
-        strafePID = new PIDFController(strafeP, 0, strafeD, strafeF);
-        PivotPID = new PIDFController(rotationP, 0, rotationD, rotationF);
+        odo.drivePID = new PIDFController(driveP, 0, driveD, driveF);
+        odo.strafePID = new PIDFController(strafeP, 0, strafeD, strafeF);
+        odo.PivotPID = new PIDFController(rotationP, 0, rotationD, rotationF);
 
     }
 
@@ -106,24 +78,38 @@ public class Odometry_Teleop extends OpMode {
 
         if (RunOdo && gamepad1.atRest()){
 
-            Xdist = (targetX - odo.X);
-            Ydist = (targetY - odo.Y);
+            odo.update();
 
-            rotdist = (targetHeading - heading);
+            odo.Xdist = (targetX - odo.X);
+            odo.Ydist = (targetY - odo.Y);
 
-            RRXdist = Ydist * Math.sin(Math.toRadians(heading)) + Xdist * Math.cos(Math.toRadians(heading));
-            RRYdist = Ydist * Math.cos(Math.toRadians(heading)) - Xdist * Math.sin(Math.toRadians(heading));
+            if (botHeading <= 0) {
+                odo.ConvertedHeading = (360 + botHeading);
+            } else {
+                odo.ConvertedHeading = (0 + botHeading);
+            }
 
-            Vertical = drivePID.calculate(-RRXdist);
-            Horizontal = strafePID.calculate(-RRYdist);
-            Pivot = PivotPID.calculate(-rotdist);
+            odo.rotdist = (targetHeading - odo.ConvertedHeading);
 
-            double denominator = Math.max(Math.abs(Vertical) + Math.abs(Horizontal) + Math.abs(Pivot), 1);
+            if (odo.rotdist < -180) {
+                odo.rotdist = (360 + odo.rotdist);
+            } else if (odo.rotdist > 360) {
+                odo.rotdist = (odo.rotdist - 360);
+            }
 
-            double left_Front = (Vertical + Horizontal + Pivot) / denominator;
-            double left_Back = (Vertical - Horizontal + Pivot) / denominator;
-            double right_Front = (Vertical - Horizontal - Pivot) / denominator;
-            double right_Back = (Vertical + Horizontal - Pivot) / denominator;
+            odo.RRXdist = odo.Ydist * Math.sin(Math.toRadians(odo.ConvertedHeading)) + odo.Xdist * Math.cos(Math.toRadians(odo.ConvertedHeading));
+            odo.RRYdist = odo.Ydist * Math.cos(Math.toRadians(odo.ConvertedHeading)) - odo.Xdist * Math.sin(Math.toRadians(odo.ConvertedHeading));
+
+            odo.Vertical = odo.drivePID.calculate(-odo.RRXdist);
+            odo.Horizontal = odo.strafePID.calculate(-odo.RRYdist);
+            odo.Pivot = odo.PivotPID.calculate(-odo.rotdist);
+
+            double denominator = Math.max(Math.abs(odo.Vertical) + Math.abs(odo.Horizontal) + Math.abs(odo.Pivot), 1);
+
+            double left_Front = (odo.Vertical + odo.Horizontal + odo.Pivot) / denominator;
+            double left_Back = (odo.Vertical - odo.Horizontal + odo.Pivot) / denominator;
+            double right_Front = (odo.Vertical - odo.Horizontal - odo.Pivot) / denominator;
+            double right_Back = (odo.Vertical + odo.Horizontal - odo.Pivot) / denominator;
 
             drive.RF.setPower(right_Front);
             drive.RB.setPower(right_Back);
@@ -135,7 +121,7 @@ public class Odometry_Teleop extends OpMode {
             throttle = Throttle;
 
             vertical = -gamepad1.right_stick_y;
-            horizontal = -gamepad1.right_stick_x * 1.2;
+            horizontal = gamepad1.right_stick_x * 1.2;
             rotation = gamepad1.left_stick_x;
 
             denominator = Math.max(Math.abs(horizontal) + Math.abs(vertical) + Math.abs(rotation), 1);

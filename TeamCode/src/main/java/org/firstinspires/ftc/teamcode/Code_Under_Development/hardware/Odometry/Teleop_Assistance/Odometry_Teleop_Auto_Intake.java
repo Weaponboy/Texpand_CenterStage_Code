@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Teleop_Assistance;
 
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.Pivot;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.botHeading;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.ConvertedHeadingForPosition;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.Pivot;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.rotdist;
+
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -45,7 +45,7 @@ public class Odometry_Teleop_Auto_Intake extends LinearOpMode {
     }
 
     void TelemetryMap(){
-        telemetry.addData("rotation", rotdist);
+        telemetry.addData("rotation", odometry.rotdist);
         telemetry.addData("Pivot power", Pivot);
         telemetry.addData("Y --", odometry.Y);
         telemetry.addData("imu heading", botHeading);

@@ -1,14 +1,13 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.Follower;
 
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.maxXVelocity;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.maxYVelocity;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathingPower.PathingPower;
 
 public class DriveAtAngle{
-
-    //in cm's per sec, these need to be tuned
-    private static final double maxYVelocity = 5;
-    private final double maxXVelocity = 7;
 
     private final double scaleFactor = maxYVelocity/maxXVelocity;
 

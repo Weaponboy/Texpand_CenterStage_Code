@@ -7,8 +7,6 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.UsefulMethods.checkXObstacles;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.UsefulMethods.checkYObstacles;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.ConvertedHeading;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.RRXdist;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.RRYdist;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -35,11 +33,8 @@ public class testObstacleAvoidance extends OpMode {
 
     Vector2D robotPos = new Vector2D();
 
-
-
     public static double X = 130;
     public static double Y = 221;
-
 
     @Override
     public void init() {
@@ -69,10 +64,10 @@ public class testObstacleAvoidance extends OpMode {
 
         double denominator = Math.max(Math.abs(horizontal) + Math.abs(vertical) + Math.abs(pivot), 1);
 
-        drive.RF.setPower((-pivot + (RRXdist - RRYdist)) / denominator);
-        drive.RB.setPower((-pivot + (RRXdist + RRYdist)) / denominator);
-        drive.LF.setPower((pivot + (RRXdist + RRYdist)) / denominator);
-        drive.LB.setPower((pivot + (RRXdist - RRYdist)) / denominator);
+        drive.RF.setPower((-pivot + (vertical - horizontal)) / denominator);
+        drive.RB.setPower((-pivot + (vertical + horizontal)) / denominator);
+        drive.LF.setPower((pivot + (vertical + horizontal)) / denominator);
+        drive.LB.setPower((pivot + (vertical - horizontal)) / denominator);
 
     }
 

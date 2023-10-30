@@ -14,11 +14,6 @@ public abstract class scrimmageBot extends OpMode {
 
     HardwareMap hardwareMap;
 
-
-
-
-
-
     public void init(HardwareMap Hmap) {
 
     }
@@ -54,7 +49,6 @@ public abstract class scrimmageBot extends OpMode {
 
         if (gamepad1.left_stick_x>0);
         RF.setPower(1);
-
 
     }
 }
