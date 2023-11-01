@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -17,7 +18,7 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems
 
 import java.util.List;
 
-@TeleOp
+@Disabled
 public class Pull_up_teleop extends OpMode {
 
     Drivetrain drive = new Drivetrain();

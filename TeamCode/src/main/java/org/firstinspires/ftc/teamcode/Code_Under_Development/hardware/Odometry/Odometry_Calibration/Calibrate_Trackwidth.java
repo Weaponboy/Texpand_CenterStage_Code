@@ -13,19 +13,19 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @Config
-@TeleOp
+@Disabled
 public class Calibrate_Trackwidth extends OpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
-    public static double trackwidth = 26.1;
-    public static double centerPodOffset = 18;
-    public static double wheelRadius = 1.75;
-    public static double podTicks = 8192;
+    public double trackwidth = 26.1;
+    public double centerPodOffset = 18;
+    public double wheelRadius = 1.75;
+    public double podTicks = 8192;
 
-    public static double cm_per_tick = 2.0 * Math.PI * wheelRadius / podTicks;
+    public double cm_per_tick = 2.0 * Math.PI * wheelRadius / podTicks;
 
     public int currentRightPod = -15779;
     public int currentLeftPod = 14810;
@@ -37,28 +37,28 @@ public class Calibrate_Trackwidth extends OpMode {
 
     public double startX, startY, startHeading;
 
-    public static PIDFController drivePID;
-    public static PIDFController strafePID;
-    public static PIDFController PivotPID;
+    public PIDFController drivePID;
+    public PIDFController strafePID;
+    public PIDFController PivotPID;
 
-    public static double Xdist = 0;
-    public static double Ydist = 0;
+    public double Xdist = 0;
+    public double Ydist = 0;
 
-    public static double rotdist = 0;
+    public double rotdist = 0;
 
-    public static double XdistForStop = 0;
-    public static double YdistForStop = 0;
+    public double XdistForStop = 0;
+    public double YdistForStop = 0;
 
-    public static double rotdistForStop = 0;
+    public double rotdistForStop = 0;
 
-    public static double RRXdist = 0;
-    public static double RRYdist = 0;
-    public static double Horizontal = 0;
-    public static double Vertical = 0;
+    public double RRXdist = 0;
+    public double RRYdist = 0;
+    public double Horizontal = 0;
+    public double Vertical = 0;
 
-    public static double Pivot = 0;
+    public double Pivot = 0;
 
-    public static double ConvertedHeading = 0;
+    public double ConvertedHeading = 0;
 
     public double X = startX, Y = startY, heading = startHeading;
 

@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Odometry_Calibration;
 
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.Horizontal;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.Pivot;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.Vertical;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.driveD;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.driveF;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.driveP;
@@ -9,12 +12,6 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeD;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeF;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeP;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.Horizontal;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.Pivot;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.PivotPID;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.Vertical;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.drivePID;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.strafePID;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -24,7 +21,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.ObjectAvoidance.Vector2D;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.Vector2D;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry;
 
 @Disabled
 @Config
@@ -36,7 +34,9 @@ public class Tune_PID_And_Drive_Direction extends OpMode {
 
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
-    public static double heading = 90;
+    Odometry odo = new Odometry(0,0,0);
+
+    public double heading = 90;
     double Xdist;
     double Ydist;
     double rotdist;
@@ -44,9 +44,9 @@ public class Tune_PID_And_Drive_Direction extends OpMode {
     @Override
     public void init() {
         robotPos.set(0,0);
-        drivePID = new PIDFController(driveP, 0, driveD, driveF);
-        strafePID = new PIDFController(strafeP, 0, strafeD, strafeF);
-        PivotPID = new PIDFController(rotationP, 0, rotationD, rotationF);
+        odo.drivePID = new PIDFController(driveP, 0, driveD, driveF);
+        odo.strafePID = new PIDFController(strafeP, 0, strafeD, strafeF);
+        odo.PivotPID = new PIDFController(rotationP, 0, rotationD, rotationF);
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     }
@@ -75,9 +75,9 @@ public class Tune_PID_And_Drive_Direction extends OpMode {
             double RRYdist = Ydist * Math.cos(Math.toRadians(heading)) - Xdist * Math.sin(Math.toRadians(heading));
 
             //SET DRIVE CONSTANTS TO THE PIDF CONTROL LOOPS
-            Vertical = drivePID.calculate(-RRXdist);
-            Horizontal = strafePID.calculate(-RRYdist);
-            Pivot = PivotPID.calculate(-rotdist);
+            Vertical = odo.drivePID.calculate(-RRXdist);
+            Horizontal = odo.strafePID.calculate(-RRYdist);
+            Pivot = odo.PivotPID.calculate(-rotdist);
 
             double denominator = Math.max(Math.abs(Vertical) + Math.abs(Horizontal) + Math.abs(Pivot), 1);
 

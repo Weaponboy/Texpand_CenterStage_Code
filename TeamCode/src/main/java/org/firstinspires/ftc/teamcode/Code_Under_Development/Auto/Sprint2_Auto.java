@@ -130,6 +130,4 @@ public class Sprint2_Auto extends LinearOpMode {
 
     }
 
-
-
 }

@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Teleop_Assistance;
 
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.Pivot;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.botHeading;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.ConvertedHeadingForPosition;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.Pivot;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.rotdist;
+
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -13,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry;
 
-@TeleOp
+@Disabled
 public class Odometry_Teleop_Auto_Intake extends LinearOpMode {
 
     Drivetrain drive = new Drivetrain();
@@ -44,7 +45,7 @@ public class Odometry_Teleop_Auto_Intake extends LinearOpMode {
     }
 
     void TelemetryMap(){
-        telemetry.addData("rotation", rotdist);
+        telemetry.addData("rotation", odometry.rotdist);
         telemetry.addData("Pivot power", Pivot);
         telemetry.addData("Y --", odometry.Y);
         telemetry.addData("imu heading", botHeading);

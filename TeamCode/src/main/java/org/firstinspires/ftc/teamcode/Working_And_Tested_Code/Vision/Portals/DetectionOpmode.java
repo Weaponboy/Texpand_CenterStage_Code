@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Working_And_Tested_Code.Vision.Portals;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -8,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Visio
 import org.firstinspires.ftc.teamcode.Working_And_Tested_Code.Vision.Processers.PropDetecterByWidth;
 import org.firstinspires.ftc.vision.VisionPortal;
 
-@Autonomous()
+@Disabled
 public class DetectionOpmode extends OpMode {
 
     PropDetecterByWidth propDetecterTest;
