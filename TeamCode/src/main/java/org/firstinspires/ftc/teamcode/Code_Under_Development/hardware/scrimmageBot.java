@@ -14,7 +14,7 @@ public abstract class scrimmageBot extends OpMode {
 
     HardwareMap hardwareMap;
 
-
+    public static double pivot_p = 0.004, pivot_i = 0, pivot_d = 0.0001;
 
 
 
@@ -54,6 +54,18 @@ public abstract class scrimmageBot extends OpMode {
 
         if (gamepad1.left_stick_x>0);
         RF.setPower(1);
+
+
+
+        double vertical = -gamepad1.right_stick_y;
+        double horizontal = gamepad1.right_stick_x*1.5;
+        double pivot = gamepad1.left_stick_x;;
+
+        RF.setPower((-pivot + (vertical - horizontal)));
+        LF.setPower((pivot + (vertical + horizontal)));
+
+
+
 
 
     }
