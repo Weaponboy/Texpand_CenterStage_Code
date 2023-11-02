@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathGeneration;
 
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Auto_Control_Points.Blue_Right.ePThirdSeg;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Auto_Control_Points.controlPoints.ePThirdSeg;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.maxYAcceleration;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.velocityDecreasePerPoint;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.Follower.DriveAtAngle.getMaxVelocity;
 
-import org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Auto_Control_Points.Blue_Right;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Auto_Control_Points.controlPoints;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.Vector2D;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathingPower.PathingVelocity;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.whatPath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class pathBuilder {
 
     SegmentGenerator segmentGenerator = new SegmentGenerator();
 
-    Blue_Right blueRight = new Blue_Right();
+    controlPoints controlPoints = new controlPoints();
 
     public ArrayList<Vector2D> originalPath = new ArrayList<>();
 
@@ -28,32 +29,55 @@ public class pathBuilder {
 
     Vector2D secondPoint = new Vector2D();
 
-    public void buildCurveSegment(Vector2D start, Vector2D control, Vector2D end){
+    public void buildPath(whatPath path){
+
+        switch (path) {
+            case blueRight:
+                blueRight();
+                break;
+            case redRight:
+                System.out.println("not ready yet");
+                break;
+            case testCurve:
+                testCurve();
+                break;
+            default:
+                break;
+        }
+
+        pathBuilder(originalPath);
+
+        motionProfile();
+    }
+
+    private void buildCurveSegment(Vector2D start, Vector2D control, Vector2D end){
         segmentGenerator.buildPath(start, control, end);
         originalPath.addAll(segmentGenerator.copyPath());
     }
 
-    public void buildLineSegment(Vector2D start, Vector2D end){
+    private void buildLineSegment(Vector2D start, Vector2D end){
         segmentGenerator.buildPath(start, end);
         originalPath.addAll(segmentGenerator.copyPath());
     }
 
-    public int findNumberOfPoints(ArrayList<Vector2D> Path){
+    private int findNumberOfPoints(ArrayList<Vector2D> Path){
         int points;
         double length = calculateTotalDistance(Path);
         points = (int) (length / 0.25);
         return points;
     }
 
-    public void blueRight(){
-        buildLineSegment(blueRight.sPFirstSeg, blueRight.ePFirstSeg);
-        buildCurveSegment(blueRight.sPSecondSeg, blueRight.cPSecondSeg, blueRight.ePSecondSeg);
-        buildCurveSegment(blueRight.sPThirdSeg, blueRight.cPThirdSeg, ePThirdSeg);
-
-        int points = findNumberOfPoints(originalPath);
+    private void blueRight(){
+        buildLineSegment(controlPoints.sPFirstSeg, controlPoints.ePFirstSeg);
+        buildCurveSegment(controlPoints.sPSecondSeg, controlPoints.cPSecondSeg, controlPoints.ePSecondSeg);
+        buildCurveSegment(controlPoints.sPThirdSeg, controlPoints.cPThirdSeg, ePThirdSeg);
     }
 
-    public Vector2D pathBuilder(ArrayList<Vector2D> originalPath){
+    private void testCurve(){
+        buildCurveSegment(controlPoints.sPTest, controlPoints.cPTest, controlPoints.ePTest);
+    }
+
+    private Vector2D pathBuilder(ArrayList<Vector2D> originalPath){
 
         Vector2D onTheCurve = new Vector2D();
         followablePath.clear();
@@ -106,7 +130,7 @@ public class pathBuilder {
 
     }
 
-    public double findAngle(PathingVelocity targetVelocity){
+    private double findAngle(PathingVelocity targetVelocity){
 
         double magnitude = Math.sqrt(targetVelocity.getXVelocity() * targetVelocity.getXVelocity() + targetVelocity.getYVelocity() * targetVelocity.getYVelocity());
 
@@ -121,7 +145,7 @@ public class pathBuilder {
         return degrees;
     }
 
-    public double motionProfile(){
+    private double motionProfile(){
 
         PathingVelocity pathVelo;
 
@@ -197,7 +221,7 @@ public class pathBuilder {
 
     }
 
-    public void firstDerivative(){
+    private void firstDerivative(){
 
         PathingVelocity pathVelo;
 
@@ -221,12 +245,12 @@ public class pathBuilder {
         }
     }
 
-    public Vector2D findPoint(){
+    private Vector2D findPoint(){
         Vector2D point = new Vector2D();
         return point;
     }
 
-    public double calculateTotalDistance(List<Vector2D> path) {
+    private double calculateTotalDistance(List<Vector2D> path) {
         double totalDistance = 0.0;
         for (int i = 0; i < path.size() - 1; i++) {
             Vector2D point1 = path.get(i);
@@ -236,13 +260,13 @@ public class pathBuilder {
         return totalDistance;
     }
 
-    public double calculateDistance(Vector2D point1, Vector2D point2) {
+    private double calculateDistance(Vector2D point1, Vector2D point2) {
         double dx = point2.getX() - point1.getX();
         double dy = point2.getY() - point1.getY();
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    public int getClosestPositionOnPath(Vector2D robotPos, ArrayList<Vector2D> path) {
+    private int getClosestPositionOnPath(Vector2D robotPos, ArrayList<Vector2D> path) {
 
         int index = 0;
 
@@ -263,7 +287,7 @@ public class pathBuilder {
         return index;
     }
 
-    public Vector2D getErrorToPath(Vector2D robotPos, ArrayList<Vector2D> path) {
+    private Vector2D getErrorToPath(Vector2D robotPos, ArrayList<Vector2D> path) {
 
         int index = 0;
 
@@ -301,7 +325,7 @@ public class pathBuilder {
         return error;
     }
 
-    public PathingVelocity getTargetVelocity(int index){
+    private PathingVelocity getTargetVelocity(int index){
 
         PathingVelocity targetVelocity = new PathingVelocity();
 
@@ -312,7 +336,7 @@ public class pathBuilder {
         return targetVelocity;
     }
 
-    public Vector2D getPointOnFollowable(int index){
+    private Vector2D getPointOnFollowable(int index){
         return followablePath.get(index);
     }
 

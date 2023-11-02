@@ -2,8 +2,9 @@ package org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setp
 
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.Vector2D;
 
-public class Blue_Right {
+public class controlPoints {
 
+    /**blue right start to backboard*/
     public Vector2D sPFirstSeg = new Vector2D(93, 33);
     public Vector2D ePFirstSeg = new Vector2D(95, 85);
 
@@ -14,5 +15,10 @@ public class Blue_Right {
     public Vector2D sPThirdSeg = new Vector2D(ePSecondSeg.getX(), ePSecondSeg.getY());
     public Vector2D cPThirdSeg = new Vector2D(302, 154);
     public static Vector2D ePThirdSeg = new Vector2D(314, 75);
+
+    /**test curve*/
+    public Vector2D sPTest = new Vector2D(0, 0);
+    public Vector2D cPTest = new Vector2D(0, 75);
+    public Vector2D ePTest = new Vector2D(75, 75);
 
 }

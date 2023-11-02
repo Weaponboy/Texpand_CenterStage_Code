@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.O
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.Follower.mecanumFollower;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathGeneration.pathBuilder;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathingPower.PathingPower;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.whatPath;
 
 @TeleOp
 public class TestingNewGen extends LinearOpMode {
@@ -33,20 +34,28 @@ public class TestingNewGen extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        pathBuilder.blueRight();
+        //build path
+        pathBuilder.buildPath(whatPath.testCurve);
 
-        pathBuilder.pathBuilder(pathBuilder.originalPath);
-
-        pathBuilder.motionProfile();
-
+        //pass it to the follower
         follower = new mecanumFollower(pathBuilder.followablePath, pathBuilder.pathingVelocity);
+
+        while (opModeInInit()){
+            PathingPower correctivePower;
+            correctivePower = follower.getCorrectivePower(robotPos, Heading);
+
+            telemetry.addData("corective power", correctivePower.getHorizontal());
+            telemetry.addData("length", follower.getPathLength());
+            telemetry.update();
+        }
 
         waitForStart();
 
         while (opModeIsActive()){
 
-            robotPos.set(106, 138.6);
+            robotPos.set(13, 50);
 
+            //use follower methods to get motor power
             PathingPower correctivePower;
             correctivePower = follower.getCorrectivePower(robotPos, Heading);
 
@@ -56,6 +65,7 @@ public class TestingNewGen extends LinearOpMode {
             PathingPower pathingPower;
             pathingPower = follower.getPathingPower(robotPos);
 
+            //apply motor power in order of importance
             if (Math.abs(correctivePosition.getX()) > 5 || Math.abs(correctivePosition.getY()) > 5){
                 vertical = correctivePower.getVertical();
                 horizontal = correctivePower.getHorizontal();
@@ -66,6 +76,7 @@ public class TestingNewGen extends LinearOpMode {
 
             pivot = follower.getTurnPower(0, Heading);
 
+            //apply motor powers
             double denominator = Math.max(Math.abs(vertical) + Math.abs(horizontal) + Math.abs(pivot), 1);
 
             double left_Front = (vertical + horizontal + pivot) / denominator;
@@ -80,9 +91,7 @@ public class TestingNewGen extends LinearOpMode {
             telemetry.addData("Power X", vertical);
             telemetry.addData("Power Y", horizontal);
             telemetry.addData("turn power", pivot);
-//            telemetry.addData("velocity point X", pathBuilder.pathingVelocity.get(1000).getXVelocity());
-//            telemetry.addData("velocity point Y", pathBuilder.pathingVelocity.get(1000).getYVelocity());
-//            telemetry.addData("point", pathBuilder.followablePath.get(1000));
+            telemetry.addData("length", pathBuilder.followablePath.size());
             telemetry.update();
         }
     }
