@@ -14,12 +14,18 @@ public abstract class scrimmageBot extends OpMode {
 
     HardwareMap hardwareMap;
 
+    double vertical = -gamepad1.right_stick_y;
+    double horizontal = gamepad1.right_stick_x*1.5;
+    double pivot = gamepad1.left_stick_x;
+
 
 
 
 
 
     public void init(HardwareMap Hmap) {
+        RF.setPower((-pivot + (vertical - horizontal)));
+        LF.setPower((pivot + (vertical + horizontal)));
 
     }
 
