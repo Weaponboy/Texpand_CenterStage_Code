@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathGeneration;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.Testing.Old;
 
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.horizontal;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.pivot;
@@ -6,18 +6,21 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.Vector2D;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.Follower.mecanumFollower;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathingPower.PathingPower;
-import org.mercurialftc.mercurialftc.util.hardware.cachinghardwaredevice.CachingDcMotorEX;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathingPower.PathingVelocity;
+
+import java.util.ArrayList;
 
 @TeleOp
+@Disabled
 public class TestPathFollower extends LinearOpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -26,7 +29,11 @@ public class TestPathFollower extends LinearOpMode {
 
     Vector2D robotPos = new Vector2D();
 
-    mecanumFollower follower = new mecanumFollower();
+    ArrayList<Vector2D> trajectory = new ArrayList<>();
+
+    ArrayList<PathingVelocity> velcity = new ArrayList<>();
+
+    mecanumFollower follower = new mecanumFollower(trajectory, velcity);
 
     ElapsedTime elapsedTime = new ElapsedTime();
     public double loopTime;
@@ -40,7 +47,8 @@ public class TestPathFollower extends LinearOpMode {
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        follower.buildPath();
+        //Build Path
+//        follower.buildPath();
 
         waitForStart();
 
@@ -48,16 +56,6 @@ public class TestPathFollower extends LinearOpMode {
         elapsedTime.startTime();
 
         while (opModeIsActive()){
-
-            if (counter == 100){
-                loopTime = elapsedTime.milliseconds() - lastTime;
-
-                counter = 0;
-            }
-
-            lastTime = elapsedTime.milliseconds();
-
-            counter++;
 
             robotPos.set(180, 156);
 
@@ -87,7 +85,9 @@ public class TestPathFollower extends LinearOpMode {
             double right_Front = (vertical - horizontal - pivot) / denominator;
             double right_Back = (vertical + horizontal - pivot) / denominator;
 
-            telemetry.addData("loop Time", loopTime);
+            telemetry.addData("error1", follower.getPathLength());
+
+
 //            telemetry.addData("RF", right_Front);
 //            telemetry.addData("LF", left_Front);
 //            telemetry.addData("LB", left_Back);

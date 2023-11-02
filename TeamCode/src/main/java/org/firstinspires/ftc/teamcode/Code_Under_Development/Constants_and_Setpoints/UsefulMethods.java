@@ -4,6 +4,8 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.robotRadius;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.vertical;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.ObstacleMap;
@@ -68,5 +70,10 @@ public class UsefulMethods {
             }
         }
         return horizontalPower;
+    }
+
+    /**Check loop time*/
+    public static double getLoopTime(double currentTime){
+        return 0;
     }
 }

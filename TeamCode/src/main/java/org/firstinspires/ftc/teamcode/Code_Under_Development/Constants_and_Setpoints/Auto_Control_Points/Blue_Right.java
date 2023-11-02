@@ -1,0 +1,18 @@
+package org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Auto_Control_Points;
+
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.Vector2D;
+
+public class Blue_Right {
+
+    public Vector2D sPFirstSeg = new Vector2D(93, 33);
+    public Vector2D ePFirstSeg = new Vector2D(95, 85);
+
+    public Vector2D sPSecondSeg = new Vector2D(ePFirstSeg.getX(), ePFirstSeg.getY());
+    public Vector2D cPSecondSeg = new Vector2D(90, 160);
+    public Vector2D ePSecondSeg = new Vector2D(154, 157);
+
+    public Vector2D sPThirdSeg = new Vector2D(ePSecondSeg.getX(), ePSecondSeg.getY());
+    public Vector2D cPThirdSeg = new Vector2D(302, 154);
+    public static Vector2D ePThirdSeg = new Vector2D(314, 75);
+
+}

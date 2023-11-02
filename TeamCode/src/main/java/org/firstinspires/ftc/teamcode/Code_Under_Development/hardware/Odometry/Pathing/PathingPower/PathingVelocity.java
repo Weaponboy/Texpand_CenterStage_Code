@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathingPower;
 
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.Vector2D;
+import org.jetbrains.annotations.NotNull;
+
 public class PathingVelocity {
 
     private double xVelocity;
@@ -26,6 +29,14 @@ public class PathingVelocity {
 
     public double getYVelocity(){
         return yVelocity;
+    }
+
+    public PathingVelocity add(@NotNull PathingVelocity other) {
+        return this.add(other.xVelocity, other.yVelocity);
+    }
+
+    private PathingVelocity add(double xVelocity, double yVelocity) {
+        return new PathingVelocity(this.xVelocity + xVelocity, this.yVelocity + yVelocity);
     }
 
 }

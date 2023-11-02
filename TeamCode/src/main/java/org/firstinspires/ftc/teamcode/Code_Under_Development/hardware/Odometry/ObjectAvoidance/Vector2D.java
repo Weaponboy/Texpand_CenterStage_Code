@@ -110,8 +110,6 @@ public class Vector2D {
 		return this.subtract(other.x, other.y);
 	}
 
-
-
 	/**
 	 * dot product
 	 *
