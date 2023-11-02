@@ -43,9 +43,17 @@ public class Constants {
     public static final double xStopDistanceAtMaxVelocity = 7;
     public static final double ystopDistanceAtMaxVelocity = 5;
 
+    //in cm's per sec, need to get the real value of these
+    public static double maxXVelocity = 310;
+    public static double maxYVelocity = maxXVelocity*0.75;
+
+    public static final double scaleFactor = maxYVelocity/maxXVelocity;
+
+    public static double velocityDecreasePerPoint = 2.5;
+
     //in cm's per sec, these need to be tuned
-    public static final double maxYVelocity = 5;
-    public static final double maxXVelocity = 7;
+    public static final double maxXAcceleration = 66.6;
+    public static final double maxYAcceleration =  maxXAcceleration*0.75;
 
     /**teleop driver constants*/
     public static double throttle = 0.6;

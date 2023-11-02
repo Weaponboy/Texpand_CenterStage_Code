@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathGeneration;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.Testing.Old;
 
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.Follower.DriveAtAngle.getMaxVelocity;
 
@@ -19,7 +19,7 @@ public class Path {
     static List<Double> velocityY = new ArrayList<>();
 
     //got to get th correct value here once i have the velocity of the robot
-    static double deltaTime = 0.1;
+    static double deltaTime;
 
     static double t = 0.0;
 
@@ -229,6 +229,36 @@ public class Path {
         targetVelocity.set(velocityX.get(index), velocityY.get(index));
 
         return targetVelocity;
+    }
+
+    public Vector2D getPoint(int index){
+        return path.get(index);
+    }
+
+    public double calculateTotalDistance(List<Vector2D> path) {
+        double totalDistance = 0.0;
+        for (int i = 0; i < path.size() - 1; i++) {
+            Vector2D point1 = path.get(i);
+            Vector2D point2 = path.get(i + 1);
+            totalDistance += calculateDistance(point1, point2);
+        }
+        return totalDistance;
+    }
+
+    public double calculateDistance(Vector2D point1, Vector2D point2) {
+        double dx = point2.getX() - point1.getX();
+        double dy = point2.getY() - point1.getY();
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    public static Vector2D interpolate(Vector2D start, Vector2D end, double t) {
+        double interpolatedX = start.getX() + t * (end.getX() - start.getX());
+        double interpolatedY = start.getY() + t * (end.getY() - start.getY());
+        return new Vector2D(interpolatedX, interpolatedY);
+    }
+
+    public ArrayList<Vector2D> copyPath(){
+        return path;
     }
 
 
