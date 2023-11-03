@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.GPT_Vision;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -13,7 +14,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.concurrent.TimeUnit;
 
-@TeleOp(name = "Hexagon Detection OpMode", group = "Testing")
+@Disabled
 public class HexagonDetectionOpMode extends LinearOpMode {
 
     public OpenCvWebcam webcam;

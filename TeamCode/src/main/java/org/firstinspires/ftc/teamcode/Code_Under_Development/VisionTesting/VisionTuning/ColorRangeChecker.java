@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.Visi
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -21,18 +22,18 @@ import org.openftc.easyopencv.OpenCvWebcam;
 import java.util.concurrent.TimeUnit;
 
 @Config
-@TeleOp
+@Disabled
 public class ColorRangeChecker extends LinearOpMode {
 
     FtcDashboard dashboard;
 
-    public static double lowerH = 60;
-    public static double lowerS = 60;
-    public static double lowerV = 64;
+    public static double lowerH = 100;
+    public static double lowerS = 90;
+    public static double lowerV = 90;
 
-    public static double upperH = 75;
-    public static double upperS = 220;
-    public static double upperV = 270;
+    public static double upperH = 180;
+    public static double upperS = 255;
+    public static double upperV = 255;
 
     public static double cameraGain = 30; // Range: 0-255
     public static double cameraExposure = 7; // Range: 0-10000

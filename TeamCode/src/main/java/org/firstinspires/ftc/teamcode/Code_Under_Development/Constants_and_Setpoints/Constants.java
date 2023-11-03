@@ -18,8 +18,8 @@ public class Constants {
     public static double strafeD = 0.005;
     public static double strafeF = 0;
 
-    public static double rotationP = 0.01;
-    public static double rotationD = 0;
+    public static double rotationP = 0.05;
+    public static double rotationD = 0.001;
     public static double rotationF = 0;
 
     /**randomization position*/
@@ -38,11 +38,34 @@ public class Constants {
     /**Slide Pid values*/
     public static double slide_p = 0.004, slide_i = 0, slide_d = 0.0001, slide_f = 0;
 
+    /** pathing constants*/
+
+    public static final double xStopDistanceAtMaxVelocity = 7;
+    public static final double ystopDistanceAtMaxVelocity = 5;
+
+    //in cm's per sec, need to get the real value of these
+    public static double maxXVelocity = 310;
+    public static double maxYVelocity = maxXVelocity*0.75;
+
+    public static final double scaleFactor = maxYVelocity/maxXVelocity;
+
+    public static double velocityDecreasePerPoint = 2.5;
+
+    //in cm's per sec, these need to be tuned
+    public static final double maxXAcceleration = 66.6;
+    public static final double maxYAcceleration =  maxXAcceleration*0.75;
+
     /**teleop driver constants*/
     public static double throttle = 0.6;
 
     public static double vertical;
     public static double horizontal;
     public static double pivot;
+
+    public static double Vertical;
+    public static double Horizontal;
+    public static double Pivot;
+
+    public static double robotRadius = 22;
 
 }
