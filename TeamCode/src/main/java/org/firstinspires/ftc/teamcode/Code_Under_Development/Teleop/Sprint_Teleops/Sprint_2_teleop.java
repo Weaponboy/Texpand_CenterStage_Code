@@ -230,7 +230,6 @@ public class Sprint_2_teleop extends OpMode {
         if (gamepad1.circle && delivery.Pivot.getCurrentPosition() > 200) {
             Pivot_Target = 0;
         }
-
     }
 
     @Override
