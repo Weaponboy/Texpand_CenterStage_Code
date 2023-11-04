@@ -27,7 +27,7 @@ public class DetectionOpmodeTest extends OpMode {
        webcamName = hardwareMap.get(WebcamName.class, "frontCam");
 //       greenPixel = new GreenPixelDetecter();
 //       yellowPixel = new YellowPixelDetecter();
-       propDetectorTest = new PropDetecterByHeight();
+       propDetectorTest = new PropDetecterByHeight(PropDetecterByHeight.color.blue);
        visionPortal = VisionPortal.easyCreateWithDefaults(webcamName, propDetectorTest);
 
        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -35,8 +35,8 @@ public class DetectionOpmodeTest extends OpMode {
 
     @Override
     public void init_loop() {
-//        telemetry.addData("height", propDetectorTest.height);
-//        telemetry.update();
+//        telemetry.addData("height", propDetectorTest.);
+        telemetry.update();
    }
 
     @Override

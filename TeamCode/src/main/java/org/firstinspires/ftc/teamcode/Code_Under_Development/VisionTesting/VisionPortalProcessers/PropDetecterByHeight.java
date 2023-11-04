@@ -34,12 +34,25 @@ import java.util.List;
 
 public class PropDetecterByHeight implements VisionProcessor {
 
+    private final PropDetecterByHeight.color color;
     public Rect rect = new Rect(20, 20, 50, 50);
 
     public Mat modifiedMat = new Mat();
 
-    public Scalar MIN_THRESH_RED = new Scalar(100, 80, 80);
-    public Scalar MAX_THRESH_RED = new Scalar(180, 255, 255);
+    public Scalar MIN_THRESH_RED = new Scalar(140, 50, 50);
+    public Scalar MAX_THRESH_RED = new Scalar(220, 255, 255);
+
+    public Scalar MIN_THRESH_BLUE = new Scalar(30, 70, 70);
+    public Scalar MAX_THRESH_BLUE = new Scalar(90, 255, 255);
+
+    public enum color{
+        blue,
+        red
+    }
+
+    public PropDetecterByHeight(color propColor){
+        this.color = propColor;
+    }
 
     private ArrayList<MatOfPoint> contours = new ArrayList<>();
     private Mat hierarchy = new Mat();
@@ -64,8 +77,16 @@ public class PropDetecterByHeight implements VisionProcessor {
 
         Imgproc.cvtColor(modifiedMat, modifiedMat, COLOR_RGB2HSV);
 
-        //Apply colour scales
-        inRange(modifiedMat, MIN_THRESH_RED, MAX_THRESH_RED, modifiedMat);
+        switch (color) {
+            case blue:
+                inRange(modifiedMat, MIN_THRESH_BLUE, MAX_THRESH_BLUE, modifiedMat);
+                break;
+            case red:
+                inRange(modifiedMat, MIN_THRESH_RED, MAX_THRESH_RED, modifiedMat);
+                break;
+            default:
+                break;
+        }
 
         //erode image
         erode(modifiedMat, modifiedMat, new Mat(5, 5, CV_8U));
