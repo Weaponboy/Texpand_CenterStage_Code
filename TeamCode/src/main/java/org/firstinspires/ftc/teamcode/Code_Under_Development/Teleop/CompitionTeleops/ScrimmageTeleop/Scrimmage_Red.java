@@ -27,7 +27,7 @@ public class Scrimmage_Red extends OpMode {
         deliverySlides.init(hardwareMap);
         sensors.init(hardwareMap);
 
-        propDetecterRed = new PropDetecterByHeight();
+        propDetecterRed = new PropDetecterByHeight(PropDetecterByHeight.color.red);
         portal = VisionPortal.easyCreateWithDefaults(sensors.frontCam, propDetecterRed);
     }
 

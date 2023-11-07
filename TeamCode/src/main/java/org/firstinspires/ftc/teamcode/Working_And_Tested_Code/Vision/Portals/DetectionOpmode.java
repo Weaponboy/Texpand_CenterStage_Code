@@ -21,7 +21,7 @@ public class DetectionOpmode extends OpMode {
     public void init() {
         webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         propDetecterTest = new PropDetecterByWidth();
-        propDetecterheight = new PropDetecterByHeight();
+        propDetecterheight = new PropDetecterByHeight(PropDetecterByHeight.color.red);
         visionPortal = VisionPortal.easyCreateWithDefaults(webcamName, propDetecterTest, propDetecterheight);
     }
 

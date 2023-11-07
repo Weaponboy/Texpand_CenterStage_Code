@@ -13,23 +13,23 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @Config
-@Disabled
+@TeleOp
 public class Calibrate_Trackwidth extends OpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
-    public double trackwidth = 26.1;
-    public double centerPodOffset = 18;
+    public double trackwidth = 36.6;
+    public double centerPodOffset = 15.5;
     public double wheelRadius = 1.75;
     public double podTicks = 8192;
 
     public double cm_per_tick = 2.0 * Math.PI * wheelRadius / podTicks;
 
-    public int currentRightPod = -15779;
-    public int currentLeftPod = 14810;
-    public int currentCenterPod = -20265;
+    public int currentRightPod = -20654;
+    public int currentLeftPod = 21654;
+    public int currentCenterPod = -19992;
 
     public int oldRightPod = 0;
     public int oldLeftPod = 0;

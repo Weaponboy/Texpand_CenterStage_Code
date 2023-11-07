@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.horizontal;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.pivot;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.vertical;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.drive;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -15,6 +16,8 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.P
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathGeneration.pathBuilder;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathingPower.PathingPower;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.whatPath;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry;
 
 @TeleOp
 public class TestingNewGen extends LinearOpMode {
@@ -23,6 +26,10 @@ public class TestingNewGen extends LinearOpMode {
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
     pathBuilder pathBuilder = new pathBuilder();
+
+    Odometry odometry = new Odometry(0,0,0);
+
+    Drivetrain drive = new Drivetrain();
 
     Vector2D robotPos = new Vector2D();
 
@@ -36,6 +43,10 @@ public class TestingNewGen extends LinearOpMode {
 
         //build path
         pathBuilder.buildPath(whatPath.testCurve);
+
+        odometry.init(hardwareMap);
+
+        drive.init(hardwareMap);
 
         //pass it to the follower
         follower = new mecanumFollower(pathBuilder.followablePath, pathBuilder.pathingVelocity);
@@ -53,7 +64,11 @@ public class TestingNewGen extends LinearOpMode {
 
         while (opModeIsActive()){
 
-            robotPos.set(13, 50);
+            odometry.update();
+
+            Heading = odometry.heading;
+
+            robotPos.set(odometry.X, odometry.Y);
 
             //use follower methods to get motor power
             PathingPower correctivePower;
@@ -83,6 +98,11 @@ public class TestingNewGen extends LinearOpMode {
             double left_Back = (vertical - horizontal + pivot) / denominator;
             double right_Front = (vertical - horizontal - pivot) / denominator;
             double right_Back = (vertical + horizontal - pivot) / denominator;
+
+            drive.RF.setPower(right_Front);
+            drive.RB.setPower(right_Back);
+            drive.LF.setPower(left_Front);
+            drive.LB.setPower(left_Back);
 
             telemetry.addData("RF", right_Front);
             telemetry.addData("LF", left_Front);

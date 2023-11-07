@@ -96,7 +96,7 @@ public class Sprint2_Auto extends LinearOpMode {
 
         frontCam = hardwareMap.get(WebcamName.class, "frontCam");
 
-        propDetecterRed = new PropDetecterByHeight();
+        propDetecterRed = new PropDetecterByHeight(PropDetecterByHeight.color.red);
 
         portal = VisionPortal.easyCreateWithDefaults(frontCam, propDetecterRed);
     }
