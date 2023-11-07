@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.Auto;
 
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.driveD;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.pivot_d;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.pivot_i;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.pivot_p;
@@ -13,6 +14,7 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionPortalProcessers.PropDetecterByHeight;
@@ -33,6 +35,10 @@ public class Sprint2_Auto extends LinearOpMode {
     public WebcamName frontCam;
 
     public VisionPortal portal;
+
+    Servo RightClaw;
+
+    Servo LeftClaw;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -101,16 +107,60 @@ public class Sprint2_Auto extends LinearOpMode {
         portal = VisionPortal.easyCreateWithDefaults(frontCam, propDetecterRed);
     }
 
-    public void dropPurplePixel(){
-
-    }
-
-    public void dropYellowPixel(){
+    public void dropYellowPixel() {
         deliverySlides.DeliverySlides(150, 1);
-        //code for depositer
+        while (deliverySlides.Left_Slide.getCurrentPosition() < 150) {
+
+        }
+        Pivot_Target = 100;
+
+        while (delivery.Pivot.getCurrentPosition() < Pivot_Target) {
+            Top_Pivot_Position_With_Feedforward();
+        }
+
+        RightClaw.setPosition(0);
+        sleep(200);
+
+        Pivot_Target = 0;
+
+        while (delivery.Pivot.getCurrentPosition() > Pivot_Target) {
+            Top_Pivot_Position_With_Feedforward();
+
+        }
+
+        deliverySlides.DeliverySlides(0, -1);
+
+
     }
 
-    public void Top_Pivot_Position_With_Feedforward(){
+    public void dropPurplePixel() {
+        deliverySlides.DeliverySlides(150, 1);
+
+        while (deliverySlides.Left_Slide.getCurrentPosition() < 150) {
+
+        }
+
+        Pivot_Target = 400;
+
+        while (delivery.Pivot.getCurrentPosition() < Pivot_Target) {
+            Top_Pivot_Position_With_Feedforward();
+        }
+
+        LeftClaw.setPosition(1);
+        sleep(200);
+
+        Pivot_Target = 0;
+
+        while (delivery.Pivot.getCurrentPosition() > Pivot_Target) {
+          Top_Pivot_Position_With_Feedforward();
+        }
+
+        deliverySlides.DeliverySlides(0, -1);
+
+
+    }
+
+    public void Top_Pivot_Position_With_Feedforward() {
 
         delivery.pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0);
 

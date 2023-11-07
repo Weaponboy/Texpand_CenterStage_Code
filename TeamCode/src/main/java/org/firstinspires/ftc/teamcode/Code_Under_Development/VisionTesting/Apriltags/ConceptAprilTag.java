@@ -76,6 +76,8 @@ public class ConceptAprilTag extends LinearOpMode {
 
     CameraName cameraName;
 
+    AprilTagDetection rightTag;
+
     /**
      * The variable to store our instance of the vision portal.
      */
@@ -96,12 +98,22 @@ public class ConceptAprilTag extends LinearOpMode {
                 // Push telemetry to the Driver Station.
                 telemetry.update();
 
-                // Save CPU resources; can resume streaming when needed.
-                if (gamepad1.dpad_down) {
-                    visionPortal.stopStreaming();
-                } else if (gamepad1.dpad_up) {
-                    visionPortal.resumeStreaming();
+
+                if(gamepad1.a && rightTag == null){
+                    odometry.update();
+                    if(rightTag.id == 7) {
+                        odometry.resetX(rightTag.ftcPose.y + 0, rightTag.ftcPose.x + 89);
+
+                    }else if (rightTag.id == 10){
+                        odometry.resetX(rightTag.ftcPose.y + 0, rightTag.ftcPose.x + 89);
+                    }
+
+
+
                 }
+
+
+
 
                 // Share the CPU.
                 sleep(20);
@@ -124,10 +136,10 @@ public class ConceptAprilTag extends LinearOpMode {
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
 
-//            if (detection.){
-//                // distance to apriltag from wall - odometry.Y = detection.ftcPose.x;
-//
-//            }
+            if (detection.id == 7 || detection.id == 8){
+                // distance to apriltag from wall - odometry.Y = detection.ftcPose.x;
+                rightTag = detection;
+            }
 
             if (detection.metadata != null) {
                 telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));

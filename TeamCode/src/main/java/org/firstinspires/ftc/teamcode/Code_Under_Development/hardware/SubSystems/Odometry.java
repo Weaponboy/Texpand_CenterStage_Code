@@ -11,6 +11,7 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeF;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeP;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.drive;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.odometry;
 
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -289,4 +290,11 @@ public class Odometry {
         return cmVelo;
     }
 
+    public void resetX(double newX, double newY){
+        leftPod.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightPod.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        centerPod.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        X = newX;
+        Y = newY;
+    }
 }
