@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.Teleop.Sprint_Teleops;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.currentGamepad1;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.previousGamepad1;
 
@@ -21,7 +21,8 @@ public class scrimmageBot extends OpMode {
 
     DcMotor Pivot2;
 
-    Servo Pivot;
+    Servo PivotRight;
+    Servo PivotLeft;
 
     public Gamepad currentGamepad1;
 
@@ -40,19 +41,21 @@ public class scrimmageBot extends OpMode {
 
     @Override
     public void init() {
-    RF = hardwareMap.get(DcMotor.class,"RF");
-    LF = hardwareMap.get(DcMotor.class,"LF");
-    Pivot2 = hardwareMap.get(DcMotor.class,"Pivot2");
-    Pivot = hardwareMap.get(Servo.class,"Pivot");
 
-    RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    Pivot2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    Pivot2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RF = hardwareMap.get(DcMotor.class,"RF");
+        LF = hardwareMap.get(DcMotor.class,"LF");
+        Pivot2 = hardwareMap.get(DcMotor.class,"Pivot2");
+        PivotLeft = hardwareMap.get(Servo.class,"gripper1");
+        PivotRight = hardwareMap.get(Servo.class,"gripper2");
 
-    currentGamepad1 = new Gamepad();
-    previousGamepad1 = new Gamepad();
-    right_Pixel = hardwareMap.get(ColorSensor.class, "right_Pixel");
+        RF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LF.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Pivot2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Pivot2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        currentGamepad1 = new Gamepad();
+        previousGamepad1 = new Gamepad();
+        right_Pixel = hardwareMap.get(ColorSensor.class, "right_Pixel");
 
     }
 
@@ -68,11 +71,28 @@ public class scrimmageBot extends OpMode {
 
         double denominator = Math.max(Math.abs(vertical) + Math.abs(pivot), 1);
 
-        if (currentGamepad1.a && !previousGamepad1.a && Pivot.getPosition() < 1) {
-            Pivot.setPosition(1);
-        } else if (currentGamepad1.a && !previousGamepad1.a && Pivot.getPosition() > 0.9) {
-            Pivot.setPosition(0);
+        if (currentGamepad1.a && !previousGamepad1.a && PivotRight.getPosition() < 1) {
+            PivotRight.setPosition(0.5);
+        } else if (currentGamepad1.a && !previousGamepad1.a && PivotRight.getPosition() > 0.9) {
+            PivotRight.setPosition(1);
         }
+
+        if (currentGamepad1.dpad_up && !previousGamepad1.a && PivotLeft.getPosition() > 0.4) {
+            PivotLeft.setPosition(0.5);
+        } else if (currentGamepad1.dpad_up && !previousGamepad1.a && PivotLeft.getPosition() < 0.1) {
+            PivotLeft.setPosition(0);
+        }
+
+        if (gamepad1.start){
+            PivotRight.setPosition(0.5);
+            PivotLeft.setPosition(0.5);
+        }
+
+        if (gamepad1.back){
+            PivotRight.setPosition(1);
+            PivotLeft.setPosition(0);
+        }
+
 
         if (gamepad1.left_bumper){
             pivot = pivot * 0.3;
@@ -118,19 +138,6 @@ public class scrimmageBot extends OpMode {
                 Pivot2.setPower(1);
             }
         }
-        int argb_val = right_Pixel.argb();
-
-        Color.colorToHSV(argb_val, hsvval);
-
-        float hue = hsvval[0];
-        float saturation = hsvval[1];
-        float value = hsvval[2];
-
-        if (hue >= MIN_HUE && hue <= MAX_HUE && saturation >= MIN_SATURATION && saturation <= MAX_SATURATION && value >= MIN_VALUE && value <= MAX_VALUE) {
-            isTargetColorDetected = true;
-        }
-        telemetry.addData("colorDetected", isTargetColorDetected);
-        telemetry.addData("hsv", hsvval);
 
     }
 }

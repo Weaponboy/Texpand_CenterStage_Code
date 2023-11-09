@@ -208,7 +208,11 @@ public class FollowPath {
 
         index += (int)lookaheadDistance;
 
-        position = followablePath.get(index);
+        if (index < followablePath.size()-1){
+            position = followablePath.get(index);
+        }else {
+            position = followablePath.get(followablePath.size()-1);
+        }
 
         error.set(position.getX() - robotPos.getX(), position.getY() - robotPos.getY());
 
@@ -221,13 +225,21 @@ public class FollowPath {
 
         index += 1;
 
-        targetVelocity.set(pathingVelocity.get(index).getXVelocity(), pathingVelocity.get(index).getYVelocity());
+        if (index > pathingVelocity.size()-1){
+            targetVelocity.set(0, 0);
+        }else {
+            targetVelocity.set(pathingVelocity.get(index).getXVelocity(), pathingVelocity.get(index).getYVelocity());
+        }
 
         return targetVelocity;
     }
 
     public Vector2D getPointOnFollowable(int index){
         return followablePath.get(index);
+    }
+
+    public int getLastPoint(){
+        return followablePath.size()-1;
     }
 
 

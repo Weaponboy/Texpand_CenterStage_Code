@@ -29,7 +29,6 @@ import java.util.List;
 
 public class pixelDetection implements VisionProcessor {
 
-    private final pixelDetection.pixelColor pixelColor;
     public Rect rect = new Rect(20, 20, 50, 50);
 
     public Mat greenPixel = new Mat();
@@ -57,9 +56,6 @@ public class pixelDetection implements VisionProcessor {
         all
     }
 
-    public pixelDetection(pixelColor propColor){
-        this.pixelColor = propColor;
-    }
     private ArrayList<MatOfPoint> contours = new ArrayList<>();
     private ArrayList<MatOfPoint> yellowcontours = new ArrayList<>();
     private ArrayList<MatOfPoint> whitecontours = new ArrayList<>();
@@ -134,39 +130,86 @@ public class pixelDetection implements VisionProcessor {
             Rect rect = boundingRect(whitecontours.get(i));
             whiterects.add(rect);
         }
+
         for (int i = 0; i < yellowcontours.size(); i++){
             Rect rect = boundingRect(yellowcontours.get(i));
             yellowrects.add(rect);
         }
+
         for (int i = 0; i < purplecontours.size(); i++){
             Rect rect = boundingRect(purplecontours.get(i));
             purplerects.add(rect);
         }
+
         for (int i = 0; i < greencontours.size(); i++){
             Rect rect = boundingRect(greencontours.get(i));
             greenrects.add(rect);
         }
 
-        GreenPixelsRawHeight = VisionUtils.sortRectsByMaxOption(greenrects.size(), VisionUtils.RECT_OPTION.HEIGHT, greenrects);
-        GreenPixelsRawWidth = VisionUtils.sortRectsByMaxOption(greenrects.size(), VisionUtils.RECT_OPTION.WIDTH, greenrects);
+        if (greenrects.size() > 0) {
 
-        for (int i = 0; i < GreenPixelsRawHeight.size(); i++){
-            if (Math.abs((GreenPixelsRawHeight.get(i).height)*(GreenPixelsRawWidth.get(i).width)) > 0.75 && Math.abs((GreenPixelsRawHeight.get(i).height)*(GreenPixelsRawWidth.get(i).width)) < 0.85) {
-                Rect rect = GreenPixelsRawHeight.get(i);
-                GreenPixels.add(rect);
+            GreenPixelsRawHeight = VisionUtils.sortRectsByMaxOption(greenrects.size(), VisionUtils.RECT_OPTION.HEIGHT, greenrects);
+            GreenPixelsRawWidth = VisionUtils.sortRectsByMaxOption(greenrects.size(), VisionUtils.RECT_OPTION.WIDTH, greenrects);
+
+            for (int i = 0; i < GreenPixelsRawHeight.size(); i++) {
+                if (Math.abs((GreenPixelsRawHeight.get(i).height) * (GreenPixelsRawWidth.get(i).width)) > 0.75 && Math.abs((GreenPixelsRawHeight.get(i).height) * (GreenPixelsRawWidth.get(i).width)) < 0.85) {
+                    Rect rect = GreenPixelsRawHeight.get(i);
+                    GreenPixels.set(0,rect);
+                } else {
+                    Rect rect = new Rect(0, 0, 0, 0);
+                    GreenPixels.add(rect);
+                }
             }
         }
-
-        YellowPixelsRawHeight = VisionUtils.sortRectsByMaxOption(yellowrects.size(), VisionUtils.RECT_OPTION.HEIGHT, yellowrects);
-        YellowPixelsRawWidth = VisionUtils.sortRectsByMaxOption(yellowrects.size(), VisionUtils.RECT_OPTION.WIDTH, yellowrects);
-
-
-        for (int i = 0; i < GreenPixelsRawHeight.size(); i++){
-            if (Math.abs((GreenPixelsRawHeight.get(i).height)*(GreenPixelsRawWidth.get(i).width)) > 0.75 && Math.abs((GreenPixelsRawHeight.get(i).height)*(GreenPixelsRawWidth.get(i).width)) < 0.85) {
-                Rect rect = GreenPixelsRawHeight.get(i);
-                GreenPixels.add(rect);
-            }
-        }
+//
+//        if (yellowrects.size() > 0) {
+//            YellowPixelsRawHeight = VisionUtils.sortRectsByMaxOption(yellowrects.size(), VisionUtils.RECT_OPTION.HEIGHT, yellowrects);
+//            YellowPixelsRawWidth = VisionUtils.sortRectsByMaxOption(yellowrects.size(), VisionUtils.RECT_OPTION.WIDTH, yellowrects);
+//
+//            for (int i = 0; i < YellowPixelsRawHeight.size(); i++) {
+//                if (Math.abs((YellowPixelsRawHeight.get(i).height) * (YellowPixelsRawWidth.get(i).width)) > 0.75 && Math.abs((YellowPixelsRawHeight.get(i).height) * (YellowPixelsRawWidth.get(i).width)) < 0.85) {
+//                    YellowPixels.clear();
+//                    Rect rect = YellowPixelsRawHeight.get(i);
+//                    YellowPixels.add(rect);
+//                } else {
+//                    Rect rect = new Rect(0, 0, 0, 0);
+//                    YellowPixels.add(rect);
+//                }
+//            }
+//        }
+//
+//        if (whiterects.size() > 0) {
+//            WhitePixelsRawHeight = VisionUtils.sortRectsByMaxOption(whiterects.size(), VisionUtils.RECT_OPTION.HEIGHT, whiterects);
+//            WhitePixelsRawWidth = VisionUtils.sortRectsByMaxOption(whiterects.size(), VisionUtils.RECT_OPTION.WIDTH, whiterects);
+//
+//            for (int i = 0; i < WhitePixelsRawHeight.size(); i++) {
+//                if (Math.abs((WhitePixelsRawHeight.get(i).height) * (WhitePixelsRawWidth.get(i).width)) > 0.75 && Math.abs((WhitePixelsRawHeight.get(i).height) * (WhitePixelsRawWidth.get(i).width)) < 0.85) {
+//                    WhitePixels.clear();
+//                    Rect rect = WhitePixelsRawHeight.get(i);
+//                    WhitePixels.add(rect);
+//                } else {
+//                    Rect rect = new Rect(0, 0, 0, 0);
+//                    WhitePixels.add(rect);
+//                }
+//            }
+//        }
+//
+//        if (purplerects.size() > 0) {
+//
+//            PurplePixelsRawHeight = VisionUtils.sortRectsByMaxOption(purplerects.size(), VisionUtils.RECT_OPTION.HEIGHT, purplerects);
+//            PurplePixelsRawWidth = VisionUtils.sortRectsByMaxOption(purplerects.size(), VisionUtils.RECT_OPTION.WIDTH, purplerects);
+//
+//            for (int i = 0; i < PurplePixelsRawHeight.size(); i++) {
+//                if (Math.abs((PurplePixelsRawHeight.get(i).height) * (PurplePixelsRawWidth.get(i).width)) > 0.75 && Math.abs((PurplePixelsRawHeight.get(i).height) * (PurplePixelsRawWidth.get(i).width)) < 0.85) {
+//                    PurplePixels.clear();
+//                    Rect rect = PurplePixelsRawHeight.get(i);
+//                    PurplePixels.add(rect);
+//                } else {
+//                    Rect rect = new Rect(0, 0, 0, 0);
+//                    PurplePixels.add(rect);
+//                }
+//            }
+//        }
 
         whitecontours.clear();
         yellowcontours.clear();
@@ -193,14 +236,37 @@ public class pixelDetection implements VisionProcessor {
     }
 
     @Override
-    public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight,float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext)
-    {
-        Paint rectPaint = new Paint();
-        rectPaint.setColor(Color.RED);
-        rectPaint.setStyle(Paint.Style.STROKE);
-        rectPaint.setStrokeWidth(scaleCanvasDensity * 4);
+    public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight,float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
+        Paint purple = new Paint();
+        purple.setColor(Color.MAGENTA);
+        purple.setStyle(Paint.Style.STROKE);
+        purple.setStrokeWidth(scaleCanvasDensity * 4);
 
-        canvas.drawRect(makeGraphicsRect(rect, scaleBmpPxToCanvasPx), rectPaint);
+        Paint green = new Paint();
+        green.setColor(Color.GREEN);
+        green.setStyle(Paint.Style.STROKE);
+        green.setStrokeWidth(scaleCanvasDensity * 4);
+
+        Paint yellow = new Paint();
+        yellow.setColor(Color.YELLOW);
+        yellow.setStyle(Paint.Style.STROKE);
+        yellow.setStrokeWidth(scaleCanvasDensity * 4);
+
+        Paint white = new Paint();
+        white.setColor(Color.WHITE);
+        white.setStyle(Paint.Style.STROKE);
+        white.setStrokeWidth(scaleCanvasDensity * 4);
+
+        if (PurplePixels.size() > 0){
+            canvas.drawRect(makeGraphicsRect(PurplePixels.get(0), scaleBmpPxToCanvasPx), purple);
+        }else if(GreenPixels.size() > 0){
+            canvas.drawRect(makeGraphicsRect(GreenPixels.get(0), scaleBmpPxToCanvasPx), green);
+        }else if(WhitePixels.size() > 0){
+            canvas.drawRect(makeGraphicsRect(WhitePixels.get(0), scaleBmpPxToCanvasPx), white);
+        }else if(YellowPixels.size() > 0){
+            canvas.drawRect(makeGraphicsRect(YellowPixels.get(0), scaleBmpPxToCanvasPx), yellow);
+        }
+
     }
 }
 

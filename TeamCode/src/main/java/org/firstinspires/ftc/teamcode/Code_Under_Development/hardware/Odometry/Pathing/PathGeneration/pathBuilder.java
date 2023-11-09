@@ -33,13 +33,16 @@ public class pathBuilder {
 
         switch (path) {
             case blueRight:
-                blueRight();
+                blueRightLongCurve();
                 break;
             case redRight:
                 System.out.println("not ready yet");
                 break;
             case testCurve:
-                testCurve();
+                dropPurple();
+                break;
+            case testCurveReverse:
+                testCurveReverse();
                 break;
             default:
                 break;
@@ -67,8 +70,11 @@ public class pathBuilder {
         return points;
     }
 
-    private void blueRight(){
+    private void dropPurple(){
         buildLineSegment(controlPoints.sPFirstSeg, controlPoints.ePFirstSeg);
+    }
+
+    private void blueRightLongCurve(){
         buildCurveSegment(controlPoints.sPSecondSeg, controlPoints.cPSecondSeg, controlPoints.ePSecondSeg);
         buildCurveSegment(controlPoints.sPThirdSeg, controlPoints.cPThirdSeg, ePThirdSeg);
     }
@@ -76,6 +82,11 @@ public class pathBuilder {
     private void testCurve(){
         buildCurveSegment(controlPoints.sPTest, controlPoints.cPTest, controlPoints.ePTest);
     }
+
+    private void testCurveReverse(){
+        buildLineSegment(controlPoints.sTest, controlPoints.eTest);
+    }
+
 
     private Vector2D pathBuilder(ArrayList<Vector2D> originalPath){
 
@@ -171,7 +182,6 @@ public class pathBuilder {
         double decIndex = deceleration_dt/2.5;
 
         double velocitySlope = new_max_velocity/getMaxVelocity();
-
 
         for (int i = 0; i < followablePath.size() - 1; i++) {
 

@@ -8,17 +8,18 @@ import java.util.IllegalFormatCodePointException;
 
 public class ObstacleMap {
 
-    public static ArrayList<Position> positionList = new ArrayList<>();
+    public static ArrayList<Vector2D> positionList = new ArrayList<>();
 
-    public static Position findClosestPosition(Position currentPos) {
-        SetMap();
-        Position closest = null;
+    //Quad quadTree = new QuadTree(new Rectangle(0, 0, 365, 365)); // Define the bounding box of your field
+
+    public static Vector2D findClosestPosition(Vector2D currentPos) {
+        Vector2D closest = null;
         double minDistance = Double.MAX_VALUE;
 
-        for (Position pos : positionList) {
+        for (Vector2D pos : positionList) {
             double distance = Math.sqrt(
-                    Math.pow(currentPos.x - pos.x, 2) +
-                            Math.pow(currentPos.y - pos.y, 2)
+                    Math.pow(currentPos.getX() - pos.getX(), 2) +
+                            Math.pow(currentPos.getY() - pos.getY(), 2)
             );
 
             if (distance < minDistance) {
@@ -58,7 +59,7 @@ public class ObstacleMap {
         double yPosition = yStart;
 
         for (int i =0; i < ((xEnd - xStart)*2); i++){
-            positionList.add(new Position(DistanceUnit.CM, xPosition, yPosition, 0.0, 0));
+            positionList.add(new Vector2D(xPosition, yPosition));
             xPosition++;
             if (xPosition == xEnd){
                 xPosition = xStart;
@@ -70,7 +71,7 @@ public class ObstacleMap {
         yPosition = yStart;
 
         for (int i =0; i < ((yEnd - yStart)*2); i++){
-            positionList.add(new Position(DistanceUnit.CM, xPosition, yPosition, 0.0, 0));
+            positionList.add(new Vector2D(xPosition, yPosition));
             yPosition++;
             if (yPosition == yEnd){
                 yPosition = yStart;

@@ -35,7 +35,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -100,21 +99,27 @@ public class ConceptAprilTag extends LinearOpMode {
 
 
                 if(gamepad1.a && rightTag == null){
+
                     odometry.update();
-                    if(rightTag.id == 7) {
-                        odometry.resetX(rightTag.ftcPose.y + 0, rightTag.ftcPose.x + 89);
 
-                    }else if (rightTag.id == 10){
-                        odometry.resetX(rightTag.ftcPose.y + 0, rightTag.ftcPose.x + 89);
-                    }
-
-
-
+//                    if(rightTag.id == 8) {
+//
+//                        double cameraReading;
+//
+//                        //red side
+//                        if(rightTag.ftcPose.x > 0){
+//                            cameraReading = rightTag.ftcPose.x - rightTag.ftcPose.x*2;
+//                        }else{
+//                            cameraReading = Math.abs(rightTag.ftcPose.x);
+//                        }
+//
+//                        odometry.reset(rightTag.ftcPose.y + 0, cameraReading);
+//
+//                    }else if (rightTag.id == 9){
+//                        //blue side
+//                        odometry.reset(rightTag.ftcPose.y + 0, rightTag.ftcPose.x + 89);
+//                    }
                 }
-
-
-
-
                 // Share the CPU.
                 sleep(20);
             }
@@ -136,7 +141,7 @@ public class ConceptAprilTag extends LinearOpMode {
         // Step through the list of detections and display info for each one.
         for (AprilTagDetection detection : currentDetections) {
 
-            if (detection.id == 7 || detection.id == 8){
+            if (detection.id == 8 || detection.id == 9){
                 // distance to apriltag from wall - odometry.Y = detection.ftcPose.x;
                 rightTag = detection;
             }

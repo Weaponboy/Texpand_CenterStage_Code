@@ -6,7 +6,9 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.drive;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.UsefulMethods.checkXObstacles;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.UsefulMethods.checkYObstacles;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.ObstacleMap.SetMap;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.ConvertedHeading;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.ConvertedHeadingForPosition;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -14,14 +16,19 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.ObstacleMap;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.Vector2D;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry;
 
 @Config
 @TeleOp
@@ -31,20 +38,29 @@ public class testObstacleAvoidance extends OpMode {
 
     Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
+    ElapsedTime elapsedTime = new ElapsedTime();
+
+    Odometry odometry = new Odometry(213, 342, 90);
+
     Vector2D robotPos = new Vector2D();
+
+    int counter;
 
     public static double X = 130;
     public static double Y = 221;
+
+    double lastLoopTime;
+
+    double loopTime;
+
 
     @Override
     public void init() {
         drive = new Drivetrain();
 
-        robotPos.set(X,Y);
+        odometry.init(hardwareMap);
 
-        vertical = 1;
-
-        horizontal = 1;
+        SetMap();
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     }
@@ -52,22 +68,48 @@ public class testObstacleAvoidance extends OpMode {
     @Override
     public void loop() {
 
-        vertical = -gamepad1.right_stick_y;
-        horizontal = -gamepad1.right_stick_x * 1.2;
+//        counter++;
+
+        if (counter > 50){
+            counter = 0;
+            loopTime = elapsedTime.milliseconds() - lastLoopTime;
+        }
+
+//        if (counter == 0){
+//            odometry.Odo_Drive(10, 10, 0);
+//        }
+
+        lastLoopTime = elapsedTime.milliseconds();
+
+        odometry.update();
+
+        robotPos.set(odometry.X, odometry.Y);
+
+        vertical = -gamepad1.right_stick_x;
+        horizontal = -gamepad1.right_stick_y;
         pivot = gamepad1.left_stick_x;
 
-        vertical = horizontal * Math.sin(Math.toRadians(ConvertedHeading)) + vertical * Math.cos(Math.toRadians(ConvertedHeading));
-        horizontal = horizontal * Math.cos(Math.toRadians(ConvertedHeading)) - vertical * Math.sin(Math.toRadians(ConvertedHeading));
+        double xPower = horizontal * Math.sin(Math.toRadians(ConvertedHeadingForPosition)) + vertical * Math.cos(Math.toRadians(ConvertedHeadingForPosition));
+        double yPower = horizontal * Math.cos(Math.toRadians(ConvertedHeadingForPosition)) - vertical * Math.sin(Math.toRadians(ConvertedHeadingForPosition));
 
-        vertical = checkXObstacles(robotPos, vertical);
-        horizontal = checkYObstacles(robotPos, horizontal);
+        xPower = checkXObstacles(robotPos, xPower);
+        yPower = checkYObstacles(robotPos, yPower);
 
-        double denominator = Math.max(Math.abs(horizontal) + Math.abs(vertical) + Math.abs(pivot), 1);
+        double denominator = Math.max(Math.abs(yPower) + Math.abs(xPower) + Math.abs(pivot), 1);
 
-        drive.RF.setPower((-pivot + (vertical - horizontal)) / denominator);
-        drive.RB.setPower((-pivot + (vertical + horizontal)) / denominator);
-        drive.LF.setPower((pivot + (vertical + horizontal)) / denominator);
-        drive.LB.setPower((pivot + (vertical - horizontal)) / denominator);
+        drive.RF.setPower((-pivot + (xPower - yPower)) / denominator);
+        drive.RB.setPower((-pivot + (xPower + yPower)) / denominator);
+        drive.LF.setPower((pivot + (xPower + yPower)) / denominator);
+        drive.LB.setPower((pivot + (xPower - yPower)) / denominator);
+
+        telemetry.addData("loop time", loopTime);
+        telemetry.addData("x", odometry.X);
+        telemetry.addData("y", odometry.Y);
+        telemetry.addData("center", odometry.currentCenterPod);
+        telemetry.addData("right", odometry.currentRightPod);
+        telemetry.addData("left", odometry.currentLeftPod);
+        telemetry.addData("heading", ConvertedHeadingForPosition);
+        telemetry.update();
 
     }
 

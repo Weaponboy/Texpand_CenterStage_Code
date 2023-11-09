@@ -11,7 +11,6 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_an
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeF;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.strafeP;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.drive;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.odometry;
 
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -24,7 +23,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.Vector2D;
 
 public class Odometry {
 
@@ -39,8 +38,8 @@ public class Odometry {
 
     HardwareMap hardwareMap;
 
-    public double trackwidth = 26.1;
-    public double centerPodOffset = 18;
+    public double trackwidth = 36;
+    public double centerPodOffset = 17;
     public double wheelRadius = 1.75;
     public double podTicks = 8192;
 
@@ -89,7 +88,7 @@ public class Odometry {
         this.startHeading = 0;
     }
 
-    public double X, Y, heading = startHeading;
+    public double X, Y, heading;
 
     public double dtheta;
 
@@ -116,6 +115,8 @@ public class Odometry {
         } else {
             ConvertedHeadingForPosition = (0 + botHeading);
         }
+
+        heading = ConvertedHeadingForPosition;
 
         oldCenterPod = currentCenterPod;
         oldLeftPod = currentLeftPod;
@@ -270,31 +271,33 @@ public class Odometry {
 
     public double getCorrectStartHeading(double globalStartHeading){
 
-        if (globalStartHeading == 270){
+        int StartHeading = (int) Math.round(globalStartHeading);
+
+        if (StartHeading == 270){
             correctedStart = -90;
-        } else if (globalStartHeading == 90) {
+        } else if (StartHeading == 90) {
             correctedStart = 90;
         }
         return correctedStart;
     }
 
-    public double getMaxVerticalVelocity(){
+    public double getVerticalVelocity(){
         double tickVelo = leftPod.getVelocity() + rightPod.getVelocity()/2;
         double cmVelo = tickVelo*cm_per_tick;
         return cmVelo;
     }
 
-    public double getMaxHorizontalVelocity(){
+    public double getHorizontalVelocity(){
         double tickVelo = centerPod.getVelocity();
         double cmVelo = tickVelo*cm_per_tick;
         return cmVelo;
     }
 
-    public void resetX(double newX, double newY){
+    public void reset(Vector2D newPos){
         leftPod.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightPod.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         centerPod.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        X = newX;
-        Y = newY;
+        X = newPos.getX();
+        Y = newPos.getY();
     }
 }

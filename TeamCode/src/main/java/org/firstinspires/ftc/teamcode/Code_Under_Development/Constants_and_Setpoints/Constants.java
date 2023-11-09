@@ -10,15 +10,15 @@ public class Constants {
 
     /**Drive PID's*/
 
-    public static double driveP = 0.1;
+    public static double driveP = 0.07;
     public static double driveD = 0.01;
     public static double driveF = 0;
 
-    public static double strafeP = 0.1;
+    public static double strafeP = 0.07;
     public static double strafeD = 0.005;
     public static double strafeF = 0;
 
-    public static double rotationP = 0.05;
+    public static double rotationP = 0.02;
     public static double rotationD = 0.001;
     public static double rotationF = 0;
 
@@ -27,6 +27,8 @@ public class Constants {
 
     /**Odometry constants*/
     public static double botHeading;
+
+    public static double realHeading;
 
     public static boolean collection_on = false;
 
@@ -44,16 +46,16 @@ public class Constants {
     public static final double ystopDistanceAtMaxVelocity = 5;
 
     //in cm's per sec, need to get the real value of these
-    public static double maxXVelocity = 310;
-    public static double maxYVelocity = maxXVelocity*0.75;
+    public static double maxXVelocity = 65;
+    public static double maxYVelocity = 43;
 
     public static final double scaleFactor = maxYVelocity/maxXVelocity;
 
     public static double velocityDecreasePerPoint = 2.5;
 
     //in cm's per sec, these need to be tuned
-    public static final double maxXAcceleration = 66.6;
-    public static final double maxYAcceleration =  maxXAcceleration*0.75;
+    public static final double maxXAcceleration = 26;
+    public static final double maxYAcceleration =  maxXAcceleration*0.66;
 
     /**teleop driver constants*/
     public static double throttle = 0.6;
@@ -66,6 +68,6 @@ public class Constants {
     public static double Horizontal;
     public static double Pivot;
 
-    public static double robotRadius = 22;
+    public static double robotRadius = 23;
 
 }

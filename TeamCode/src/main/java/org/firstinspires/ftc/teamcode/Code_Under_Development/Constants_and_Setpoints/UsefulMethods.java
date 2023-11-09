@@ -13,7 +13,6 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.O
 
 public class UsefulMethods {
 
-
     /**Need to add the code to this when we have tested Peter's code*/
     public static boolean isYellow(){
         return false;
@@ -38,15 +37,13 @@ public class UsefulMethods {
     /**Object avoidance*/
     public static double checkXObstacles(Vector2D robotPos, double verticalPower){
 
-        Position currentPos = new Position(DistanceUnit.CM, robotPos.getX(), robotPos.getY(), 0.0, 0);
+        Vector2D closestPosition = ObstacleMap.findClosestPosition(robotPos);
 
-        Position closestPosition = ObstacleMap.findClosestPosition(currentPos);
+        if (Math.abs(closestPosition.getX() - (robotPos.getX() + robotRadius)) <= 5 && closestPosition.getY() > robotPos.getY() - robotRadius && closestPosition.getY() < robotPos.getY() + robotRadius){
 
-        if (Math.abs(closestPosition.x - (robotPos.getX() + robotRadius)) <= 5 && closestPosition.y > robotPos.getY() - robotRadius && closestPosition.y < robotPos.getY() +robotRadius){
-
-            if (closestPosition.x > robotPos.getX() && verticalPower > 0){
+            if (closestPosition.getX() > robotPos.getX() && verticalPower > 0){
                 verticalPower = 0;
-            } else if (closestPosition.x < robotPos.getX() && verticalPower < 0){
+            } else if (closestPosition.getX() < robotPos.getX() && verticalPower < 0){
                 verticalPower = 0;
             }
 
@@ -57,15 +54,14 @@ public class UsefulMethods {
     }
 
     public static double checkYObstacles(Vector2D robotPos, double horizontalPower){
-        Position currentPos = new Position(DistanceUnit.CM, robotPos.getX(), robotPos.getY(), 0.0, 0);
 
-        Position closestPosition = ObstacleMap.findClosestPosition(currentPos);
+        Vector2D closestPosition = ObstacleMap.findClosestPosition(robotPos);
 
-        if (Math.abs(closestPosition.y - (robotPos.getY() + robotRadius)) <= 5 && closestPosition.x > robotPos.getX() - robotRadius && closestPosition.x < robotPos.getX() + robotRadius) {
+        if (Math.abs(closestPosition.getY() - (robotPos.getY() + robotRadius)) <= 5 && closestPosition.getX() > robotPos.getX() - robotRadius && closestPosition.getX() < robotPos.getX() + robotRadius) {
 
-            if (closestPosition.y > robotPos.getY() && horizontalPower > 0){
+            if (closestPosition.getY() > robotPos.getY() && horizontalPower > 0){
                 horizontalPower = 0;
-            } else if (closestPosition.y < robotPos.getY() && horizontalPower < 0){
+            } else if (closestPosition.getY() < robotPos.getY() && horizontalPower < 0){
                 horizontalPower = 0;
             }
         }

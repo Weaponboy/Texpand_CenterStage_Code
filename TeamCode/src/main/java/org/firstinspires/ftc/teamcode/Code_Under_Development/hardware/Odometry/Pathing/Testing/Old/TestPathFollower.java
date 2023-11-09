@@ -33,7 +33,7 @@ public class TestPathFollower extends LinearOpMode {
 
     ArrayList<PathingVelocity> velcity = new ArrayList<>();
 
-    mecanumFollower follower = new mecanumFollower(trajectory, velcity);
+    mecanumFollower follower = new mecanumFollower();
 
     ElapsedTime elapsedTime = new ElapsedTime();
     public double loopTime;
@@ -66,7 +66,7 @@ public class TestPathFollower extends LinearOpMode {
             correctivePosition = follower.getCorrectivePosition(robotPos);
 
             PathingPower pathingPower;
-            pathingPower = follower.getPathingPower(robotPos);
+            pathingPower = follower.getPathingPower(robotPos, Heading);
 
             if (Math.abs(correctivePosition.getX()) > 5 || Math.abs(correctivePosition.getY()) > 5){
                 vertical = correctivePower.getVertical();
