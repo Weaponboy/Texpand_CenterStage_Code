@@ -8,7 +8,6 @@ import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odo
 import org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Auto_Control_Points.controlPoints;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.Vector2D;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathingPower.PathingVelocity;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.whatPath;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +52,55 @@ public class pathBuilder {
         motionProfile();
     }
 
+    public void buildPath(TargetPoint targetPoint, Vector2D currentPos, Vector2D controlPoint){
+
+        switch (targetPoint) {
+            case blueBackBoard:
+                PathToBackBoard(currentPos, controlPoint, controlPoints.dropAtBlueBackboard);
+                break;
+            case redBackBoard:
+                PathToBackBoard(currentPos, controlPoint, controlPoints.dropAtRedBackboard);
+                break;
+            case blueCollection:
+                PathToCollection(currentPos, controlPoint, controlPoints.collectAtBlue);
+                break;
+            case redCollection:
+                PathToCollection(currentPos, controlPoint, controlPoints.collectAtRed);
+                break;
+            default:
+                break;
+        }
+
+        pathBuilder(originalPath);
+
+        motionProfile();
+    }
+
+    public void buildPath(TargetPoint targetPoint, Vector2D currentPos){
+
+        switch (targetPoint) {
+            case blueBackBoard:
+                PathToBackBoard(currentPos, controlPoints.dropAtBlueBackboard);
+                break;
+            case redBackBoard:
+                PathToBackBoard(currentPos, controlPoints.dropAtRedBackboard);
+                break;
+            case blueCollection:
+                PathToCollection(currentPos, controlPoints.collectAtBlue);
+                break;
+            case redCollection:
+                PathToCollection(currentPos, controlPoints.collectAtRed);
+                break;
+            default:
+                break;
+        }
+
+        pathBuilder(originalPath);
+
+        motionProfile();
+    }
+
+
     private void buildCurveSegment(Vector2D start, Vector2D control, Vector2D end){
         segmentGenerator.buildPath(start, control, end);
         originalPath.addAll(segmentGenerator.copyPath());
@@ -68,6 +116,26 @@ public class pathBuilder {
         double length = calculateTotalDistance(Path);
         points = (int) (length / 0.25);
         return points;
+    }
+
+    public void PathToBackBoard(Vector2D startPoint, Vector2D dynamicControlPoint, Vector2D TargetPoint){
+        buildCurveSegment(startPoint, dynamicControlPoint, controlPoints.intermediatePointToBackboard);
+        buildCurveSegment(controlPoints.intermediatePointToBackboard, controlPoints.intermediateControlToBackboard, TargetPoint);
+    }
+
+    public void PathToBackBoard(Vector2D startPoint, Vector2D TargetPoint){
+        buildLineSegment(startPoint, controlPoints.intermediatePointToBackboard);
+        buildCurveSegment(controlPoints.intermediatePointToBackboard, controlPoints.intermediateControlToBackboard, TargetPoint);
+    }
+
+    public void PathToCollection(Vector2D startPoint, Vector2D dynamicControlPoint, Vector2D TargetPoint){
+        buildCurveSegment(startPoint, dynamicControlPoint, controlPoints.intermediatePointToCollection);
+        buildCurveSegment(controlPoints.intermediatePointToCollection, controlPoints.intermediateControlToCollection, TargetPoint);
+    }
+
+    public void PathToCollection(Vector2D startPoint, Vector2D TargetPoint){
+        buildLineSegment(startPoint, controlPoints.intermediatePointToCollection);
+        buildCurveSegment(controlPoints.intermediatePointToCollection, controlPoints.intermediateControlToCollection, TargetPoint);
     }
 
     private void dropPurple(){
@@ -86,7 +154,6 @@ public class pathBuilder {
     private void testCurveReverse(){
         buildLineSegment(controlPoints.sTest, controlPoints.eTest);
     }
-
 
     private Vector2D pathBuilder(ArrayList<Vector2D> originalPath){
 
@@ -229,30 +296,6 @@ public class pathBuilder {
 
         return new_max_velocity;
 
-    }
-
-    private void firstDerivative(){
-
-        PathingVelocity pathVelo;
-
-        double deltaTime;
-
-        for (int i = 0; i < followablePath.size() - 1; i++) {
-            Vector2D currentPoint = followablePath.get(i);
-            Vector2D nextPoint = followablePath.get(i + 1);
-
-            double deltaX = nextPoint.getX() - currentPoint.getX();
-            double deltaY = nextPoint.getY() - currentPoint.getY();
-
-            deltaTime = Math.hypot(deltaY, deltaX) / getMaxVelocity();
-
-            double velocityXValue = deltaX / deltaTime;
-            double velocityYValue = deltaY / deltaTime;
-
-            pathVelo = new PathingVelocity(velocityXValue, velocityYValue);
-
-            pathingVelocity.add(pathVelo);
-        }
     }
 
     private Vector2D findPoint(){

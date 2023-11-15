@@ -1,12 +1,5 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.Testing;
 
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.horizontal;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.pivot;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.realHeading;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.vertical;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.ConvertedHeading;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry.ConvertedHeadingForPosition;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -18,8 +11,7 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.O
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.robotPos;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.Follower.mecanumFollower;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathGeneration.pathBuilder;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathingPower.PathingPower;
-import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.whatPath;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathGeneration.whatPath;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry;
 
@@ -38,7 +30,7 @@ public class TestingNewGen extends LinearOpMode {
 
     Drivetrain drive = new Drivetrain();
 
-    Vector2D robotpos = new Vector2D();
+    Vector2D robotposition = new Vector2D();
 
     ElapsedTime elapsedTime = new ElapsedTime();
 
@@ -69,19 +61,13 @@ public class TestingNewGen extends LinearOpMode {
 
         follower.setPath(pathFirst.followablePath, pathFirst.pathingVelocity);
 
-        while (opModeInInit()){
-            odometry.update();
-            realHeading = ConvertedHeadingForPosition;
-            telemetry.addData("heading", ConvertedHeadingForPosition);
-            telemetry.update();
-        }
+        odometry.update();
 
         waitForStart();
 
-        botFullPos.set(odometry.X, odometry.Y, ConvertedHeadingForPosition);
+        follower.followPath(true, 180, false, odometry, drive);
 
-        //follow first path
-        odometry.reset( follower.followPath(botFullPos, hardwareMap, true, 180));
+        odometry.update();
 
         pathSecond.buildPath(whatPath.blueRight);
 
@@ -89,9 +75,16 @@ public class TestingNewGen extends LinearOpMode {
 
         odometry.update();
 
-        botFullPos.set(odometry.X, odometry.Y, odometry.heading);
+        follower.followPath(true, 180, false, odometry, drive);
 
-        follower.followPath(botFullPos, hardwareMap, true, 180);
+        while (opModeIsActive()){
+
+            dashboardTelemetry.addData("x opmode", odometry.X);
+            dashboardTelemetry.addData("y opmode", odometry.Y);
+            dashboardTelemetry.addData("heading opmode", odometry.heading);
+            dashboardTelemetry.update();
+
+        }
 
 //        while (opModeIsActive()) {
 //

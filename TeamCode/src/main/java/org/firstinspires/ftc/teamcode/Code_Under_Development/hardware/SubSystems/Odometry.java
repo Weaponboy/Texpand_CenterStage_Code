@@ -80,6 +80,7 @@ public class Odometry {
         this.X = startX;
         this.Y = startY;
         this.startHeading = startHeading;
+        this.heading = startHeading;
     }
 
     public Odometry(){
@@ -144,6 +145,40 @@ public class Odometry {
         if(factor > 1) {
             heading = heading - 360*(int)factor;
         }
+
+    }
+
+    public void update(double delta){
+
+        heading = 0;
+
+        heading += getCorrectStartHeading(startHeading);
+
+        if (heading <= 0) {
+            ConvertedHeadingForPosition = (360 + heading);
+        } else {
+            ConvertedHeadingForPosition = (0 + heading);
+        }
+
+        heading = ConvertedHeadingForPosition;
+
+        oldCenterPod = currentCenterPod;
+        oldLeftPod = currentLeftPod;
+        oldRightPod = currentRightPod;
+
+        currentCenterPod -= delta;
+        currentLeftPod -= delta;
+        currentRightPod += delta;
+
+        int dn1 = currentLeftPod - oldLeftPod;
+        int dn2 = currentRightPod - oldRightPod;
+        int dn3 = currentCenterPod - oldCenterPod;
+
+        dx = cm_per_tick * (dn1+dn2)/2.0;
+        dy = cm_per_tick * (dn3 - (dn2-dn1) * centerPodOffset / trackwidth);
+
+        X += dx * Math.cos(Math.toRadians(heading)) - dy * Math.sin(Math.toRadians(heading));
+        Y += dx * Math.sin(Math.toRadians(heading)) + dy * Math.cos(Math.toRadians(heading));
 
     }
 

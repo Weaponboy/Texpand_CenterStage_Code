@@ -8,6 +8,13 @@ public class Constants {
      * !!!!!!
      * */
 
+
+    /**Odometry position*/
+
+    public static double X = 0;
+    public static double Y = 0;
+    public static double Heading = 0;
+
     /**Drive PID's*/
 
     public static double driveP = 0.07;

@@ -24,4 +24,14 @@ public class controlPoints {
     public Vector2D sTest = new Vector2D(75, 75);
     public Vector2D eTest = new Vector2D(130, 50);
 
+    public Vector2D intermediatePointToBackboard = new Vector2D(122, 183);
+    public Vector2D intermediateControlToBackboard = new Vector2D(302, 183);
+    public Vector2D dropAtBlueBackboard = new Vector2D(314, 75);
+    public Vector2D dropAtRedBackboard = new Vector2D(314, 281);
+
+    public Vector2D intermediatePointToCollection = new Vector2D(183, 183);
+    public Vector2D intermediateControlToCollection = new Vector2D(248, 182);
+    public Vector2D collectAtRed = new Vector2D(61, 61);
+    public Vector2D collectAtBlue = new Vector2D(61, 304);
+
 }

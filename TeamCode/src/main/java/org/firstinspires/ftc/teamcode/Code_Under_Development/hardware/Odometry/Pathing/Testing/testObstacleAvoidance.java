@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.Testing;
 
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.horizontal;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.pivot;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.robotRadius;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.vertical;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Hardware_objects.drive;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.UsefulMethods.checkXObstacles;
@@ -53,7 +54,6 @@ public class testObstacleAvoidance extends OpMode {
 
     double loopTime;
 
-
     @Override
     public void init() {
         drive = new Drivetrain();
@@ -70,10 +70,10 @@ public class testObstacleAvoidance extends OpMode {
 
 //        counter++;
 
-        if (counter > 50){
-            counter = 0;
-            loopTime = elapsedTime.milliseconds() - lastLoopTime;
-        }
+//        if (counter > 50){
+//            counter = 0;
+//            loopTime = elapsedTime.milliseconds() - lastLoopTime;
+//        }
 
 //        if (counter == 0){
 //            odometry.Odo_Drive(10, 10, 0);
@@ -83,7 +83,7 @@ public class testObstacleAvoidance extends OpMode {
 
         odometry.update();
 
-        robotPos.set(odometry.X, odometry.Y);
+        robotPos.set(90, 61);
 
         vertical = -gamepad1.right_stick_x;
         horizontal = -gamepad1.right_stick_y;
@@ -92,8 +92,8 @@ public class testObstacleAvoidance extends OpMode {
         double xPower = horizontal * Math.sin(Math.toRadians(ConvertedHeadingForPosition)) + vertical * Math.cos(Math.toRadians(ConvertedHeadingForPosition));
         double yPower = horizontal * Math.cos(Math.toRadians(ConvertedHeadingForPosition)) - vertical * Math.sin(Math.toRadians(ConvertedHeadingForPosition));
 
-        xPower = checkXObstacles(robotPos, xPower);
-        yPower = checkYObstacles(robotPos, yPower);
+        xPower = checkXObstacles(robotPos, xPower, odometry);
+        yPower = checkYObstacles(robotPos, yPower, odometry);
 
         double denominator = Math.max(Math.abs(yPower) + Math.abs(xPower) + Math.abs(pivot), 1);
 
@@ -109,6 +109,9 @@ public class testObstacleAvoidance extends OpMode {
         telemetry.addData("right", odometry.currentRightPod);
         telemetry.addData("left", odometry.currentLeftPod);
         telemetry.addData("heading", ConvertedHeadingForPosition);
+        telemetry.addData("vertical", xPower);
+        telemetry.addData("horizontal", yPower);
+        telemetry.addData("robot pos", robotPos);
         telemetry.update();
 
     }
