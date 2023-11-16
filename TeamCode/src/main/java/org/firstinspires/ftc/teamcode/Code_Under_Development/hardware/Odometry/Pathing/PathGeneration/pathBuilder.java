@@ -54,6 +54,9 @@ public class pathBuilder {
 
     public void buildPath(TargetPoint targetPoint, Vector2D currentPos, Vector2D controlPoint){
 
+        originalPath.clear();
+        pathingVelocity.clear();
+
         switch (targetPoint) {
             case blueBackBoard:
                 PathToBackBoard(currentPos, controlPoint, controlPoints.dropAtBlueBackboard);
@@ -77,6 +80,9 @@ public class pathBuilder {
     }
 
     public void buildPath(TargetPoint targetPoint, Vector2D currentPos){
+
+        originalPath.clear();
+        pathingVelocity.clear();
 
         switch (targetPoint) {
             case blueBackBoard:
@@ -158,7 +164,9 @@ public class pathBuilder {
     private Vector2D pathBuilder(ArrayList<Vector2D> originalPath){
 
         Vector2D onTheCurve = new Vector2D();
+
         followablePath.clear();
+
         int oldindex = 0;
         int newindex = 0;
         int points = findNumberOfPoints(originalPath) - 1;

@@ -1,13 +1,7 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints;
 
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.horizontal;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.robotRadius;
-import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.vertical;
 
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.ObstacleMap;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.Vector2D;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry;
@@ -89,7 +83,7 @@ public class UsefulMethods {
     }
 
     /**find control points for pathing in teleop*/
-    public static Vector2D driveToBackboardPath(Vector2D currentPosition){
+    public static Vector2D getDriveToBackboardControlPoint(Vector2D currentPosition){
 
         Vector2D controlPoint;
 
@@ -104,4 +98,21 @@ public class UsefulMethods {
         return controlPoint;
 
     }
+
+    public static Vector2D getDriveToCollectionControlPoint(Vector2D currentPosition){
+
+        Vector2D controlPoint;
+
+        if (currentPosition.getY() < 95 && currentPosition.getX() > 220){
+            controlPoint = new Vector2D(248, 182);
+        } else if (currentPosition.getY() > 221 && currentPosition.getX() > 220) {
+            controlPoint = new Vector2D(248, 182);
+        }else{
+            controlPoint = null;
+        }
+
+        return controlPoint;
+
+    }
+
 }
