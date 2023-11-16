@@ -50,6 +50,23 @@ public class SegmentGenerator {
 
     }
 
+    public void buildPathAvoidance( Vector2D startPoint, Vector2D controlPoint, Vector2D endPoint){
+
+        Segment.clear();
+
+        t = 0;
+
+        do{
+            onTheCurve = calculateQuadraticBezier(startPoint, controlPoint, endPoint, t);
+
+            t += 0.001;
+
+            Segment.add(onTheCurve);
+
+        }while (t <= 1.0);
+
+    }
+
     private Vector2D calculateQuadraticBezier(Vector2D start, Vector2D control, Vector2D end, double t) {
         double u = 1 - t;
         double tt = t * t;
@@ -57,6 +74,19 @@ public class SegmentGenerator {
 
         double x = uu * start.getX() + 2 * u * t * control.getX() + tt * end.getX();
         double y = uu * start.getY() + 2 * u * t * control.getY() + tt * end.getY();
+
+        return new Vector2D(x, y);
+    }
+
+    private Vector2D calculateQuadraticBezier(Vector2D start, Vector2D controlFirst, Vector2D controlSecond, Vector2D end, double t) {
+        double u = 1 - t;
+        double tt = t * t;
+        double ttt = t * t * t;
+        double uu = u * u;
+        double uuu = u * u * u;
+
+        double x = uuu * start.getX() + 3 * uu * t * controlFirst.getX() + 3 * u * tt * controlSecond.getX() + ttt * end.getX();
+        double y = uuu * start.getY() + 3 * uu * t * controlFirst.getY() + 3 * u * tt * controlSecond.getY() + ttt * end.getY();
 
         return new Vector2D(x, y);
     }

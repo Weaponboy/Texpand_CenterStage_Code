@@ -106,7 +106,6 @@ public class pathBuilder {
         motionProfile();
     }
 
-
     private void buildCurveSegment(Vector2D start, Vector2D control, Vector2D end){
         segmentGenerator.buildPath(start, control, end);
         originalPath.addAll(segmentGenerator.copyPath());
@@ -400,6 +399,5 @@ public class pathBuilder {
     private Vector2D getPointOnFollowable(int index){
         return followablePath.get(index);
     }
-
 
 }

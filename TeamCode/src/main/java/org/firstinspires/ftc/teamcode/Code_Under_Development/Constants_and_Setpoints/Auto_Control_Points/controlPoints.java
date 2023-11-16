@@ -6,15 +6,15 @@ public class controlPoints {
 
     /**blue right start to backboard*/
     public Vector2D sPFirstSeg = new Vector2D(93, 23);
-    public Vector2D ePFirstSeg = new Vector2D(95, 85);
+    public Vector2D ePFirstSeg = new Vector2D(90, 90);
 
-    public Vector2D sPSecondSeg = new Vector2D(95, 85);
+    public Vector2D sPSecondSeg = new Vector2D(90, 90);
     public Vector2D cPSecondSeg = new Vector2D(90, 160);
     public Vector2D ePSecondSeg = new Vector2D(154, 157);
 
     public Vector2D sPThirdSeg = new Vector2D(ePSecondSeg.getX(), ePSecondSeg.getY());
     public Vector2D cPThirdSeg = new Vector2D(302, 154);
-    public static Vector2D ePThirdSeg = new Vector2D(314, 75);
+    public static Vector2D ePThirdSeg = new Vector2D(305, 90);
 
     /**test curve*/
     public Vector2D sPTest = new Vector2D(0, 0);
