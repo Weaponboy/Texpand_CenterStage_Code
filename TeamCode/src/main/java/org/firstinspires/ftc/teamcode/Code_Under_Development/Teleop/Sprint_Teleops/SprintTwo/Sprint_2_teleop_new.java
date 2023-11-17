@@ -76,9 +76,12 @@ public class Sprint_2_teleop_new extends OpMode {
     boolean pivotSafePoint = false;
     boolean slidesCollect = false;
     boolean slidesMoving = false;
-
+    boolean slidesMovingUp = false;
+    boolean slidesMovingDown = false;
     boolean retracting = false;
     boolean extending = false;
+    boolean Driving = false;
+    double pivotPower = 0;
 
     @Override
     public void loop() {
@@ -114,59 +117,158 @@ public class Sprint_2_teleop_new extends OpMode {
         if (gamepad1.x && !SlideSafetyHeight) {
             SlideSafetyHeight = deliverySlides.Left_Slide.getCurrentPosition() < -2200;
             deliverySlides.SlidesBothPower(-0.3);
-        }else if (gamepad1.a && !SlideSafetyBottom) {
+            slidesMovingUp = true;
+            slidesMovingDown = false;
+            slidesMoving = true;
+        } else if (gamepad1.a && !SlideSafetyBottom) {
             SlideSafetyBottom = deliverySlides.Left_Slide.getCurrentPosition() > -5;
             deliverySlides.SlidesBothPower(0.3);
-        }else if (!slidesMoving){
+            slidesMovingUp = false;
+            slidesMovingDown = true;
+            slidesMoving = true;
+        } else if (deliverySlides.Left_Slide.getCurrentPosition() > -25){
+            deliverySlides.SlidesBothPower(0);
+        } else{
             deliverySlides.SlidesBothPower(0.0005);
         }
 
-        if (Math.abs(deliverySlides.Left_Slide.getVelocity()) < 20){
+        if (Math.abs(deliverySlides.Left_Slide.getVelocity()) < 20) {
             slidesMoving = false;
         }
+        /**Deposit Code*/
 
-        if (gamepad1.start){
+
+        if (gamepad1.start) {
             clawLeft.setPosition(0.6);
             clawRight.setPosition(0.4);
         }
 
-        if (gamepad1.back){
+        if (gamepad1.back) {
             clawLeft.setPosition(0);
             clawRight.setPosition(1);
         }
 
-        if (gamepad1.dpad_right && IntakeServo.getPosition() == 0){
+        /**Intake Servo Code*/
+
+        if (gamepad1.dpad_right && IntakeServo.getPosition() >= 0) {
             IntakeServo.setPosition(0.5);
-        }else if (gamepad1.dpad_right && IntakeServo.getPosition() == 0.5){
+        } else if (gamepad1.dpad_right && IntakeServo.getPosition() <= 0.5) {
             IntakeServo.setPosition(0);
         }
 
-        if(gamepad1.dpad_up){
+        /**Top Arm Control Code*/
 
+        /**Arm Control While Slides Moving*/
+        if (slidesMoving && delivery.Pivot.getCurrentPosition() > -100) {
+            if (clawLeft.getPosition() > 0.1 || clawRight.getPosition() < 0.9) {
+                clawLeft.setPosition(0);
+                clawRight.setPosition(1);
+
+                try {
+                    Thread.sleep(400);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                clawLeft.setPosition(0);
+                clawRight.setPosition(1);
+            }
+            Pivot_Target = 220;
+            pivotPower = 0.5;
+            Top_Pivot_Position(pivotPower);
+            if (deliverySlides.Left_Slide.getCurrentPosition() < -600) {
+                DepositServoRotate.setPosition(1);
+
+            } else {
+                DepositServoRotate.setPosition(0.5);
+            }
+            DepositPivot.setPosition(0.9);
+        }
+
+        if ((Math.abs(drive.RF.getPower()) > 0.15 || Math.abs(drive.RF.getPower()) > 0.15)) {
+
+            Driving = true;
+            runtime.reset();
+        } else if ((Math.abs(drive.RF.getPower()) > 0.1 || Math.abs(drive.RF.getPower()) > 0.1) && collection.Intake.getPower() == 0 && delivery.Pivot.getCurrentPosition() > -100 && deliverySlides.Left_Slide.getCurrentPosition() > -10) {
             clawLeft.setPosition(0);
             clawRight.setPosition(1);
+        } else if ((runtime.milliseconds()) > buttondelaytime){
+            Driving = false;
+            runtime.reset();
+        }
 
+        if( Driving && delivery.Pivot.getCurrentPosition() > -100 && deliverySlides.Left_Slide.getCurrentPosition() > -10 && collection.Intake.getPower() == 0){
+            clawLeft.setPosition(0);
+            clawRight.setPosition(1);
             try {
-                Thread.sleep(400);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            Pivot_Target = 200;
+            pivotPower = 0.9;
+            Top_Pivot_Position(pivotPower);
 
-            Pivot_Target = 220;
 
-            while (delivery.Pivot.getCurrentPosition() > 210){
-                Top_Pivot_Position();
+        }else if(delivery.Pivot.getCurrentPosition() > -100 && deliverySlides.Left_Slide.getCurrentPosition() > -10){
+            Pivot_Target = 0;
+            pivotPower = 0.4;
+            Top_Pivot_Position(pivotPower);
+            DepositServoRotate.setPosition(0.5);
+            DepositPivot.setPosition(0.9);
+        }
+
+
+        if(gamepad1.dpad_up){
+
+            if (clawLeft.getPosition() > 0.1 || clawRight.getPosition() < 0.9) {
+                clawLeft.setPosition(0);
+                clawRight.setPosition(1);
+
+                try {
+                    Thread.sleep(400);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                clawLeft.setPosition(0);
+                clawRight.setPosition(1);
             }
-
             DepositServoRotate.setPosition(1);
+            DepositPivot.setPosition(0.5);
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            Pivot_Target = 120;
+            Top_Pivot_Position(pivotPower);
+
+
 
         }
 
         if (gamepad1.dpad_down){
-            Pivot_Target = -820;
+            DepositServoRotate.setPosition(1);
 
-            while (delivery.Pivot.getCurrentPosition() > -800){
-                Top_Pivot_Position();
+            if (clawLeft.getPosition() > 0.1 || clawRight.getPosition() < 0.9) {
+                clawLeft.setPosition(0);
+                clawRight.setPosition(1);
+
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                clawLeft.setPosition(0);
+                clawRight.setPosition(1);
+            }
+
+            Pivot_Target = -990;
+
+            while (delivery.Pivot.getCurrentPosition() > -200){
+                Top_Pivot_Position(pivotPower);
             }
 
             DepositPivot.setPosition(0.6);
@@ -174,66 +276,7 @@ public class Sprint_2_teleop_new extends OpMode {
             DepositServoRotate.setPosition(0.5);
         }
 
-        if(gamepad1.right_trigger > 0){
 
-            clawLeft.setPosition(0);
-            clawRight.setPosition(1);
-
-            DepositServoRotate.setPosition(1);
-
-            try {
-                Thread.sleep(800);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-            Pivot_Target = 140;
-
-            while (delivery.Pivot.getCurrentPosition() < 130){
-                Top_Pivot_Position();
-            }
-
-            DepositPivot.setPosition(1);
-
-        }
-
-        if (gamepad1.dpad_left){
-            DepositPivot.setPosition(1);
-
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-            Pivot_Target = 0;
-
-            while (delivery.Pivot.getCurrentPosition() > 0){
-                Top_Pivot_Position();
-            }
-
-            DepositPivot.setPosition(1);
-
-            try {
-                Thread.sleep(400);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-            DepositServoRotate.setPosition(0.5);
-
-            try {
-                Thread.sleep(400);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-            clawLeft.setPosition(0.6);
-            clawRight.setPosition(0.4);
-
-        }
-
-        /**Top pivot code*/
 
         /**Intake Toggle*/
 
@@ -249,7 +292,7 @@ public class Sprint_2_teleop_new extends OpMode {
 
         /**Call all PID's and telemetry code*/
 
-        Top_Pivot_Position();
+        Top_Pivot_Position(pivotPower);
 
         TelemetryMap();
 
@@ -301,13 +344,13 @@ public class Sprint_2_teleop_new extends OpMode {
 
     }
 
-    public void Top_Pivot_Position(){
+    public void Top_Pivot_Position(double power){
 
         delivery.pivot_controllers.setPIDF(pivot_p, pivot_i, pivot_d, 0);
 
         double Pivot_Current_Position = delivery.Pivot.getCurrentPosition();
 
-        double Top_Pivot_PID = delivery.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * 0.6;
+        double Top_Pivot_PID = delivery.pivot_controllers.calculate(Pivot_Current_Position, Pivot_Target) * power;
 
         delivery.Pivot.setPower(Top_Pivot_PID);
 
@@ -358,6 +401,7 @@ public class Sprint_2_teleop_new extends OpMode {
         telemetry.addData("Deposit Rotate", delivery.Pivot.getVelocity());
         telemetry.addData("pivot pos", delivery.Pivot.getCurrentPosition());
         telemetry.addData("pivot target", Pivot_Target);
+        telemetry.addData("Driving", Driving);
         telemetry.update();
     }
 
