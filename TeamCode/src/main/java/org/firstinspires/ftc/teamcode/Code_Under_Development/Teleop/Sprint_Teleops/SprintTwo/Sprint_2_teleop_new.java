@@ -271,7 +271,7 @@ public class Sprint_2_teleop_new extends OpMode {
                 Top_Pivot_Position(pivotPower);
             }
 
-            DepositPivot.setPosition(0.6);
+            DepositPivot.setPosition(0.4);
 
             DepositServoRotate.setPosition(0.5);
         }
