@@ -94,7 +94,7 @@ public class Sprint_3_teleop extends OpMode {
         drive.LF.setPower((pivot + (vertical + horizontal)));
         drive.LB.setPower((pivot + (vertical - horizontal)));
 
-        if (odometry.getHorizontalVelocity() > 20 || odometry.getVerticalVelocity() > 20) {
+        if (odometry.getHorizontalVelocity() > 20 || odometry.getVerticalVelocity() > 20 && delivery.getTopPivotPosition() > 0.6) {
             delivery.setTopPivot(safeTopPivot);
         }
 
@@ -128,10 +128,10 @@ public class Sprint_3_teleop extends OpMode {
             case manuel:
                 if (gamepad1.x && !SlideSafetyHeight) {
                     SlideSafetyHeight = deliverySlides.Left_Slide.getCurrentPosition() > 2200;
-                    deliverySlides.SlidesBothPower(-0.3);
+                    deliverySlides.SlidesBothPower(0.3);
                 } else if (gamepad1.a && !SlideSafetyBottom) {
                     SlideSafetyBottom = deliverySlides.Left_Slide.getCurrentPosition() < 5;
-                    deliverySlides.SlidesBothPower(0.3);
+                    deliverySlides.SlidesBothPower(-0.3);
                 }else {
                     deliverySlides.SlidesBothPower(0.0005);
                 }
@@ -151,8 +151,9 @@ public class Sprint_3_teleop extends OpMode {
 
         switch (pivotState){
             case collect:
+
                 //delivery position
-                if (gamepad1.a && deliverySlides.getCurrentposition() > 150){
+                if (gamepad1.dpad_up && deliverySlides.getCurrentposition() > 150){
 
                     pivotState = PivotState.transitioning;
 
@@ -168,7 +169,7 @@ public class Sprint_3_teleop extends OpMode {
 
                     delivery.RotateClaw.setPosition(rotateCollect);
 
-                } else if (gamepad1.a && deliverySlides.getCurrentposition() < 150) {
+                } else if (gamepad1.dpad_up && deliverySlides.getCurrentposition() < 150) {
 
                     closeToCollection = true;
 
@@ -186,7 +187,7 @@ public class Sprint_3_teleop extends OpMode {
             case deposit:
 
                 //delivery position
-                if (gamepad1.b && deliverySlides.getCurrentposition() > 150) {
+                if (gamepad1.dpad_down && deliverySlides.getCurrentposition() > 150) {
 
                     pivotState = PivotState.transitioning;
 
@@ -207,12 +208,12 @@ public class Sprint_3_teleop extends OpMode {
                 break;
             case transitioning:
 
-                if (pivotMoveTime.milliseconds() >= timeToWait && delivery.getTopPivotPosition() == 1 && !closeToCollection){
+                if (pivotMoveTime.milliseconds() >= timeToWait && delivery.getTopPivotPosition() > 0.5 && !closeToCollection){
                     pivotState = PivotState.deposit;
                     delivery.setSecondPivot(deliverySecondPivot);
                 }
 
-                if (pivotMoveTime.milliseconds() >= timeToWait && delivery.getTopPivotPosition() == 0 && !closeToCollection){
+                if (pivotMoveTime.milliseconds() >= timeToWait && delivery.getTopPivotPosition() < 0.5 && !closeToCollection){
                     pivotState = PivotState.collect;
 
                     delivery.setSecondPivot(collectSecondPivot);
