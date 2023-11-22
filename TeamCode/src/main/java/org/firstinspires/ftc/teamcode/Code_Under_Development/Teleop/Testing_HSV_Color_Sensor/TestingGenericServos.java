@@ -23,7 +23,6 @@ public class TestingGenericServos extends OpMode {
         pivot2 = hardwareMap.get(ServoImplEx.class, "pivot2");
 
         pivot2.setDirection(Servo.Direction.REVERSE);
-        pivot2.setDirection(Servo.Direction.FORWARD);
 
         pivot1.setPwmRange(new PwmControl.PwmRange(600, 2400));
         pivot2.setPwmRange(new PwmControl.PwmRange(600, 2400));
@@ -43,10 +42,10 @@ public class TestingGenericServos extends OpMode {
 
         if (currentGamepad1.a && !previousGamepad1.a && pivot2.getPosition() == 0){
             pivot2.setPosition(1);
-            pivot1.setPosition(0);
+            pivot1.setPosition(1);
         }else if(currentGamepad1.a && !previousGamepad1.a && pivot2.getPosition() == 1){
             pivot2.setPosition(0);
-            pivot1.setPosition(1);
+            pivot1.setPosition(0);
         }
     }
 }

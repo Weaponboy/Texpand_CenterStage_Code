@@ -281,7 +281,6 @@ public class Testing_Different_Teleop extends OpMode {
             DepositPivot.setPosition(0.9);
         }
 
-
         if(gamepad1.dpad_up){
 
             if (clawLeft.getPosition() > 0.1 || clawRight.getPosition() < 0.9) {
@@ -341,7 +340,6 @@ public class Testing_Different_Teleop extends OpMode {
 
             DepositServoRotate.setPosition(0.5);
         }
-
 
         /**Intake Toggle*/
 

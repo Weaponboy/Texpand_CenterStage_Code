@@ -17,10 +17,11 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Delivery;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Delivery_Slides;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Drivetrain;
+import org.junit.jupiter.api.Disabled;
 
 import java.util.List;
 
-@TeleOp
+@Disabled
 public class Sprint_2_teleop extends OpMode {
 
     Drivetrain drive = new Drivetrain();

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Code_Under_Development.Teleop.Sprint_Teleops;
+package org.firstinspires.ftc.teamcode.Code_Under_Development.Teleop.Sprint_Teleops.ScrimmageTeleops;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.currentGamepad1;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.previousGamepad1;
 

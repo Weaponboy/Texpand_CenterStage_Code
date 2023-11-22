@@ -8,6 +8,7 @@ import android.widget.Switch;
 
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -24,7 +25,7 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems
 
 import java.util.List;
 
-@TeleOp
+@Disabled
 public class Sprint_2_teleop_new extends OpMode {
 
     Drivetrain drive = new Drivetrain();
@@ -112,7 +113,6 @@ public class Sprint_2_teleop_new extends OpMode {
 
         SlideSafetyHeight = deliverySlides.Left_Slide.getCurrentPosition() < -2200;
         SlideSafetyBottom = deliverySlides.Left_Slide.getCurrentPosition() > -5;
-
 
         if (gamepad1.x && !SlideSafetyHeight) {
             SlideSafetyHeight = deliverySlides.Left_Slide.getCurrentPosition() < -2200;

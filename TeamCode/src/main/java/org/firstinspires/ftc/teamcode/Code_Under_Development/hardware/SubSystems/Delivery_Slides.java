@@ -26,7 +26,7 @@ public class  Delivery_Slides {
         Left_Slide = hardwareMap.get(DcMotorEx.class, "Left_Slide");
         Right_Slide = hardwareMap.get(DcMotorEx.class, "Right_Slide");
 
-        Right_Slide.setDirection(DcMotorSimple.Direction.REVERSE);
+        Left_Slide.setDirection(DcMotorSimple.Direction.REVERSE);
 
         Right_Slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Left_Slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -55,6 +55,8 @@ public class  Delivery_Slides {
         Left_Slide.setPower(power);
     }
 
-
+    public int getCurrentposition(){
+        return Right_Slide.getCurrentPosition() + Left_Slide.getCurrentPosition()/2;
+    }
 
 }
