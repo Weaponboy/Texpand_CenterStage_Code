@@ -60,7 +60,7 @@ public class TestPathFollower extends LinearOpMode {
             robotPos.set(180, 156);
 
             PathingPower correctivePower;
-            correctivePower = follower.getCorrectivePower(robotPos, Heading);
+            correctivePower = follower.getCorrectivePowerOnPath(robotPos, Heading);
 
             Vector2D correctivePosition;
             correctivePosition = follower.getCorrectivePosition(robotPos);

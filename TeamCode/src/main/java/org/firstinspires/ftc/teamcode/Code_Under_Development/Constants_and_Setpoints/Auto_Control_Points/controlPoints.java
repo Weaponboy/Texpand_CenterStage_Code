@@ -26,8 +26,8 @@ public class controlPoints {
 
     public Vector2D intermediatePointToBackboard = new Vector2D(122, 183);
     public Vector2D intermediateControlToBackboard = new Vector2D(302, 183);
-    public Vector2D dropAtBlueBackboard = new Vector2D(314, 75);
-    public Vector2D dropAtRedBackboard = new Vector2D(314, 281);
+    public Vector2D dropAtBlueBackboard = new Vector2D(260, 75);
+    public Vector2D dropAtRedBackboard = new Vector2D(260, 281);
 
     public Vector2D intermediatePointToCollection = new Vector2D(183, 183);
     public Vector2D intermediateControlToCollection = new Vector2D(248, 182);

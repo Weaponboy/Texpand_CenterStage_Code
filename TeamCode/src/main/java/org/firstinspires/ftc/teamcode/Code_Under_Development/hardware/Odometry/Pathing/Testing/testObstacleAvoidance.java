@@ -41,7 +41,7 @@ public class testObstacleAvoidance extends OpMode {
 
     ElapsedTime elapsedTime = new ElapsedTime();
 
-    Odometry odometry = new Odometry(213, 342, 90);
+    Odometry odometry = new Odometry(210, 337, 90);
 
     Vector2D robotPos = new Vector2D();
 
@@ -83,7 +83,7 @@ public class testObstacleAvoidance extends OpMode {
 
         odometry.update();
 
-        robotPos.set(90, 61);
+        robotPos.set(odometry.X, odometry.Y);
 
         vertical = -gamepad1.right_stick_x;
         horizontal = -gamepad1.right_stick_y;
@@ -102,15 +102,15 @@ public class testObstacleAvoidance extends OpMode {
         drive.LF.setPower((pivot + (xPower + yPower)) / denominator);
         drive.LB.setPower((pivot + (xPower - yPower)) / denominator);
 
-        telemetry.addData("loop time", loopTime);
-        telemetry.addData("x", odometry.X);
-        telemetry.addData("y", odometry.Y);
-        telemetry.addData("center", odometry.currentCenterPod);
-        telemetry.addData("right", odometry.currentRightPod);
-        telemetry.addData("left", odometry.currentLeftPod);
-        telemetry.addData("heading", ConvertedHeadingForPosition);
+        Vector2D closestPosition;
+
+//        telemetry.addData("center", odometry.currentCenterPod);
+//        telemetry.addData("right", odometry.currentRightPod);
+//        telemetry.addData("left", odometry.currentLeftPod);
+        telemetry.addData("heading", odometry.heading);
         telemetry.addData("vertical", xPower);
         telemetry.addData("horizontal", yPower);
+        telemetry.addData("closestPos", ObstacleMap.findClosestPosition(robotPos));
         telemetry.addData("robot pos", robotPos);
         telemetry.update();
 

@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.Testing;
 
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.horizontal;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.pivot;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.vertical;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -65,7 +69,9 @@ public class TestingNewGen extends LinearOpMode {
 
         waitForStart();
 
-        follower.followPath(true, 180, false, odometry, drive);
+        follower.followPath(true, 180, false, odometry, drive, telemetry);
+
+        sleep(5000);
 
         odometry.update();
 
@@ -75,14 +81,51 @@ public class TestingNewGen extends LinearOpMode {
 
         odometry.update();
 
-        follower.followPath(true, 180, false, odometry, drive);
+        follower.followPath(true, 180, false, odometry, drive, telemetry);
+
+//        follower.getPathingVelocity(42, 42);
+//
+//        horizontal = follower.getPathingVelocity(42, 42).getHorizontal();
+//
+//        vertical = follower.getPathingVelocity(42, 42).getVertical();
+//
+//        double denominator = Math.max(Math.abs(vertical) + Math.abs(horizontal) + Math.abs(pivot), 1);
+//
+//        double left_Front = (vertical + horizontal + pivot) / denominator;
+//        double left_Back = (vertical - horizontal + pivot) / denominator;
+//        double right_Front = (vertical - horizontal - pivot) / denominator;
+//        double right_Back = (vertical + horizontal - pivot) / denominator;
+//
+//        drive.RF.setPower(right_Front);
+//        drive.RB.setPower(right_Back);
+//        drive.LF.setPower(left_Front);
+//        drive.LB.setPower(left_Back);
+//
+//
+//        sleep(2000);
+//
+//        drive.RF.setPower(0);
+//        drive.RB.setPower(0);
+//        drive.LF.setPower(0);
+//        drive.LB.setPower(0);
 
         while (opModeIsActive()){
 
-            dashboardTelemetry.addData("x opmode", odometry.X);
-            dashboardTelemetry.addData("y opmode", odometry.Y);
-            dashboardTelemetry.addData("heading opmode", odometry.heading);
-            dashboardTelemetry.update();
+//            robotposition.set(244, 120);
+
+//            telemetry.addData("robot pos", robotposition);
+//            telemetry.addData("power y", (follower.getPathingPower(robotposition, 180).getHorizontal()));
+//            telemetry.addData("power x", (follower.getPathingPower(robotposition, 180).getVertical()));
+//            telemetry.addData("x velo", follower.getTargetVelocity(robotposition).getXVelocity());
+//            telemetry.addData("y velo", follower.getTargetVelocity(robotposition).getYVelocity());
+//            telemetry.update();
+
+            odometry.update();
+
+            telemetry.addData("x opmode", odometry.X);
+            telemetry.addData("y opmode", odometry.Y);
+            telemetry.addData("heading opmode", odometry.heading);
+            telemetry.update();
 
         }
 

@@ -34,22 +34,22 @@ public class ObstacleMap {
     public static void SetMap(){
 
         // wall blue truss
-        Rectangle(115, 0, 188, 5);
+        Rectangle(117, 0, 183, 5);
 
         // middle blue truss
-        Rectangle(115, 57, 188, 63);
+        Rectangle(117, 57, 183, 63);
 
         // door blue truss
-        Rectangle(115, 117, 188, 123);
+        Rectangle(117, 117, 183, 123);
 
         // door red truss
-        Rectangle(115, 241, 188, 247);
+        Rectangle(117, 241, 183, 247);
 
         // middle red truss
-        Rectangle(115, 301, 188, 307);
+        Rectangle(117, 301, 183, 307);
 
         // wall red truss
-        Rectangle(115, 360, 188, 365);
+        Rectangle(117, 360, 183, 365);
 
     }
 

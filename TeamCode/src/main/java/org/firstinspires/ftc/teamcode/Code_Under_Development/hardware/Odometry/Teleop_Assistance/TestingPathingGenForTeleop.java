@@ -33,7 +33,7 @@ public class TestingPathingGenForTeleop extends OpMode {
 
     Drivetrain drive = new Drivetrain();
 
-    Odometry odometry = new Odometry();
+    Odometry odometry = new Odometry(93,23,270);
 
     pathBuilder path = new pathBuilder();
 
@@ -63,12 +63,14 @@ public class TestingPathingGenForTeleop extends OpMode {
     @Override
     public void loop() {
 
+        odometry.update();
+
         robotPos.set(odometry.X, odometry.Y);
 
         if (gamepad1.b){
 
             if (getDriveToBackboardControlPoint(robotPos) != null){
-                path.buildPath(TargetPoint.blueCollection, getDriveToBackboardControlPoint(robotPos), robotPos);
+                path.buildPath(TargetPoint.blueBackBoard, robotPos, getDriveToBackboardControlPoint(robotPos));
             }else {
                 path.buildPath(TargetPoint.blueBackBoard, robotPos);
             }
@@ -80,20 +82,22 @@ public class TestingPathingGenForTeleop extends OpMode {
             follower.setPath(path.followablePath, path.pathingVelocity);
         }
 
-        if (gamepad1.a){
 
-            if (getDriveToCollectionControlPoint(robotPos) != null){
-                path.buildPath(TargetPoint.blueCollection, getDriveToCollectionControlPoint(robotPos), robotPos);
-            }else {
-                path.buildPath(TargetPoint.blueBackBoard, robotPos);
-            }
 
-            targetHeading = 90;
-
-            pathing = true;
-
-            follower.setPath(path.followablePath, path.pathingVelocity);
-        }
+//        if (gamepad1.a){
+//
+//            if (getDriveToCollectionControlPoint(robotPos) != null){
+//                path.buildPath(TargetPoint.blueCollection, getDriveToCollectionControlPoint(robotPos), robotPos);
+//            }else {
+//                path.buildPath(TargetPoint.blueBackBoard, robotPos);
+//            }
+//
+//            targetHeading = 90;
+//
+//            pathing = true;
+//
+//            follower.setPath(path.followablePath, path.pathingVelocity);
+//        }
 
         if(gamepad1.right_stick_button && gamepad1.left_stick_button){
             pathing = false;
@@ -107,18 +111,12 @@ public class TestingPathingGenForTeleop extends OpMode {
             horizontal = -gamepad1.right_stick_y;
             pivot = gamepad1.left_stick_x;
 
-            double xPower = horizontal * Math.sin(Math.toRadians(ConvertedHeadingForPosition)) + vertical * Math.cos(Math.toRadians(ConvertedHeadingForPosition));
-            double yPower = horizontal * Math.cos(Math.toRadians(ConvertedHeadingForPosition)) - vertical * Math.sin(Math.toRadians(ConvertedHeadingForPosition));
+            double denominator = Math.max(Math.abs(horizontal) + Math.abs(vertical) + Math.abs(pivot), 1);
 
-            xPower = checkXObstacles(robotPos, xPower, odometry);
-            yPower = checkYObstacles(robotPos, yPower, odometry);
-
-            double denominator = Math.max(Math.abs(yPower) + Math.abs(xPower) + Math.abs(pivot), 1);
-
-            drive.RF.setPower((-pivot + (xPower - yPower)) / denominator);
-            drive.RB.setPower((-pivot + (xPower + yPower)) / denominator);
-            drive.LF.setPower((pivot + (xPower + yPower)) / denominator);
-            drive.LB.setPower((pivot + (xPower - yPower)) / denominator);
+            drive.RF.setPower((-pivot + (vertical - horizontal)) / denominator);
+            drive.RB.setPower((-pivot + (vertical + horizontal)) / denominator);
+            drive.LF.setPower((pivot + (vertical + horizontal)) / denominator);
+            drive.LB.setPower((pivot + (vertical - horizontal)) / denominator);
 
         }
 

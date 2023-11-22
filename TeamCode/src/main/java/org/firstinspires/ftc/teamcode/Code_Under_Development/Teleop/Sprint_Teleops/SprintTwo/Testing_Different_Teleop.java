@@ -1,33 +1,46 @@
 package org.firstinspires.ftc.teamcode.Code_Under_Development.Teleop.Sprint_Teleops.SprintTwo;
 
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.horizontal;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.pivot;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Constants.vertical;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.currentGamepad1;
 import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Non_Hardware_Objects.previousGamepad1;
-import static org.opencv.core.Core.inRange;
-
-import android.widget.Switch;
+import static org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.UsefulMethods.getDriveToBackboardControlPoint;
 
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.Constants_and_Setpoints.Auto_Control_Points.controlPoints;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionPortalProcessers.Auto_Slide_Height;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.VisionTesting.VisionPortalProcessers.PropDetecterByHeight;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.ObjectAvoidance.Vector2D;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.Follower.mecanumFollower;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathGeneration.TargetPoint;
+import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.Odometry.Pathing.PathGeneration.pathBuilder;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Collection;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Delivery;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Delivery_Slides;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems.Odometry;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.VisionPortalImpl;
 
 import java.util.List;
 
 @TeleOp
-public class Sprint_2_teleop_new extends OpMode {
+public class Testing_Different_Teleop extends OpMode {
 
     Drivetrain drive = new Drivetrain();
+
+    Auto_Slide_Height slideHeight;
+    private VisionPortal visionPortal;
+    WebcamName webcamName;
 
     Delivery_Slides deliverySlides = new Delivery_Slides();
 
@@ -35,7 +48,7 @@ public class Sprint_2_teleop_new extends OpMode {
 
     Delivery delivery = new Delivery();
 
-    Odometry odometry = new Odometry(0,0,0);
+    Odometry odometry = new Odometry(296, 70, 180);
 
     PIDFController Slide_Power;
 
@@ -83,36 +96,68 @@ public class Sprint_2_teleop_new extends OpMode {
     boolean Driving = false;
     double pivotPower = 0;
 
+    pathBuilder path = new pathBuilder();
+
+    Vector2D robotPos = new Vector2D();
+
+    mecanumFollower follower = new mecanumFollower();
+
+    boolean pathing = false;
+
+    double targetHeading;
+
     @Override
     public void loop() {
+
+        odometry.update();
+
+        robotPos.set(odometry.X, odometry.Y);
 
         /**Drive code*/
         previousGamepad1.copy(currentGamepad1);
 
         currentGamepad1.copy(gamepad1);
 
-        throttle = 0.6;
-
-        throttle = (gamepad1.left_trigger * 0.4) + throttle;
-
-        if (gamepad1.right_bumper) {
-            throttle = 0.3;
+        if(gamepad1.right_stick_button && gamepad1.left_stick_button){
+            pathing = false;
         }
 
-        double vertical = -gamepad1.right_stick_y;
-        double horizontal = gamepad1.right_stick_x * 1.5;
-        double pivot = gamepad1.left_stick_x;
+        if (pathing && gamepad1.atRest()){
+            follower.followPathTeleop(true, targetHeading, false, odometry, drive);
+        }else {
 
-        drive.RF.setPower(throttle * (-pivot + (vertical - horizontal)));
-        drive.RB.setPower((throttle * 1.15) * (-pivot + (vertical + horizontal)));
-        drive.LF.setPower(throttle * (pivot + (vertical + horizontal)));
-        drive.LB.setPower((throttle * 1.15) * (pivot + (vertical - horizontal)));
+            horizontal = -gamepad1.right_stick_x;
+            vertical = -gamepad1.right_stick_y;
+            pivot = gamepad1.left_stick_x;
+
+            double denominator = Math.max(Math.abs(horizontal) + Math.abs(vertical) + Math.abs(pivot), 1);
+
+            drive.RF.setPower((-pivot + (vertical - horizontal)) / denominator);
+            drive.RB.setPower((-pivot + (vertical + horizontal)) / denominator);
+            drive.LF.setPower((pivot + (vertical + horizontal)) / denominator);
+            drive.LB.setPower((pivot + (vertical - horizontal)) / denominator);
+
+        }
+
+        if (gamepad1.b){
+
+            if (getDriveToBackboardControlPoint(robotPos) != null){
+                path.buildPath(TargetPoint.blueBackBoard, robotPos, getDriveToBackboardControlPoint(robotPos));
+            }else {
+                path.buildPath(TargetPoint.blueBackBoard, robotPos);
+            }
+
+            targetHeading = 180;
+
+            pathing = true;
+
+            follower.setPath(path.followablePath, path.pathingVelocity);
+        }
 
         /**Delivery Slide Code*/
 
         SlideSafetyHeight = deliverySlides.Left_Slide.getCurrentPosition() < -2200;
         SlideSafetyBottom = deliverySlides.Left_Slide.getCurrentPosition() > -5;
-
 
         if (gamepad1.x && !SlideSafetyHeight) {
             SlideSafetyHeight = deliverySlides.Left_Slide.getCurrentPosition() < -2200;
@@ -138,6 +183,12 @@ public class Sprint_2_teleop_new extends OpMode {
 
         /**Deposit Code*/
 
+        if (currentGamepad1.dpad_right && !previousGamepad1.dpad_right && clawLeft.getPosition() < 0.1) {
+            clawLeft.setPosition(0.6);
+        } else if (currentGamepad1.dpad_right && !previousGamepad1.dpad_right && clawLeft.getPosition() > 0.1) {
+            clawLeft.setPosition(0);
+        }
+
         if (gamepad1.start) {
             clawLeft.setPosition(0.6);
             clawRight.setPosition(0.4);
@@ -148,13 +199,19 @@ public class Sprint_2_teleop_new extends OpMode {
             clawRight.setPosition(1);
         }
 
+        if (currentGamepad1.dpad_left && !previousGamepad1.dpad_left && clawRight.getPosition() > 0.9) {
+            clawRight.setPosition(0.4);
+        } else if (currentGamepad1.dpad_left && !previousGamepad1.dpad_left && clawRight.getPosition() < 0.9) {
+            clawRight.setPosition(1);
+        }
+
         /**Intake Servo Code*/
 
-        if (gamepad1.dpad_right && IntakeServo.getPosition() >= 0) {
-            IntakeServo.setPosition(0.5);
-        } else if (gamepad1.dpad_right && IntakeServo.getPosition() <= 0.5) {
-            IntakeServo.setPosition(0);
-        }
+//        if (gamepad1.dpad_right && IntakeServo.getPosition() >= 0) {
+//            IntakeServo.setPosition(0.5);
+//        } else if (gamepad1.dpad_right && IntakeServo.getPosition() <= 0.5) {
+//            IntakeServo.setPosition(0);
+//        }
 
         /**Top Arm Control Code*/
 
@@ -175,19 +232,20 @@ public class Sprint_2_teleop_new extends OpMode {
                 clawRight.setPosition(1);
             }
 
-            Pivot_Target = 220;
+            Pivot_Target = 100;
             pivotPower = 0.5;
 
             Top_Pivot_Position(pivotPower);
 
             if (deliverySlides.Left_Slide.getCurrentPosition() < -600) {
+                Pivot_Target = 0;
                 DepositServoRotate.setPosition(1);
-
+                DepositPivot.setPosition(0);
             } else {
                 DepositServoRotate.setPosition(0.5);
+                DepositPivot.setPosition(0.9);
             }
 
-            DepositPivot.setPosition(0.9);
         }
 
         if ((Math.abs(drive.RF.getPower()) > 0.15 || Math.abs(drive.RF.getPower()) > 0.15)) {
@@ -204,6 +262,7 @@ public class Sprint_2_teleop_new extends OpMode {
         if( Driving && delivery.Pivot.getCurrentPosition() > -100 && deliverySlides.Left_Slide.getCurrentPosition() > -10 && collection.Intake.getPower() == 0){
             clawLeft.setPosition(0);
             clawRight.setPosition(1);
+
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
@@ -240,10 +299,10 @@ public class Sprint_2_teleop_new extends OpMode {
             }
             DepositServoRotate.setPosition(1);
 
-            DepositPivot.setPosition(0.5);
+            DepositPivot.setPosition(0);
 
             try {
-                Thread.sleep(300);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -254,7 +313,8 @@ public class Sprint_2_teleop_new extends OpMode {
 
         }
 
-        if (gamepad1.dpad_down){
+        if (gamepad1.dpad_down && deliverySlides.Left_Slide.getCurrentPosition() < 590){
+
             DepositServoRotate.setPosition(1);
 
             if (clawLeft.getPosition() > 0.1 || clawRight.getPosition() < 0.9) {
@@ -316,6 +376,8 @@ public class Sprint_2_teleop_new extends OpMode {
 
         odometry.init(hardwareMap);
 
+        robotPos.set(odometry.X, odometry.Y);
+
         DepositServoRotate = hardwareMap.get(Servo.class, "DepositRotate");
         clawLeft = hardwareMap.get(Servo.class, "clawLeft");
         clawRight = hardwareMap.get(Servo.class, "clawRight");
@@ -323,6 +385,10 @@ public class Sprint_2_teleop_new extends OpMode {
         TestFeetech = hardwareMap.get(Servo.class, "fitec");
         IntakeServo = hardwareMap.get(Servo.class, "intake_servo");
 
+        webcamName = hardwareMap.get(WebcamName.class, "frontCam");
+
+        slideHeight = new Auto_Slide_Height(telemetry);
+        visionPortal = VisionPortal.easyCreateWithDefaults(webcamName, slideHeight);
 
         Slide_Power = new PIDFController(pivot_p, pivot_i, pivot_d, 0);
 

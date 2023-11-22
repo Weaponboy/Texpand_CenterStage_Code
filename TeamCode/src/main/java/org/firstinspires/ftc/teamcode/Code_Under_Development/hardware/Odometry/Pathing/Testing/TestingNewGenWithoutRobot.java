@@ -52,7 +52,7 @@ public class TestingNewGenWithoutRobot extends LinearOpMode {
 
         odometry.update(0);
 
-        follower.followPath(false, 180, false, odometry, drive);
+        follower.followPath(false, 180, false, odometry, drive, telemetry);
 
         odometry.update(0);
 

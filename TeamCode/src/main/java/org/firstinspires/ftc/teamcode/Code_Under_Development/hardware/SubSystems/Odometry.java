@@ -255,6 +255,22 @@ public class Odometry {
 
     public void Odo_Drive(double targetX, double targetY, double targetRot) {
 
+        double driveP = 0.1;
+        double driveD = 0.007;
+        double driveF = 0;
+
+        double strafeP = 0.1;
+        double strafeD = 0.005;
+        double strafeF = 0;
+
+        double rotationP = 0.04;
+        double rotationD = 0.001;
+        double rotationF = 0;
+
+        drivePID.setPIDF(driveP, 0, driveD, driveF);
+        strafePID.setPIDF(strafeP, 0, strafeD, strafeF);
+        PivotPID.setPIDF(rotationP, 0, rotationD, rotationF);
+
         do {
 
             update();
@@ -295,7 +311,7 @@ public class Odometry {
             drive.LF.setPower(left_Front);
             drive.LB.setPower(left_Back);
 
-        }while ((Math.abs(Xdist) > 0.8 ) || (Math.abs(Ydist) > 0.8 ) || (Math.abs(rotdist) > 0.8));
+        }while ((Math.abs(Xdist) > 1.2 ) || (Math.abs(Ydist) > 1.2 ) || (Math.abs(rotdist) > 1.2));
 
         drive.RF.setPower(0);
         drive.RB.setPower(0);
