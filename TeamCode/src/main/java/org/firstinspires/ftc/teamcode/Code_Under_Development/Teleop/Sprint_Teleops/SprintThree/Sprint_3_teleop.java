@@ -243,26 +243,26 @@ public class Sprint_3_teleop extends OpMode {
 
         /**gripper code*/
 
-        if (currentGamepad1.dpad_right && !previousGamepad1.dpad_right && delivery.LeftClaw.getPosition() == 0) {
-            delivery.LeftClaw.setPosition(1);
-        } else if (currentGamepad1.dpad_right && !previousGamepad1.dpad_right && delivery.LeftClaw.getPosition() == 1) {
-            delivery.LeftClaw.setPosition(0);
+        if (currentGamepad1.dpad_right && !previousGamepad1.dpad_right && delivery.LeftClaw.getPosition() == clawClosed) {
+            delivery.LeftClaw.setPosition(clawOpen);
+        } else if (currentGamepad1.dpad_right && !previousGamepad1.dpad_right && delivery.LeftClaw.getPosition() == clawOpen) {
+            delivery.LeftClaw.setPosition(clawClosed);
         }
 
         if (gamepad1.start) {
-            delivery.RightClaw.setPosition(0);
-            delivery.LeftClaw.setPosition(0);
+            delivery.RightClaw.setPosition(clawClosed);
+            delivery.LeftClaw.setPosition(clawClosed);
         }
 
         if (gamepad1.back) {
-            delivery.RightClaw.setPosition(1);
-            delivery.LeftClaw.setPosition(1);
+            delivery.RightClaw.setPosition(clawOpen);
+            delivery.LeftClaw.setPosition(clawOpen);
         }
 
-        if (currentGamepad1.dpad_left && !previousGamepad1.dpad_left && delivery.RightClaw.getPosition() == 0) {
-            delivery.RightClaw.setPosition(1);
-        } else if (currentGamepad1.dpad_left && !previousGamepad1.dpad_left && delivery.RightClaw.getPosition() == 1) {
-            delivery.RightClaw.setPosition(0);
+        if (currentGamepad1.dpad_left && !previousGamepad1.dpad_left && delivery.RightClaw.getPosition() == clawClosed) {
+            delivery.RightClaw.setPosition(clawOpen);
+        } else if (currentGamepad1.dpad_left && !previousGamepad1.dpad_left && delivery.RightClaw.getPosition() == clawOpen) {
+            delivery.RightClaw.setPosition(clawClosed);
         }
 
     }
