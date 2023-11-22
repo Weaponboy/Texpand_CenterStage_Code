@@ -60,7 +60,7 @@ public class Sprint_3_teleop extends OpMode {
     ElapsedTime pivotMoveTime = new ElapsedTime();
 
     public enum SlideState{
-        manuel,
+        manual,
         moving,
         targetReached
     }
@@ -71,7 +71,7 @@ public class Sprint_3_teleop extends OpMode {
         transitioning
     }
 
-    SlideState slideState = SlideState.manuel;
+    SlideState slideState = SlideState.manual;
     PivotState pivotState = PivotState.collect;
 
     @Override
@@ -125,13 +125,13 @@ public class Sprint_3_teleop extends OpMode {
         SlideSafetyBottom = deliverySlides.Left_Slide.getCurrentPosition() < 5;
 
         switch (slideState){
-            case manuel:
+            case manual:
                 if (gamepad1.x && !SlideSafetyHeight) {
                     SlideSafetyHeight = deliverySlides.Left_Slide.getCurrentPosition() > 2200;
-                    deliverySlides.SlidesBothPower(-0.3);
+                    deliverySlides.SlidesBothPower(0.3);
                 } else if (gamepad1.a && !SlideSafetyBottom) {
                     SlideSafetyBottom = deliverySlides.Left_Slide.getCurrentPosition() < 5;
-                    deliverySlides.SlidesBothPower(0.3);
+                    deliverySlides.SlidesBothPower(-0.3);
                 }else {
                     deliverySlides.SlidesBothPower(0.0005);
                 }
@@ -142,7 +142,7 @@ public class Sprint_3_teleop extends OpMode {
                 }
                 break;
             case targetReached:
-                slideState = SlideState.manuel;
+                slideState = SlideState.manual;
                 break;
             default:
         }
@@ -151,7 +151,7 @@ public class Sprint_3_teleop extends OpMode {
 
         switch (pivotState){
             case collect:
-                //delivery position
+                //Move to delivery position
                 if (gamepad1.a && deliverySlides.getCurrentposition() > 150){
 
                     pivotState = PivotState.transitioning;
@@ -185,7 +185,7 @@ public class Sprint_3_teleop extends OpMode {
                 break;
             case deposit:
 
-                //delivery position
+                //Move to collect position
                 if (gamepad1.b && deliverySlides.getCurrentposition() > 150) {
 
                     pivotState = PivotState.transitioning;
@@ -207,12 +207,12 @@ public class Sprint_3_teleop extends OpMode {
                 break;
             case transitioning:
 
-                if (pivotMoveTime.milliseconds() >= timeToWait && delivery.getTopPivotPosition() == 1 && !closeToCollection){
+                if (pivotMoveTime.milliseconds() >= timeToWait && delivery.getTopPivotPosition() > 0.5 && !closeToCollection){
                     pivotState = PivotState.deposit;
                     delivery.setSecondPivot(deliverySecondPivot);
                 }
 
-                if (pivotMoveTime.milliseconds() >= timeToWait && delivery.getTopPivotPosition() == 0 && !closeToCollection){
+                if (pivotMoveTime.milliseconds() >= timeToWait && delivery.getTopPivotPosition() < 0.5 && !closeToCollection){
                     pivotState = PivotState.collect;
 
                     delivery.setSecondPivot(collectSecondPivot);
@@ -243,9 +243,9 @@ public class Sprint_3_teleop extends OpMode {
 
         /**gripper code*/
 
-        if (currentGamepad1.dpad_right && !previousGamepad1.dpad_right && delivery.LeftClaw.getPosition() == clawClosed) {
+        if (currentGamepad1.dpad_left && !previousGamepad1.dpad_left && delivery.LeftClaw.getPosition() == clawClosed) {
             delivery.LeftClaw.setPosition(clawOpen);
-        } else if (currentGamepad1.dpad_right && !previousGamepad1.dpad_right && delivery.LeftClaw.getPosition() == clawOpen) {
+        } else if (currentGamepad1.dpad_left && !previousGamepad1.dpad_left && delivery.LeftClaw.getPosition() == clawOpen) {
             delivery.LeftClaw.setPosition(clawClosed);
         }
 
@@ -259,9 +259,9 @@ public class Sprint_3_teleop extends OpMode {
             delivery.LeftClaw.setPosition(clawOpen);
         }
 
-        if (currentGamepad1.dpad_left && !previousGamepad1.dpad_left && delivery.RightClaw.getPosition() == clawClosed) {
+        if (currentGamepad1.dpad_right && !previousGamepad1.dpad_right && delivery.RightClaw.getPosition() == clawClosed) {
             delivery.RightClaw.setPosition(clawOpen);
-        } else if (currentGamepad1.dpad_left && !previousGamepad1.dpad_left && delivery.RightClaw.getPosition() == clawOpen) {
+        } else if (currentGamepad1.dpad_right && !previousGamepad1.dpad_right && delivery.RightClaw.getPosition() == clawOpen) {
             delivery.RightClaw.setPosition(clawClosed);
         }
 
