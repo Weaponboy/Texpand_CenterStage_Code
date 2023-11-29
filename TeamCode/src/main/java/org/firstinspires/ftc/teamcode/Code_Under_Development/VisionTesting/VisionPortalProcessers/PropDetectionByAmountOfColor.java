@@ -45,6 +45,7 @@ public class PropDetectionByAmountOfColor implements VisionProcessor {
         blue,
         red
     }
+    
 
     public Rect leftOfScreen = new Rect(0, 0, 320, 240);
 
