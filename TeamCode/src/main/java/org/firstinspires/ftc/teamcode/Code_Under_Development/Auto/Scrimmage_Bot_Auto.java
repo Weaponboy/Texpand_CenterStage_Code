@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -16,28 +17,34 @@ import org.firstinspires.ftc.teamcode.Code_Under_Development.hardware.SubSystems
 @Autonomous
 public class Scrimmage_Bot_Auto extends LinearOpMode {
 
-    DcMotor Left_Drive;
-    DcMotor Right_Drive;
+    DcMotor LF;
+    DcMotor RF;
+    DcMotor Povit2;
+    Servo PivotLeft;
 
     static final double     COUNTS_PER_MOTOR_REV    = 960;
     static final double     DRIVE_GEAR_REDUCTION    = 1;
-    static final double     WHEEL_DIAMETER_INCHES   = 9;
+    static final double     WHEEL_DIAMETER_INCM   = 9;
     static final double     COUNTS_PER_CM        = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415);
+            (WHEEL_DIAMETER_INCM * 3.1415);
 
     public BNO055IMU imu = null;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        Left_Drive = hardwareMap.get(DcMotor.class, "left_drive");
-        Right_Drive = hardwareMap.get(DcMotor.class, "right_drive");
+        RF = hardwareMap.get(DcMotor.class,"RF");
+        LF = hardwareMap.get(DcMotor.class,"LF");
+        Povit2 = hardwareMap.get(DcMotor.class, "Pivot2");
+        PivotLeft = hardwareMap.get(Servo.class, "PivotLeft");
 
-        Left_Drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Right_Drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Povit2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        Left_Drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Right_Drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Povit2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        LF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -50,52 +57,61 @@ public class Scrimmage_Bot_Auto extends LinearOpMode {
 
         imu.initialize(parameters);
 
+        PivotLeft.setPosition(1);
+
         waitForStart();
 
         //start code
 
-        turnToHeadingWithImu(imu, 90, this);
+        encoderDrive(0.4, -35);
 
-        encoderDrive(0.4, 20);
+        turnToHeadingWithImu(imu, -100, this);
+
+        sleep(3);
+
+        encoderDrive(0.4, -70);
+
+
 
     }
 
     public void encoderDrive(double speed, double TargetCm) {
 
-        Left_Drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Right_Drive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        Left_Drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Right_Drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        LF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         int newLeftTarget;
         int newRightTarget;
 
         // Determine new target position, and pass to motor controller
-        newLeftTarget = Left_Drive.getCurrentPosition() + (int)(TargetCm * COUNTS_PER_CM);
-        newRightTarget = Right_Drive.getCurrentPosition() + (int)(TargetCm * COUNTS_PER_CM);
+        newLeftTarget = LF.getCurrentPosition() + (int)(TargetCm * COUNTS_PER_CM);
+        newRightTarget = RF.getCurrentPosition() + (int)(TargetCm * COUNTS_PER_CM);
 
-        Left_Drive.setTargetPosition(newLeftTarget);
-        Right_Drive.setTargetPosition(newRightTarget);
+        LF.setTargetPosition(newLeftTarget);
+        RF.setTargetPosition(newRightTarget);
 
         // Turn On RUN_TO_POSITION
-        Left_Drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Right_Drive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        LF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        RF.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        Left_Drive.setPower(speed);
-        Right_Drive.setPower(speed);
+        LF.setPower(speed);
+        RF.setPower(speed);
 
-        while (Left_Drive.isBusy() && Right_Drive.isBusy()) {
+        while (LF.isBusy() && RF.isBusy()) {
             //do nothing
         }
 
         // Stop all motion
-        Left_Drive.setPower(0);
-        Right_Drive.setPower(0);
+        LF.setPower(0);
+        RF.setPower(0);
 
         // Turn off RUN_TO_POSITION
-        Left_Drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Right_Drive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        LF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        RF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
 
@@ -105,6 +121,8 @@ public class Scrimmage_Bot_Auto extends LinearOpMode {
 
         while (opMode.opModeIsActive() && (Math.abs(headingError) > 0.8)) {
 
+            headingError = targetHeading - imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+
             if (headingError > 180){
                 headingError -= 360;
             }else if (headingError <= -180){
@@ -112,15 +130,18 @@ public class Scrimmage_Bot_Auto extends LinearOpMode {
             }
 
             // Determine required steering to keep on heading
-            double turnSpeed = Range.clip(headingError * 0.016, -0.4, 0.4);
+            double turnSpeed = Range.clip(headingError * 0.009, -0.2, 0.2);
 
-            Left_Drive.setPower(turnSpeed);
-            Right_Drive.setPower(-turnSpeed);
+            LF.setPower(-turnSpeed);
+            RF.setPower(turnSpeed);
+
+            telemetry.addData("heading error", headingError);
+            telemetry.update();
 
         }
 
-        Left_Drive.setPower(0);
-        Right_Drive.setPower(0);
+        LF.setPower(0);
+        RF.setPower(0);
 
     }
     

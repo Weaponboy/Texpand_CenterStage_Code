@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp
-public class scrimmageBot extends OpMode {
+public class advanced extends OpMode {
 
     DcMotor RightDrive;
 
@@ -19,12 +19,14 @@ public class scrimmageBot extends OpMode {
 
     Servo Gripper;
 
+    Servo PivotServo;
+
     Double Slow = 1.0;
 
     ElapsedTime runtime = new ElapsedTime();
 
     int buttondelaytime = 300;
-
+    double PivotServoposition;
 
     public Gamepad currentGamepad1;
 
@@ -48,7 +50,7 @@ public class scrimmageBot extends OpMode {
         LeftDrive = hardwareMap.get(DcMotor.class,"LeftDrive");
         Pivot = hardwareMap.get(DcMotor.class,"Pivot");
         Gripper = hardwareMap.get(Servo.class,"Gripper");
-
+        PivotServo = hardwareMap.get(Servo.class,"PivotServo");
         RightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         LeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -77,7 +79,6 @@ public class scrimmageBot extends OpMode {
 //        } else if (currentGamepad1.a && !previousGamepad1.a && Gripper.getPosition() > 0.9) {
 //            Gripper.setPosition(1);
 //        }
-
 
 
         if (gamepad1.start){
@@ -144,6 +145,45 @@ public class scrimmageBot extends OpMode {
             }
         }
 
+        if(gamepad1.dpad_down && Pivot.getCurrentPosition() < 1500){
+            Pivot.setTargetPosition(Pivot.getCurrentPosition()+10);
+            Pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Pivot.setPower(0.4);
+
+        }
+        if (gamepad1.dpad_up && Pivot.getCurrentPosition() > 900){
+            Pivot.setTargetPosition(Pivot.getCurrentPosition()-10);
+            Pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Pivot.setPower(0.4);
+
+        }
+        if( Pivot.getCurrentPosition() < 1040) {
+            PivotServoposition = 0.63;
+            PivotServo.setPosition(PivotServoposition);
+            telemetry.addData("PivotServoposition 1040", Pivot.getCurrentPosition());
+        }else if( Pivot.getCurrentPosition() > 1400){
+            PivotServoposition= 0.63;
+            PivotServo.setPosition(PivotServoposition);
+            telemetry.addData("PivotServoposition 1400", Pivot.getCurrentPosition());
+
+        }else if( Pivot.getCurrentPosition() > 1300){
+            PivotServoposition= 0.75;
+            PivotServo.setPosition(PivotServoposition);
+            telemetry.addData("PivotServoposition 1300", Pivot.getCurrentPosition());
+
+        }else if( Pivot.getCurrentPosition() > 1200) {
+            PivotServoposition = 0.70;
+            PivotServo.setPosition(PivotServoposition);
+            telemetry.addData("PivotServoposition 1200", Pivot.getCurrentPosition());
+
+        }else if( Pivot.getCurrentPosition() > 1100) {
+            PivotServoposition = 0.67;
+            PivotServo.setPosition(PivotServoposition);
+            telemetry.addData("PivotServoposition 1100", Pivot.getCurrentPosition());
+
+        }
+        telemetry.update();
     }
 }
+
 
